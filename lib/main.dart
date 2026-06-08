@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gym_management_app/core/theme/theme_app.dart';
+import 'package:gym_management_app/features/profile/cubit/profile_cubit.dart';
 import 'package:gym_management_app/features/root/cubit/root_cubit.dart';
 import 'package:gym_management_app/features/root/views/root_view.dart';
 
@@ -14,7 +15,10 @@ class GymSystemApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(
-      providers: [BlocProvider(create: (context) => RootCubit())],
+      providers: [
+        BlocProvider(create: (context) => RootCubit()),
+        BlocProvider(create: (context) => ProfileCubit()),
+      ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         title: 'Gym System App',

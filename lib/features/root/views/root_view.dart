@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gym_management_app/core/utils/assets.dart';
 import 'package:gym_management_app/features/home/views/home_view.dart';
-import 'package:gym_management_app/features/offers/views/offters_view.dart';
+import 'package:gym_management_app/features/tools/views/tools_view.dart';
 import 'package:gym_management_app/features/profile/views/profile_view.dart';
 import 'package:gym_management_app/features/root/cubit/root_cubit.dart';
 import 'package:gym_management_app/features/root/views/widgets/custom_nav_bar.dart';
@@ -17,8 +17,8 @@ class RootView extends StatelessWidget {
     final views = const [
       HomeView(),
       SubscriptionView(),
-      OfftersView(),
       ProfileView(),
+      ToolsView(),
       SettingsView(),
     ];
 

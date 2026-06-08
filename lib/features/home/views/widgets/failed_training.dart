@@ -33,7 +33,7 @@ class FailedTraining extends StatelessWidget {
             children: [
               const CustomText(text: 'حالة الحضور اليوم', fontSize: 18),
 
-              const SizedBox(height: 6),
+              Gap(6),
 
               const CustomText(
                 text: 'لم يتم تسجيل حضورك اليوم',
@@ -41,8 +41,7 @@ class FailedTraining extends StatelessWidget {
                 color: Colors.white70,
               ),
 
-              const SizedBox(height: 12),
-
+              Gap(12),
               Container(
                 padding: const EdgeInsets.all(12),
                 decoration: BoxDecoration(
@@ -64,6 +63,7 @@ class FailedTraining extends StatelessWidget {
                         fontSize: 14,
                       ),
                     ),
+                    const Gap(10),
 
                     CustomButton(
                       icon: FaIcon(FontAwesomeIcons.expand, size: 18),

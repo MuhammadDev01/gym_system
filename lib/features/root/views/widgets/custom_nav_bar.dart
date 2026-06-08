@@ -13,11 +13,7 @@ class CustomNavBar extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       margin: const EdgeInsets.only(left: 16, right: 16, bottom: 16),
-      decoration: BoxDecoration(
-        color: Colors.black.withValues(alpha: .08),
-        borderRadius: BorderRadius.circular(25),
-        border: Border.all(color: Colors.white.withValues(alpha: .08)),
-      ),
+      decoration: _containerDecoration(),
       child: ClipRRect(
         borderRadius: BorderRadius.circular(25),
         child: BackdropFilter(
@@ -34,7 +30,7 @@ class CustomNavBar extends StatelessWidget {
 
               _navItem(
                 index: 1,
-                icon: FontAwesomeIcons.dumbbell,
+                icon: FontAwesomeIcons.solidCreditCard,
                 label: 'اشتراكي',
                 context,
               ),
@@ -48,8 +44,8 @@ class CustomNavBar extends StatelessWidget {
 
               _navItem(
                 index: 3,
-                icon: FontAwesomeIcons.tag,
-                label: 'العروض',
+                icon: FontAwesomeIcons.dumbbell,
+                label: 'الادوات',
                 context,
               ),
 
@@ -63,6 +59,14 @@ class CustomNavBar extends StatelessWidget {
           ),
         ),
       ),
+    );
+  }
+
+  BoxDecoration _containerDecoration() {
+    return BoxDecoration(
+      color: Colors.black.withValues(alpha: .08),
+      borderRadius: BorderRadius.circular(25),
+      border: Border.all(color: Colors.white.withValues(alpha: .08)),
     );
   }
 
