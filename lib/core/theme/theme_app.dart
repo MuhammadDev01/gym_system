@@ -21,7 +21,8 @@ class ThemeApp {
 
     //bottom navigation bar
     bottomNavigationBarTheme: BottomNavigationBarThemeData(
-      backgroundColor: Colors.black,
+      backgroundColor: Colors.transparent,
+
       selectedItemColor: Colors.yellow,
       unselectedItemColor: Colors.white,
       selectedLabelStyle: TextStyle(fontFamily: cairoFont),

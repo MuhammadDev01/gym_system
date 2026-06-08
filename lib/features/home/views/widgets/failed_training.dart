@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:gap/gap.dart';
+import 'package:gym_management_app/core/components/custom_button.dart';
 import 'package:gym_management_app/core/components/custom_text.dart';
 import 'package:gym_management_app/core/theme/colors_app.dart';
 
@@ -63,18 +65,10 @@ class FailedTraining extends StatelessWidget {
                       ),
                     ),
 
-                    FilledButton.icon(
+                    CustomButton(
+                      icon: FaIcon(FontAwesomeIcons.expand, size: 18),
                       onPressed: onScanPressed,
-                      icon: const Icon(Icons.qr_code_scanner, size: 18),
-                      label: const Text('اتمرن الآن'),
-                      style: FilledButton.styleFrom(
-                        backgroundColor: ColorsApp.gold,
-                        foregroundColor: ColorsApp.black,
-                        elevation: 0,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                      ),
+                      text: 'مسح الكود',
                     ),
                   ],
                 ),

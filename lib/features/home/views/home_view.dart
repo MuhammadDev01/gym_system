@@ -27,7 +27,7 @@ class _HomeViewState extends State<HomeView> {
             MemberCard(),
             Gap(16),
 
-            TrainingTodaySection(isAttendToday: true),
+            TrainingTodaySection(isAttendToday: false),
             Gap(16),
 
             AnnouncementSection(

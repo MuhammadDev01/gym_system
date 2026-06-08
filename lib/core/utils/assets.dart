@@ -6,6 +6,12 @@ class Assets {
 
   static const String banner = "assets/banner.png";
 
+  static const String cardsFitnessCard = "assets/cards/fitness_card.png";
+
+  static const String cardsGymCard = "assets/cards/gym_card.png";
+
+  static const String cardsPrivateCard = "assets/cards/private_card.png";
+
   static const String kongiGym = "assets/kongiGym.png";
 
   static const String manHandADumbel = "assets/manHandADumbel.png";
