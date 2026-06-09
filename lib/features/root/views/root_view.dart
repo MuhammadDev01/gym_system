@@ -27,9 +27,11 @@ class RootView extends StatelessWidget {
         return Scaffold(
           extendBody: true,
           body: Container(
+            height: double.infinity,
             decoration: const BoxDecoration(
               image: DecorationImage(
                 image: AssetImage(Assets.backround),
+
                 fit: BoxFit.cover,
               ),
             ),
