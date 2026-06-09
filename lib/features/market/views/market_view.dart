@@ -1,0 +1,57 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:gap/gap.dart';
+import 'package:gym_management_app/core/components/custom_text.dart';
+import 'package:gym_management_app/features/market/cubit/market_cubit.dart';
+import 'package:gym_management_app/features/market/cubit/market_state.dart';
+import 'package:gym_management_app/features/market/views/widgets/market_item.dart';
+import 'package:gym_management_app/features/market/views/widgets/market_item_filter.dart';
+
+class MarketView extends StatelessWidget {
+  const MarketView({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return SafeArea(
+      child: SingleChildScrollView(
+        padding: const EdgeInsets.all(16),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const CustomText(text: 'المتجر', fontSize: 24),
+            const Gap(16),
+            BlocBuilder<MarketCubit, MarketState>(
+              builder: (context, state) {
+                final cubit = context.read<MarketCubit>();
+                return Column(
+                  children: [
+                    ItemFilter(
+                      selectedFilter: cubit.selectedFilter,
+                      onFilterChanged: (filter) => cubit.filterByType(filter),
+                    ),
+                    const Gap(16),
+                    GridView.builder(
+                      shrinkWrap: true,
+                      physics: const NeverScrollableScrollPhysics(),
+                      gridDelegate:
+                          const SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: 2,
+                            childAspectRatio: 0.7,
+                            crossAxisSpacing: 12,
+                            mainAxisSpacing: 12,
+                          ),
+                      itemCount: cubit.filteredItems.length,
+                      itemBuilder: (context, index) {
+                        return MarketItem(item: cubit.filteredItems[index]);
+                      },
+                    ),
+                  ],
+                );
+              },
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}

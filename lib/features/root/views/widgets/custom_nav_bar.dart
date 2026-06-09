@@ -44,8 +44,8 @@ class CustomNavBar extends StatelessWidget {
 
               _navItem(
                 index: 3,
-                icon: FontAwesomeIcons.dumbbell,
-                label: 'الادوات',
+                icon: FontAwesomeIcons.bagShopping,
+                label: 'المتجر',
                 context,
               ),
 

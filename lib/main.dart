@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gym_management_app/core/theme/theme_app.dart';
+import 'package:gym_management_app/features/market/cubit/market_cubit.dart';
 import 'package:gym_management_app/features/profile/cubit/profile_cubit.dart';
 import 'package:gym_management_app/features/root/cubit/root_cubit.dart';
 import 'package:gym_management_app/features/root/views/root_view.dart';
@@ -18,6 +19,7 @@ class GymSystemApp extends StatelessWidget {
       providers: [
         BlocProvider(create: (context) => RootCubit()),
         BlocProvider(create: (context) => ProfileCubit()),
+        BlocProvider(create: (context) => MarketCubit()),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
