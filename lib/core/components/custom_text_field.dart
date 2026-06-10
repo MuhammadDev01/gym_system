@@ -7,19 +7,32 @@ class CustomTextField extends StatelessWidget {
     this.initialValue,
     required this.labelText,
     this.obscureText,
+    this.onTapSufffix,
+    this.prefixIcon,
+    this.suffixIcon,
+    this.textInputType,
   });
   final String? initialValue;
   final String labelText;
   final bool? obscureText;
+  final VoidCallback? onTapSufffix;
+  final IconData? prefixIcon;
+  final IconData? suffixIcon;
+  final TextInputType? textInputType;
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      keyboardType: textInputType,
       initialValue: initialValue,
       obscureText: obscureText ?? false,
       cursorColor: ColorsApp.gold,
       style: const TextStyle(color: Colors.white),
 
       decoration: InputDecoration(
+        prefixIconColor: ColorsApp.gold.withValues(alpha: 0.75),
+        suffixIconColor: ColorsApp.gold.withValues(alpha: 0.75),
+        prefixIcon: Icon(prefixIcon),
+        suffixIcon: IconButton(onPressed: onTapSufffix, icon: Icon(suffixIcon)),
         labelText: labelText,
         focusColor: ColorsApp.gold,
         focusedBorder: OutlineInputBorder(

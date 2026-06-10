@@ -14,6 +14,8 @@ class Assets {
 
   static const String kongiGym = "assets/kongiGym.png";
 
+  static const String logo = "assets/logo.png";
+
   static const String manHandADumbel = "assets/manHandADumbel.png";
 
   static const String profilePic = "assets/profilePic.png";
