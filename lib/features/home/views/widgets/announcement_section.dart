@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
+import 'package:gym_management_app/core/components/custom_status_icon.dart';
 import 'package:gym_management_app/core/components/custom_text.dart';
+import 'package:gym_management_app/core/components/glass_widget.dart';
 import 'package:gym_management_app/core/theme/colors_app.dart';
 
 class AnnouncementSection extends StatelessWidget {
@@ -17,10 +19,11 @@ class AnnouncementSection extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const CustomText(text: "تنبيهات من الكابتن", fontSize: 22),
-
+        CustomText(
+          text: "تنبيهات من الكابتن",
+          style: Theme.of(context).textTheme.headlineLarge,
+        ),
         const Gap(12),
-
         ListView.separated(
           shrinkWrap: true,
           physics: const NeverScrollableScrollPhysics(),
@@ -42,29 +45,12 @@ class AnnouncementItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: Colors.white.withAlpha(13),
-        borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: Colors.white.withAlpha(20)),
-      ),
+    return GlassWidget(
+      padding: EdgeInsets.all(16),
       child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          Container(
-            width: 36,
-            height: 36,
-            decoration: BoxDecoration(
-              color: ColorsApp.gold.withAlpha(30),
-              shape: BoxShape.circle,
-            ),
-            child: Icon(
-              Icons.campaign_rounded,
-              color: ColorsApp.gold,
-              size: 20,
-            ),
-          ),
+          CustomStatusIcon(color: ColorsApp.gold, icon: Icons.campaign_rounded),
 
           const Gap(12),
 

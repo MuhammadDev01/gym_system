@@ -11,7 +11,7 @@ class MembershipCard extends StatelessWidget {
       child: Container(
         padding: const EdgeInsets.all(20),
         decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(28),
+          borderRadius: BorderRadius.circular(16),
           image: DecorationImage(image: AssetImage(picCard), fit: BoxFit.fill),
           // color: color.withValues(alpha: .5),
         ),

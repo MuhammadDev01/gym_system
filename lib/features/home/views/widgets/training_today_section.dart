@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:gap/gap.dart';
+import 'package:gym_management_app/core/components/custom_text.dart';
+import 'package:gym_management_app/core/components/glass_widget.dart';
 import 'package:gym_management_app/features/home/views/widgets/failed_training.dart';
 import 'package:gym_management_app/features/home/views/widgets/success_training.dart';
 
@@ -9,17 +12,16 @@ class TrainingTodaySection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: double.infinity,
-      padding: const EdgeInsets.all(20),
-      decoration: BoxDecoration(
-        color: Colors.white.withValues(alpha: 0.05),
-        borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: Colors.white.withValues(alpha: 0.1)),
+    return GlassWidget(
+      padding: EdgeInsets.all(10),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const CustomText(text: 'حالة الحضور اليوم'),
+          Gap(12),
+          isAttendToday ? SuccessTraining() : FailedTraining(),
+        ],
       ),
-      child: isAttendToday
-          ? SuccessTraining(checkInTime: "7.34 AM")
-          : FailedTraining(onScanPressed: () {}),
     );
   }
 }

@@ -5,8 +5,8 @@ import 'package:gym_management_app/core/components/glass_widget.dart';
 import 'package:gym_management_app/core/theme/colors_app.dart';
 import 'package:gym_management_app/core/utils/assets.dart';
 
-class MemberCard extends StatelessWidget {
-  const MemberCard({super.key});
+class HomeMemberInfo extends StatelessWidget {
+  const HomeMemberInfo({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -26,21 +26,17 @@ class MemberCard extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  CustomText(text: "dev muhammad"),
+                  CustomText(text: "محمد خالد عيسى"),
                   Gap(4),
-                  CustomText(text: "فتنس", fontSize: 16, color: ColorsApp.gold),
+                  CustomText(text: "فتنس", color: ColorsApp.gold),
                 ],
               ),
             ),
 
             Column(
               children: [
-                CustomText(text: "18", color: ColorsApp.gold, fontSize: 32),
-                CustomText(
-                  text: "يوم متبقي",
-                  color: Colors.white70,
-                  fontSize: 14,
-                ),
+                CustomText(text: "18", color: ColorsApp.gold, fontSize: 20),
+                CustomText(text: "يوم متبقي", color: Colors.white70),
               ],
             ),
           ],

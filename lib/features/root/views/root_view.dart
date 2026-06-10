@@ -24,22 +24,30 @@ class RootView extends StatelessWidget {
 
     return BlocBuilder<RootCubit, RootState>(
       builder: (context, state) {
-        return Scaffold(
-          extendBody: true,
-          body: Container(
-            height: double.infinity,
-            decoration: const BoxDecoration(
-              image: DecorationImage(
-                image: AssetImage(Assets.backround),
+        return GestureDetector(
+          onTap: () => FocusScope.of(context).unfocus(),
+          child: Scaffold(
+            extendBody: true,
+            body: Container(
+              height: double.infinity,
+              decoration: const BoxDecoration(
+                image: DecorationImage(
+                  image: AssetImage(Assets.backround),
 
-                fit: BoxFit.cover,
+                  fit: BoxFit.cover,
+                ),
+              ),
+
+              child: SingleChildScrollView(
+                padding: const EdgeInsets.all(8),
+                child: SafeArea(
+                  child: views[context.read<RootCubit>().currentIndex],
+                ),
               ),
             ),
 
-            child: views[context.read<RootCubit>().currentIndex],
+            bottomNavigationBar: CustomNavBar(),
           ),
-
-          bottomNavigationBar: CustomNavBar(),
         );
       },
     );

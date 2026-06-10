@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gap/gap.dart';
 import 'package:gym_management_app/core/components/custom_text.dart';
 import 'package:gym_management_app/core/utils/assets.dart';
 import 'package:gym_management_app/features/subscription/views/widgets/not_subscribed_section.dart';
@@ -10,17 +11,18 @@ class SubscriptionView extends StatelessWidget {
   final isSubscribed = false;
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      padding: const EdgeInsets.all(16),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          const CustomText(text: 'الاشتراكات', fontSize: 24),
-          isSubscribed
-              ? SubscribedSection(picCard: Assets.cardsPrivateCard)
-              : NotSubscribedSection(),
-        ],
-      ),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        CustomText(
+          text: 'الاشتراكات',
+          style: Theme.of(context).textTheme.headlineLarge,
+        ),
+        Gap(18),
+        isSubscribed
+            ? SubscribedSection(picCard: Assets.cardsPrivateCard)
+            : NotSubscribedSection(),
+      ],
     );
   }
 }

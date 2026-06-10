@@ -17,6 +17,7 @@ class CustomTextField extends StatelessWidget {
       initialValue: initialValue,
       obscureText: obscureText ?? false,
       cursorColor: ColorsApp.gold,
+      style: const TextStyle(color: Colors.white),
 
       decoration: InputDecoration(
         labelText: labelText,
@@ -24,7 +25,7 @@ class CustomTextField extends StatelessWidget {
         focusedBorder: OutlineInputBorder(
           borderSide: BorderSide(color: ColorsApp.gold),
         ),
-        labelStyle: TextStyle(color: ColorsApp.gray),
+        labelStyle: TextStyle(color: ColorsApp.gray, fontSize: 14),
         filled: true,
         fillColor: Colors.white.withValues(alpha: .04),
       ),

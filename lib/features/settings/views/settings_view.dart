@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
-import 'package:gym_management_app/core/components/custom_text.dart';
 import 'package:gym_management_app/features/settings/views/branches_view.dart';
 import 'package:gym_management_app/features/settings/views/subscription_history_view.dart';
 import 'package:gym_management_app/features/settings/views/widgets/logout_button.dart';
@@ -13,59 +12,48 @@ class SettingsView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Padding(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const CustomText(text: 'الإعدادات', fontSize: 24),
-            const Gap(24),
-            NavCard(
-              title: 'فروع الجيم',
-              icon: Icons.location_on,
-              onTap: () => Navigator.push(
-                context,
-                MaterialPageRoute(builder: (_) => const BranchesView()),
-              ),
-            ),
-            const Gap(12),
-            NavCard(
-              title: 'سجل الاشتراكات',
-              icon: Icons.history,
-              onTap: () => Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (_) => const SubscriptionHistoryView(),
-                ),
-              ),
-            ),
-            const Gap(12),
-            NavCard(
-              title: 'الانضمام لجروب الجيم',
-              icon: Icons.groups,
-              onTap: () => launchUrlString(
-                'https://chat.whatsapp.com/LLywZ8vUQRs9b7CgjFYF3F',
-                mode: LaunchMode.externalApplication,
-              ),
-            ),
-            const Gap(12),
-            NavCard(
-              title: 'التواصل مع الكابتن',
-              icon: Icons.chat,
-              onTap: () => launchUrlString(
-                'https://chat.whatsapp.com/LLywZ8vUQRs9b7CgjFYF3F',
-                mode: LaunchMode.externalApplication,
-              ),
-            ),
-            const Spacer(),
-            const LogoutButton(),
-            const Gap(24),
-            const SettingsFooter(),
-            const Gap(24),
-          ],
+    return Column(
+      children: [
+        NavCard(
+          title: 'فروع الجيم',
+          icon: Icons.location_on,
+          onTap: () => Navigator.push(
+            context,
+            MaterialPageRoute(builder: (_) => const BranchesView()),
+          ),
         ),
-      ),
+        const Gap(12),
+        NavCard(
+          title: 'سجل الاشتراكات',
+          icon: Icons.history,
+          onTap: () => Navigator.push(
+            context,
+            MaterialPageRoute(builder: (_) => const SubscriptionHistoryView()),
+          ),
+        ),
+        const Gap(12),
+        NavCard(
+          title: 'الانضمام لجروب الجيم',
+          icon: Icons.groups,
+          onTap: () => launchUrlString(
+            'https://chat.whatsapp.com/LLywZ8vUQRs9b7CgjFYF3F',
+            mode: LaunchMode.externalApplication,
+          ),
+        ),
+        const Gap(12),
+        NavCard(
+          title: 'التواصل مع الكابتن',
+          icon: Icons.chat,
+          onTap: () => launchUrlString(
+            'https://chat.whatsapp.com/LLywZ8vUQRs9b7CgjFYF3F',
+            mode: LaunchMode.externalApplication,
+          ),
+        ),
+        const Gap(30),
+        const LogoutButton(),
+        const Gap(24),
+        const SettingsFooter(),
+      ],
     );
   }
 }

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
 import 'package:gym_management_app/core/components/custom_text.dart';
+import 'package:gym_management_app/core/components/glass_widget.dart';
 import 'package:gym_management_app/core/theme/colors_app.dart';
 import 'package:gym_management_app/core/utils/assets.dart';
 import 'package:gym_management_app/features/profile/cubit/profile_cubit.dart';
@@ -17,12 +18,9 @@ class ProfileHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: double.infinity,
+    return GlassWidget(
       padding: const EdgeInsets.all(20),
-
-      decoration: _containerDecoration(),
-
+      width: double.infinity,
       child: Column(
         children: [
           Stack(
@@ -42,7 +40,7 @@ class ProfileHeader extends StatelessWidget {
 
           const Gap(4),
 
-          CustomText(text: userphone, fontSize: 14, color: Colors.white70),
+          CustomText(text: userphone, color: Colors.white70),
         ],
       ),
     );
@@ -70,15 +68,6 @@ class ProfileHeader extends StatelessWidget {
           },
         ),
       ),
-    );
-  }
-
-  BoxDecoration _containerDecoration() {
-    return BoxDecoration(
-      color: Colors.white.withValues(alpha: .05),
-      borderRadius: BorderRadius.circular(20),
-
-      border: Border.all(color: Colors.white.withValues(alpha: .08)),
     );
   }
 }

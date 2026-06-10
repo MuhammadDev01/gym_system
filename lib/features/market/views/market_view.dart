@@ -12,46 +12,43 @@ class MarketView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: SingleChildScrollView(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const CustomText(text: 'المتجر', fontSize: 24),
-            const Gap(16),
-            BlocBuilder<MarketCubit, MarketState>(
-              builder: (context, state) {
-                final cubit = context.read<MarketCubit>();
-                return Column(
-                  children: [
-                    ItemFilter(
-                      selectedFilter: cubit.selectedFilter,
-                      onFilterChanged: (filter) => cubit.filterByType(filter),
-                    ),
-                    const Gap(16),
-                    GridView.builder(
-                      shrinkWrap: true,
-                      physics: const NeverScrollableScrollPhysics(),
-                      gridDelegate:
-                          const SliverGridDelegateWithFixedCrossAxisCount(
-                            crossAxisCount: 2,
-                            childAspectRatio: 0.7,
-                            crossAxisSpacing: 12,
-                            mainAxisSpacing: 12,
-                          ),
-                      itemCount: cubit.filteredItems.length,
-                      itemBuilder: (context, index) {
-                        return MarketItem(item: cubit.filteredItems[index]);
-                      },
-                    ),
-                  ],
-                );
-              },
-            ),
-          ],
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        CustomText(
+          text: 'المتجر',
+          style: Theme.of(context).textTheme.headlineLarge,
         ),
-      ),
+        const Gap(16),
+        BlocBuilder<MarketCubit, MarketState>(
+          builder: (context, state) {
+            final cubit = context.read<MarketCubit>();
+            return Column(
+              children: [
+                ItemFilter(
+                  selectedFilter: cubit.selectedFilter,
+                  onFilterChanged: (filter) => cubit.filterByType(filter),
+                ),
+                const Gap(16),
+                GridView.builder(
+                  shrinkWrap: true,
+                  physics: const NeverScrollableScrollPhysics(),
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 2,
+                    childAspectRatio: 0.7,
+                    crossAxisSpacing: 12,
+                    mainAxisSpacing: 12,
+                  ),
+                  itemCount: cubit.filteredItems.length,
+                  itemBuilder: (context, index) {
+                    return MarketItem(item: cubit.filteredItems[index]);
+                  },
+                ),
+              ],
+            );
+          },
+        ),
+      ],
     );
   }
 }

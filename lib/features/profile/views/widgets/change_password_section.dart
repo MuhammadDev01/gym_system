@@ -22,16 +22,14 @@ class ChangePasswordSection extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
 
         children: [
-          const CustomText(text: 'تغيير كلمة المرور', fontSize: 18),
-
+          CustomText(
+            text: 'تغيير كلمة المرور',
+            style: Theme.of(context).textTheme.headlineMedium,
+          ),
           const Gap(16),
-
           CustomTextField(labelText: "كلمة المرور الحالية", obscureText: true),
-
           const Gap(12),
-
           CustomTextField(labelText: "كلمة المرور الجديدة", obscureText: true),
-
           const Gap(12),
           CustomTextField(
             labelText: "تأكيد كلمة المرور الجديدة",

@@ -21,7 +21,7 @@ class DialogMessage extends StatelessWidget {
             decoration: _containerDecoration2(),
             child: Icon(
               Icons.warning_amber_rounded,
-              color: ColorsApp.errorRed,
+              color: ColorsApp.error,
               size: 40,
             ),
           ),

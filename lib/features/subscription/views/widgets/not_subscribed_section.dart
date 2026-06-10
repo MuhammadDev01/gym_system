@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
+import 'package:gym_management_app/core/components/custom_glass_alert.dart';
 import 'package:gym_management_app/core/components/custom_text.dart';
 import 'package:gym_management_app/core/theme/colors_app.dart';
 import 'package:gym_management_app/core/utils/assets.dart';
@@ -14,9 +15,16 @@ class NotSubscribedSection extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const _NotSubscribedAlert(),
+        CustomGlassAlert(
+          text: 'أنت غير مشترك حالياً',
+          color: ColorsApp.error,
+          icon: Icons.cancel_outlined,
+        ),
         const Gap(24),
-        const CustomText(text: 'اختر الباقة المناسبة', fontSize: 18),
+        CustomText(
+          text: "الباقات المتاحة",
+          style: Theme.of(context).textTheme.headlineMedium,
+        ),
         const Gap(16),
         const _PackageCard(
           picCard: Assets.cardsGymCard,
@@ -35,38 +43,13 @@ class NotSubscribedSection extends StatelessWidget {
           price: 500,
           color: ColorsApp.gold,
         ),
-        const Gap(150),
+        const Gap(80),
       ],
     );
   }
 }
 
 // alert
-class _NotSubscribedAlert extends StatelessWidget {
-  const _NotSubscribedAlert();
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      width: double.infinity,
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: ColorsApp.errorRed.withValues(alpha: .12),
-        borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: ColorsApp.errorRed.withValues(alpha: .25)),
-      ),
-      child: Row(
-        children: [
-          Icon(Icons.info_outline, color: ColorsApp.errorRed),
-          const Gap(12),
-          const Expanded(
-            child: CustomText(text: 'أنت غير مشترك حالياً', fontSize: 16),
-          ),
-        ],
-      ),
-    );
-  }
-}
 
 class _PackageCard extends StatelessWidget {
   final String picCard;

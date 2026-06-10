@@ -9,6 +9,21 @@ import 'package:gym_management_app/core/theme/colors_app.dart';
 class LogoutButton extends StatelessWidget {
   const LogoutButton({super.key});
 
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      width: double.infinity,
+      height: 50,
+      child: CustomButton(
+        onPressed: () => _showLogoutDialog(context),
+        text: 'تسجيل الخروج',
+        colorButton: ColorsApp.error.withValues(alpha: .15),
+        colorText: ColorsApp.error,
+        icon: Icon(Icons.logout, color: ColorsApp.error, size: 20),
+      ),
+    );
+  }
+
   void _showLogoutDialog(BuildContext context) {
     showDialog(
       context: context,
@@ -33,21 +48,16 @@ class LogoutButton extends StatelessWidget {
                     width: 70,
                     height: 70,
                     decoration: BoxDecoration(
-                      color: ColorsApp.errorRed.withValues(alpha: .15),
+                      color: ColorsApp.error.withValues(alpha: .15),
                       shape: BoxShape.circle,
                     ),
-                    child: Icon(
-                      Icons.logout,
-                      color: ColorsApp.errorRed,
-                      size: 34,
-                    ),
+                    child: Icon(Icons.logout, color: ColorsApp.error, size: 34),
                   ),
                   const Gap(20),
                   CustomText(text: 'تسجيل الخروج', color: ColorsApp.gold),
                   const Gap(12),
                   const CustomText(
                     text: 'هل أنت متأكد من تسجيل الخروج؟',
-                    fontSize: 14,
                     color: Colors.white70,
                   ),
                   const Gap(24),
@@ -66,7 +76,7 @@ class LogoutButton extends StatelessWidget {
                         child: CustomButton(
                           onPressed: () => Navigator.pop(context),
                           text: 'تأكيد',
-                          colorButton: ColorsApp.errorRed.withValues(alpha: .8),
+                          colorButton: ColorsApp.error.withValues(alpha: .8),
                           colorText: Colors.white,
                         ),
                       ),
@@ -77,21 +87,6 @@ class LogoutButton extends StatelessWidget {
             ),
           ),
         ),
-      ),
-    );
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return SizedBox(
-      width: double.infinity,
-      height: 50,
-      child: CustomButton(
-        onPressed: () => _showLogoutDialog(context),
-        text: 'تسجيل الخروج',
-        colorButton: ColorsApp.errorRed.withValues(alpha: .15),
-        colorText: ColorsApp.errorRed,
-        icon: Icon(Icons.logout, color: ColorsApp.errorRed, size: 20),
       ),
     );
   }
