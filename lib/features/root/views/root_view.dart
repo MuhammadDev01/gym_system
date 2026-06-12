@@ -1,53 +1,28 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:gym_management_app/core/utils/assets.dart';
-import 'package:gym_management_app/features/home/views/home_view.dart';
-import 'package:gym_management_app/features/market/views/market_view.dart';
-import 'package:gym_management_app/features/profile/views/profile_view.dart';
+import 'package:gym_management_app/features/auth/views/registration_view.dart';
+import 'package:gym_management_app/features/general/views/gerenal_view.dart';
 import 'package:gym_management_app/features/root/cubit/root_cubit.dart';
-import 'package:gym_management_app/features/root/views/widgets/custom_nav_bar.dart';
-import 'package:gym_management_app/features/settings/views/settings_view.dart';
-import 'package:gym_management_app/features/subscription/views/subscription_view.dart';
+import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 
 class RootView extends StatelessWidget {
   const RootView({super.key});
-
+  static Widget currentView = SizedBox.shrink();
   @override
   Widget build(BuildContext context) {
-    final views = const [
-      HomeView(),
-      SubscriptionView(),
-      ProfileView(),
-      MarketView(),
-      SettingsView(),
-    ];
-
-    return BlocBuilder<RootCubit, RootState>(
+    return BlocConsumer<RootCubit, RootState>(
+      listener: (context, state) {
+        if (state is RootSuccessLogin) {
+          currentView = GerenalView();
+        }
+        if (state is RootFailLogin) {
+          currentView = RegistrationView();
+        }
+      },
       builder: (context, state) {
-        return GestureDetector(
-          onTap: () => FocusScope.of(context).unfocus(),
-          child: Scaffold(
-            extendBody: true,
-            body: Container(
-              height: double.infinity,
-              decoration: const BoxDecoration(
-                image: DecorationImage(
-                  image: AssetImage(Assets.backround),
-
-                  fit: BoxFit.cover,
-                ),
-              ),
-
-              child: SingleChildScrollView(
-                padding: const EdgeInsets.all(8),
-                child: SafeArea(
-                  child: views[context.read<RootCubit>().currentIndex],
-                ),
-              ),
-            ),
-
-            bottomNavigationBar: CustomNavBar(),
-          ),
+        return ModalProgressHUD(
+          inAsyncCall: state is RootLoading,
+          child: currentView,
         );
       },
     );

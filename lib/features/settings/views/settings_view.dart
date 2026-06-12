@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
-import 'package:gym_management_app/features/settings/views/branches_view.dart';
-import 'package:gym_management_app/features/settings/views/subscription_history_view.dart';
+import 'package:gym_management_app/core/routes/app_routes.dart';
 import 'package:gym_management_app/features/settings/views/widgets/logout_button.dart';
 import 'package:gym_management_app/features/settings/views/widgets/settings_footer.dart';
 import 'package:gym_management_app/features/settings/views/widgets/settings_item.dart';
@@ -17,18 +16,15 @@ class SettingsView extends StatelessWidget {
         NavCard(
           title: 'فروع الجيم',
           icon: Icons.location_on,
-          onTap: () => Navigator.push(
-            context,
-            MaterialPageRoute(builder: (_) => const BranchesView()),
-          ),
+          onTap: () => Navigator.pushNamed(context, AppRoutes.branchesSubView),
         ),
         const Gap(12),
         NavCard(
           title: 'سجل الاشتراكات',
           icon: Icons.history,
-          onTap: () => Navigator.push(
+          onTap: () => Navigator.pushNamed(
             context,
-            MaterialPageRoute(builder: (_) => const SubscriptionHistoryView()),
+            AppRoutes.subscriptionHistorySubView,
           ),
         ),
         const Gap(12),

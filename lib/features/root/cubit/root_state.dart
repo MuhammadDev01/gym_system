@@ -5,6 +5,8 @@ sealed class RootState {}
 
 final class RootInitial extends RootState {}
 
-final class RootSuccess extends RootState {}
+final class RootLoading extends RootState {}
 
-final class RootError extends RootState {}
+final class RootSuccessLogin extends RootState {}
+
+final class RootFailLogin extends RootState {}

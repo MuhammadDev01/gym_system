@@ -6,7 +6,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:gap/gap.dart';
 import 'package:gym_management_app/core/components/glass_widget.dart';
 import 'package:gym_management_app/core/theme/colors_app.dart';
-import 'package:gym_management_app/features/root/cubit/root_cubit.dart';
+import 'package:gym_management_app/features/general/cubit/gerenal_cubit.dart';
 
 class CustomNavBar extends StatelessWidget {
   const CustomNavBar({super.key});
@@ -69,7 +69,7 @@ class CustomNavBar extends StatelessWidget {
     required FaIconData icon,
     required String label,
   }) {
-    final cubit = context.read<RootCubit>();
+    final cubit = context.read<GerenalCubit>();
 
     return Expanded(
       child: GestureDetector(

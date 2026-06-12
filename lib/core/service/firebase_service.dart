@@ -1,13 +1,16 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:gym_management_app/firebase_options.dart';
 
 class FirebaseService {
   static final FirebaseAuth auth = FirebaseAuth.instance;
   static final FirebaseFirestore firestore = FirebaseFirestore.instance;
 
   static Future<void> init() async {
-    await Firebase.initializeApp();
+    await Firebase.initializeApp(
+      options: DefaultFirebaseOptions.currentPlatform,
+    );
   }
 
   static Future<UserCredential> signIn({
@@ -31,11 +34,11 @@ class FirebaseService {
     await auth.signOut();
   }
 
-  static Future<void> addDocument({
+  static Future<DocumentReference> addDocument({
     required String collection,
     required Map<String, dynamic> data,
   }) async {
-    await firestore.collection(collection).add(data);
+    return firestore.collection(collection).add(data);
   }
 
   static Future<void> setDocument({
@@ -53,10 +56,12 @@ class FirebaseService {
     return firestore.collection(collection).doc(docId).get();
   }
 
-  static Future<QuerySnapshot> getCollection({
+  static Future<QuerySnapshot> queryCollection({
     required String collection,
+    required String field,
+    required dynamic isEqualTo,
   }) async {
-    return firestore.collection(collection).get();
+    return firestore.collection(collection).where(field, isEqualTo: isEqualTo).get();
   }
 
   static Stream<QuerySnapshot> streamCollection({required String collection}) {

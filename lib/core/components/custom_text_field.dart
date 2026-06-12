@@ -4,6 +4,7 @@ import 'package:gym_management_app/core/theme/colors_app.dart';
 class CustomTextField extends StatelessWidget {
   const CustomTextField({
     super.key,
+    this.controller,
     this.initialValue,
     required this.labelText,
     this.obscureText,
@@ -11,7 +12,9 @@ class CustomTextField extends StatelessWidget {
     this.prefixIcon,
     this.suffixIcon,
     this.textInputType,
+    this.validator,
   });
+  final TextEditingController? controller;
   final String? initialValue;
   final String labelText;
   final bool? obscureText;
@@ -19,12 +22,15 @@ class CustomTextField extends StatelessWidget {
   final IconData? prefixIcon;
   final IconData? suffixIcon;
   final TextInputType? textInputType;
+  final String? Function(String?)? validator;
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      controller: controller,
       keyboardType: textInputType,
-      initialValue: initialValue,
+      initialValue: controller != null ? null : initialValue,
       obscureText: obscureText ?? false,
+      validator: validator,
       cursorColor: ColorsApp.gold,
       style: const TextStyle(color: Colors.white),
 

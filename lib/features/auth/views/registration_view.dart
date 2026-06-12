@@ -3,10 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:gym_management_app/core/components/glass_widget.dart';
 import 'package:gym_management_app/core/utils/assets.dart';
-import 'package:gym_management_app/features/auth/views/login_view_body.dart';
+import 'package:gym_management_app/features/auth/views/registration_view_body.dart';
 
-class LoginView extends StatelessWidget {
-  const LoginView({super.key});
+class RegistrationView extends StatelessWidget {
+  const RegistrationView({super.key});
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -47,7 +47,7 @@ class LoginView extends StatelessWidget {
                               horizontal: 24,
                               vertical: 32,
                             ),
-                            child: LoginViewBody(),
+                            child: RegistrationViewBody(),
                           ),
                         ),
                       ),

@@ -12,12 +12,10 @@ class Assets {
 
   static const String cardsPrivateCard = "assets/cards/private_card.png";
 
-  static const String kongiGym = "assets/kongiGym.png";
-
   static const String logo = "assets/logo.png";
 
   static const String manHandADumbel = "assets/manHandADumbel.png";
 
-  static const String profilePic = "assets/profilePic.png";
+  static const String picProfile = "assets/pic_profile.png";
 }
 
