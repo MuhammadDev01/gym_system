@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:gym_management_app/core/components/custom_text.dart';
 import 'package:gym_management_app/core/components/glass_widget.dart';
-import 'package:gym_management_app/core/theme/colors_app.dart';
+import 'package:gym_management_app/core/theme/app_colors.dart';
 
 class NavCard extends StatelessWidget {
   final String title;
@@ -29,10 +29,10 @@ class NavCard extends StatelessWidget {
                 width: 48,
                 height: 48,
                 decoration: BoxDecoration(
-                  color: ColorsApp.gold.withValues(alpha: .15),
+                  color: AppColors.gold.withValues(alpha: .15),
                   borderRadius: BorderRadius.circular(14),
                 ),
-                child: Icon(icon, color: ColorsApp.gold, size: 22),
+                child: Icon(icon, color: AppColors.gold, size: 22),
               ),
               const Gap(14),
               Expanded(child: CustomText(text: title)),

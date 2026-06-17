@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:gym_management_app/core/theme/colors_app.dart';
+import 'package:gym_management_app/core/theme/app_colors.dart';
 
 class GoldLine extends StatelessWidget {
   const GoldLine({super.key});
@@ -10,7 +10,7 @@ class GoldLine extends StatelessWidget {
       width: 60,
       height: 4,
       decoration: BoxDecoration(
-        color: ColorsApp.gold,
+        color: AppColors.gold,
         borderRadius: BorderRadius.circular(20),
       ),
     );

@@ -3,29 +3,29 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
 import 'package:gym_management_app/core/components/custom_button.dart';
+import 'package:gym_management_app/core/components/custom_loading_overlay.dart';
 import 'package:gym_management_app/core/components/custom_text.dart';
-import 'package:gym_management_app/core/routes/app_routes.dart';
-import 'package:gym_management_app/core/theme/colors_app.dart';
-import 'package:gym_management_app/features/auth/cubit/user_cubit.dart';
+import 'package:gym_management_app/core/theme/app_colors.dart';
+import 'package:gym_management_app/features/auth/cubit/auth_cubit.dart';
 
 class LogoutButton extends StatelessWidget {
   const LogoutButton({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<UserCubit, UserState>(
-      builder: (context, state) {
-        return SizedBox(
-          width: double.infinity,
-          height: 50,
+    return BlocConsumer<AuthCubit, AuthState>(
+      listener: (_, state) {
+        if (state is AuthLogoutedState) {}
+      },
+      builder: (_, state) {
+        return CustomLoadingOverlay(
+          isLoading: state is AuthLoadingState,
           child: CustomButton(
-            onPressed: state is UserLoading
-                ? SizedBox.shrink
-                : () => _showLogoutDialog(context),
+            onPressed: () => _showLogoutDialog(context),
             text: 'تسجيل الخروج',
-            colorButton: ColorsApp.error.withValues(alpha: .15),
-            colorText: ColorsApp.error,
-            icon: Icon(Icons.logout, color: ColorsApp.error, size: 20),
+            colorButton: AppColors.error.withValues(alpha: .15),
+            colorText: AppColors.error,
+            icon: Icon(Icons.logout, color: AppColors.error, size: 20),
           ),
         );
       },
@@ -56,13 +56,13 @@ class LogoutButton extends StatelessWidget {
                     width: 70,
                     height: 70,
                     decoration: BoxDecoration(
-                      color: ColorsApp.error.withValues(alpha: .15),
+                      color: AppColors.error.withValues(alpha: .15),
                       shape: BoxShape.circle,
                     ),
-                    child: Icon(Icons.logout, color: ColorsApp.error, size: 34),
+                    child: Icon(Icons.logout, color: AppColors.error, size: 34),
                   ),
                   const Gap(20),
-                  CustomText(text: 'تسجيل الخروج', color: ColorsApp.gold),
+                  CustomText(text: 'تسجيل الخروج', color: AppColors.gold),
                   const Gap(12),
                   const CustomText(
                     text: 'هل أنت متأكد من تسجيل الخروج؟',
@@ -83,16 +83,11 @@ class LogoutButton extends StatelessWidget {
                       Expanded(
                         child: CustomButton(
                           onPressed: () async {
-                            final navigator = Navigator.of(
-                              context,
-                              rootNavigator: true,
-                            );
                             Navigator.pop(ctx);
-                            await context.read<UserCubit>().signOut();
-                            navigator.pushReplacementNamed(AppRoutes.loginView);
+                            await context.read<AuthCubit>().logout();
                           },
                           text: 'تأكيد',
-                          colorButton: ColorsApp.error.withValues(alpha: .8),
+                          colorButton: AppColors.error.withValues(alpha: .8),
                           colorText: Colors.white,
                         ),
                       ),

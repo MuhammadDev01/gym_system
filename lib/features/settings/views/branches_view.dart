@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:gym_management_app/core/components/custom_appbar.dart';
 import 'package:gym_management_app/core/components/custom_text.dart';
-import 'package:gym_management_app/core/theme/colors_app.dart';
-import 'package:gym_management_app/core/utils/assets.dart';
+import 'package:gym_management_app/core/theme/app_colors.dart';
+import 'package:gym_management_app/core/constants/app_assets.dart';
 
 class BranchesView extends StatelessWidget {
   const BranchesView({super.key});
@@ -15,7 +15,7 @@ class BranchesView extends StatelessWidget {
       body: Container(
         decoration: const BoxDecoration(
           image: DecorationImage(
-            image: AssetImage(Assets.backround),
+            image: AssetImage(AppAssets.backround),
             fit: BoxFit.cover,
           ),
         ),
@@ -103,10 +103,10 @@ class _BranchCard extends StatelessWidget {
                 width: 48,
                 height: 48,
                 decoration: BoxDecoration(
-                  color: ColorsApp.gold.withValues(alpha: .15),
+                  color: AppColors.gold.withValues(alpha: .15),
                   borderRadius: BorderRadius.circular(14),
                 ),
-                child: Icon(Icons.location_on, color: ColorsApp.gold, size: 24),
+                child: Icon(Icons.location_on, color: AppColors.gold, size: 24),
               ),
               const Gap(14),
               CustomText(text: name, fontSize: 16),
@@ -137,7 +137,7 @@ class _InfoRow extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       children: [
-        Icon(icon, color: ColorsApp.gold, size: 18),
+        Icon(icon, color: AppColors.gold, size: 18),
         const Gap(10),
         CustomText(text: text, fontSize: 13, color: Colors.white70),
       ],

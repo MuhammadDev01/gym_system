@@ -6,11 +6,12 @@ import 'package:gym_management_app/core/components/custom_text.dart';
 import 'package:gym_management_app/core/components/custom_text_field.dart';
 import 'package:gym_management_app/core/helper/validators.dart';
 import 'package:gym_management_app/core/theme/app_colors.dart';
-import 'package:gym_management_app/features/auth/cubit/auth_cubit.dart';
 import 'package:gym_management_app/features/auth/views/widgets/gold_line.dart';
+import 'package:gym_management_app/features/auth/cubit/auth_cubit.dart';
+import 'package:gym_management_app/features/auth/views/widgets/member_pick_image.dart';
 
-class LoginView extends StatelessWidget {
-  LoginView({super.key});
+class RegisterView extends StatelessWidget {
+  RegisterView({super.key});
   final _formKey = GlobalKey<FormState>();
 
   @override
@@ -21,11 +22,15 @@ class LoginView extends StatelessWidget {
       child: Column(
         children: [
           CustomText(
-            text: 'تسجيل الدخول',
+            text: 'تسجيل بيانات العضوية',
             style: Theme.of(context).textTheme.headlineLarge,
           ),
           const Gap(12),
           GoldLine(),
+          const Gap(24),
+          MemberPickImage(),
+          const Gap(12),
+          _instractionPorfilePic(),
           const Gap(24),
           CustomTextField(
             controller: cubit.nameController,
@@ -45,23 +50,39 @@ class LoginView extends StatelessWidget {
           const Gap(24),
           CustomButton(
             onPressed: () async {
+              FocusScope.of(context).unfocus();
               if (_formKey.currentState!.validate()) {
-                await cubit.memberLogin();
+                await cubit.memeberRegister();
               }
             },
-            text: 'دخول',
+            text: 'تسجيل',
           ),
           const Gap(16),
           GestureDetector(
             onTap: () => cubit.changeField(),
             child: CustomText(
-              text: 'ليس لديك حساب؟ سجل الآن',
+              text: 'لديك حساب بالفعل؟ سجل دخول',
               color: AppColors.gold,
               fontSize: 13,
             ),
           ),
         ],
       ),
+    );
+  }
+
+  Row _instractionPorfilePic() {
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Icon(Icons.info_outline, color: AppColors.gold, size: 14),
+        const Gap(4),
+        CustomText(
+          text: 'يجب أن تكون الصورة واضحة ويظهر فيها الوجه',
+          fontSize: 10,
+          color: AppColors.gray,
+        ),
+      ],
     );
   }
 }

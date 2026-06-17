@@ -4,7 +4,7 @@ import 'package:gap/gap.dart';
 import 'package:gym_management_app/core/components/custom_button.dart';
 import 'package:gym_management_app/core/components/custom_text.dart';
 import 'package:gym_management_app/core/components/glass_widget.dart';
-import 'package:gym_management_app/core/theme/colors_app.dart';
+import 'package:gym_management_app/core/theme/app_colors.dart';
 
 class FailedTraining extends StatelessWidget {
   const FailedTraining({super.key});
@@ -31,7 +31,7 @@ class FailedTraining extends StatelessWidget {
           padding: EdgeInsets.all(6),
           child: Row(
             children: [
-              Icon(Icons.qr_code_scanner, color: ColorsApp.gold),
+              Icon(Icons.qr_code_scanner, color: AppColors.gold),
               const Gap(10),
               const Expanded(
                 child: CustomText(text: 'سجل حضورك وابدأ التمرين'),

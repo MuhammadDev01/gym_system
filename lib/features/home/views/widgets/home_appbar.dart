@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:gym_management_app/core/constants/images_app.dart';
+import 'package:gym_management_app/core/constants/app_constants.dart';
 
 class HomeAppBar extends StatelessWidget {
   const HomeAppBar({super.key});
@@ -8,7 +8,7 @@ class HomeAppBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AppBar(
-      title: Image.asset(ImagesApp.logo, height: 80),
+      title: Image.asset(AppConstants.logo, height: 80),
       centerTitle: true,
       leading: IconButton(
         icon: IconButton(

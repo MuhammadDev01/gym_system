@@ -19,11 +19,14 @@ class CustomAppBar extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 8),
       child: Row(
         children: [
-          leading ??
-              const SizedBox(width: 44),
+          leading ?? const SizedBox(width: 44),
           const Gap(8),
           Expanded(
-            child: CustomText(text: title, fontSize: 20, textAlign: TextAlign.center),
+            child: CustomText(
+              text: title,
+              fontSize: 20,
+              textAlign: TextAlign.center,
+            ),
           ),
           const Gap(8),
           actions != null

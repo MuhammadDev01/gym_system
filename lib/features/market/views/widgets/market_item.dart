@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:gym_management_app/core/components/custom_text.dart';
 import 'package:gym_management_app/core/components/glass_widget.dart';
-import 'package:gym_management_app/core/theme/colors_app.dart';
-import 'package:gym_management_app/core/utils/assets.dart';
+import 'package:gym_management_app/core/theme/app_colors.dart';
+import 'package:gym_management_app/core/constants/app_assets.dart';
 import 'package:gym_management_app/features/market/data/market_item_model.dart';
 
 class MarketItem extends StatelessWidget {
@@ -19,7 +19,7 @@ class MarketItem extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Expanded(
-              child: Image.asset(Assets.manHandADumbel, fit: BoxFit.cover),
+              child: Image.asset(AppAssets.manHandADumbel, fit: BoxFit.cover),
             ),
 
             //market item details
@@ -36,7 +36,7 @@ class MarketItem extends StatelessWidget {
                     color: Colors.white70,
                   ),
                   const Gap(6),
-                  CustomText(text: "${item.price} جنيه", color: ColorsApp.gold),
+                  CustomText(text: "${item.price} جنيه", color: AppColors.gold),
                 ],
               ),
             ),

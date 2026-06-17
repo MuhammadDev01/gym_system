@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:gym_management_app/core/components/custom_appbar.dart';
 import 'package:gym_management_app/core/components/custom_text.dart';
-import 'package:gym_management_app/core/theme/colors_app.dart';
-import 'package:gym_management_app/core/utils/assets.dart';
+import 'package:gym_management_app/core/theme/app_colors.dart';
+import 'package:gym_management_app/core/constants/app_assets.dart';
 
 class SubscriptionHistoryView extends StatelessWidget {
   const SubscriptionHistoryView({super.key});
@@ -15,7 +15,7 @@ class SubscriptionHistoryView extends StatelessWidget {
       body: Container(
         decoration: const BoxDecoration(
           image: DecorationImage(
-            image: AssetImage(Assets.backround),
+            image: AssetImage(AppAssets.backround),
             fit: BoxFit.cover,
           ),
         ),
@@ -90,10 +90,10 @@ class _SubscriptionCard extends StatelessWidget {
             width: 52,
             height: 52,
             decoration: BoxDecoration(
-              color: ColorsApp.gold.withValues(alpha: .15),
+              color: AppColors.gold.withValues(alpha: .15),
               borderRadius: BorderRadius.circular(14),
             ),
-            child: Icon(Icons.fitness_center, color: ColorsApp.gold, size: 24),
+            child: Icon(Icons.fitness_center, color: AppColors.gold, size: 24),
           ),
           const Gap(14),
           Expanded(
@@ -104,7 +104,7 @@ class _SubscriptionCard extends StatelessWidget {
                 const Gap(6),
                 CustomText(text: date, fontSize: 13, color: Colors.white70),
                 const Gap(8),
-                CustomText(text: price, fontSize: 14, color: ColorsApp.gold),
+                CustomText(text: price, fontSize: 14, color: AppColors.gold),
               ],
             ),
           ),

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:gym_management_app/core/components/custom_button.dart';
 import 'package:gym_management_app/core/components/custom_text.dart';
-import 'package:gym_management_app/core/theme/colors_app.dart';
+import 'package:gym_management_app/core/theme/app_colors.dart';
 
 class DialogMessage extends StatelessWidget {
   const DialogMessage({super.key});
@@ -21,13 +21,13 @@ class DialogMessage extends StatelessWidget {
             decoration: _containerDecoration2(),
             child: Icon(
               Icons.warning_amber_rounded,
-              color: ColorsApp.error,
+              color: AppColors.error,
               size: 40,
             ),
           ),
 
           Gap(20),
-          CustomText(text: 'تأكيد التغييرات', color: ColorsApp.gold),
+          CustomText(text: 'تأكيد التغييرات', color: AppColors.gold),
           Gap(12),
           CustomText(
             text:
@@ -66,7 +66,7 @@ class DialogMessage extends StatelessWidget {
 
   BoxDecoration _containerDecoration2() {
     return BoxDecoration(
-      color: ColorsApp.gold.withValues(alpha: .15),
+      color: AppColors.gold.withValues(alpha: .15),
       shape: BoxShape.circle,
     );
   }

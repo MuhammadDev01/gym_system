@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:gym_management_app/core/utils/assets.dart';
+import 'package:gym_management_app/core/constants/app_assets.dart';
 
 class HomeBanner extends StatelessWidget {
   const HomeBanner({super.key});
@@ -11,7 +11,7 @@ class HomeBanner extends StatelessWidget {
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(24),
         image: DecorationImage(
-          image: const AssetImage(Assets.banner),
+          image: const AssetImage(AppAssets.banner),
           fit: MediaQuery.of(context).size.width > 650
               ? BoxFit.fill
               : BoxFit.cover,

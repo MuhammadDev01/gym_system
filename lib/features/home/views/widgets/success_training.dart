@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:gym_management_app/core/components/custom_text.dart';
 import 'package:gym_management_app/core/components/glass_widget.dart';
-import 'package:gym_management_app/core/theme/colors_app.dart';
+import 'package:gym_management_app/core/theme/app_colors.dart';
 
 class SuccessTraining extends StatelessWidget {
   const SuccessTraining({super.key});
@@ -40,12 +40,12 @@ class _DateSuccessTrain extends StatelessWidget {
         child: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Icon(Icons.access_time_rounded, color: ColorsApp.success, size: 18),
+            Icon(Icons.access_time_rounded, color: AppColors.success, size: 18),
             const Gap(6),
             CustomText(
               text: checkInTime,
               fontSize: 14,
-              color: ColorsApp.success,
+              color: AppColors.success,
             ),
           ],
         ),

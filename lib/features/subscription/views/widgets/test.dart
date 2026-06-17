@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:gym_management_app/core/utils/assets.dart';
+import 'package:gym_management_app/core/constants/app_assets.dart';
 
 class TestWidget extends StatelessWidget {
   const TestWidget({super.key});
@@ -12,7 +12,7 @@ class TestWidget extends StatelessWidget {
         ClipRRect(
           borderRadius: BorderRadius.circular(16),
           child: Image.asset(
-            Assets.cardsGymCard, // أو Image.network()
+            AppAssets.cardsGymCard, // أو Image.network()
 
             fit: BoxFit.cover,
           ),

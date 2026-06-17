@@ -5,10 +5,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
 import 'package:gym_management_app/core/components/custom_text.dart';
 import 'package:gym_management_app/core/components/glass_widget.dart';
-import 'package:gym_management_app/core/theme/colors_app.dart';
-import 'package:gym_management_app/core/utils/assets.dart';
+import 'package:gym_management_app/core/theme/app_colors.dart';
+import 'package:gym_management_app/core/constants/app_assets.dart';
 import 'package:gym_management_app/features/profile/cubit/profile_cubit.dart';
-import 'package:gym_management_app/features/auth/cubit/user_cubit.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 
 class ProfileHeader extends StatelessWidget {
@@ -38,7 +37,7 @@ class ProfileHeader extends StatelessWidget {
                       children: [
                         const CircleAvatar(
                           radius: 50,
-                          backgroundImage: AssetImage(Assets.picProfile),
+                          backgroundImage: AssetImage(AppAssets.picProfile),
                         ),
                         _editPicIcon(),
                       ],
@@ -79,22 +78,21 @@ class ProfileHeader extends StatelessWidget {
           padding: const EdgeInsets.all(8),
           margin: const EdgeInsets.all(16),
           decoration: BoxDecoration(
-            color: ColorsApp.gold.withValues(alpha: .2),
+            color: AppColors.gold.withValues(alpha: .2),
             borderRadius: BorderRadius.circular(12),
-            border: Border.all(color: ColorsApp.gold.withValues(alpha: .3)),
+            border: Border.all(color: AppColors.gold.withValues(alpha: .3)),
           ),
-          child: Icon(Icons.qr_code_2, color: ColorsApp.gold, size: 28),
+          child: Icon(Icons.qr_code_2, color: AppColors.gold, size: 28),
         ),
       ),
     );
   }
 
   void _showQrDialog(BuildContext context) {
-    final cubit = context.read<UserCubit>();
     final userData = jsonEncode({
-      'name': cubit.name,
-      'phone': cubit.phone,
-      'imagePath': cubit.image?.path ?? '',
+      'name': 'cubit.name',
+      'phone': 'cubit.phone',
+      'imagePath': "cubit.image?.path ?? ''",
     });
 
     showDialog(
@@ -118,11 +116,11 @@ class ProfileHeader extends StatelessWidget {
                   size: 200,
                   eyeStyle: QrEyeStyle(
                     eyeShape: QrEyeShape.square,
-                    color: ColorsApp.gold,
+                    color: AppColors.gold,
                   ),
                   dataModuleStyle: QrDataModuleStyle(
                     dataModuleShape: QrDataModuleShape.square,
-                    color: ColorsApp.gold,
+                    color: AppColors.gold,
                   ),
                 ),
                 const Gap(12),
@@ -146,10 +144,10 @@ class ProfileHeader extends StatelessWidget {
       child: Container(
         padding: const EdgeInsets.all(6),
         decoration: BoxDecoration(
-          color: ColorsApp.gold,
+          color: AppColors.gold,
           shape: BoxShape.circle,
         ),
-        child: Icon(Icons.edit, size: 18, color: ColorsApp.black),
+        child: Icon(Icons.edit, size: 18, color: AppColors.black),
       ),
     );
   }

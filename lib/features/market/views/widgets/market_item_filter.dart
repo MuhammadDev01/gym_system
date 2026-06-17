@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:gym_management_app/core/theme/colors_app.dart';
+import 'package:gym_management_app/core/theme/app_colors.dart';
 
 class ItemFilter extends StatelessWidget {
   const ItemFilter({
@@ -67,7 +67,7 @@ class _FilterButton extends StatelessWidget {
         duration: const Duration(milliseconds: 250),
         height: 45,
         decoration: BoxDecoration(
-          color: selected ? ColorsApp.gold : Colors.transparent,
+          color: selected ? AppColors.gold : Colors.transparent,
           borderRadius: BorderRadius.circular(16),
         ),
         child: Center(

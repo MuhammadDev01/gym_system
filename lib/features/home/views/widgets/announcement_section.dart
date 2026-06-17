@@ -3,7 +3,7 @@ import 'package:gap/gap.dart';
 import 'package:gym_management_app/core/components/custom_status_icon.dart';
 import 'package:gym_management_app/core/components/custom_text.dart';
 import 'package:gym_management_app/core/components/glass_widget.dart';
-import 'package:gym_management_app/core/theme/colors_app.dart';
+import 'package:gym_management_app/core/theme/app_colors.dart';
 
 class AnnouncementSection extends StatelessWidget {
   const AnnouncementSection({super.key, required this.announcements});
@@ -50,7 +50,7 @@ class AnnouncementItem extends StatelessWidget {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          CustomStatusIcon(color: ColorsApp.gold, icon: Icons.campaign_rounded),
+          CustomStatusIcon(color: AppColors.gold, icon: Icons.campaign_rounded),
 
           const Gap(12),
 
@@ -58,7 +58,7 @@ class AnnouncementItem extends StatelessWidget {
             child: CustomText(
               text: message,
               fontSize: 14,
-              color: ColorsApp.gray,
+              color: AppColors.gray,
             ),
           ),
         ],

@@ -5,7 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:gap/gap.dart';
 import 'package:gym_management_app/core/components/glass_widget.dart';
-import 'package:gym_management_app/core/theme/colors_app.dart';
+import 'package:gym_management_app/core/theme/app_colors.dart';
 import 'package:gym_management_app/features/general/cubit/gerenal_cubit.dart';
 
 class CustomNavBar extends StatelessWidget {
@@ -79,7 +79,7 @@ class CustomNavBar extends StatelessWidget {
           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
           decoration: BoxDecoration(
             color: cubit.currentIndex == index
-                ? ColorsApp.gold
+                ? AppColors.gold
                 : Colors.transparent,
             borderRadius: BorderRadius.circular(16),
           ),

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:gym_management_app/core/components/custom_button.dart';
 import 'package:gym_management_app/core/components/custom_text.dart';
-import 'package:gym_management_app/core/theme/colors_app.dart';
+import 'package:gym_management_app/core/theme/app_colors.dart';
 
 class DetailsMemberShipCard extends StatelessWidget {
   const DetailsMemberShipCard({
@@ -57,7 +57,7 @@ class DetailsMemberShipCard extends StatelessWidget {
             TextSpan(
               text: 'KONGI ',
               style: TextStyle(
-                color: ColorsApp.gold,
+                color: AppColors.gold,
                 fontWeight: FontWeight.bold,
                 fontSize: 16,
               ),

@@ -1,8 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 
-class FirebaseExceptions {
-  static String getAuthError(FirebaseAuthException e) {
-    switch (e.code) {
+class FirebaseExceptionMessages {
+  static String getMessage(FirebaseAuthException exception) {
+    switch (exception.code) {
       case 'user-not-found':
         return 'لا يوجد حساب بهذا البريد الإلكتروني';
       case 'wrong-password':

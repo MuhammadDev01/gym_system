@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:gym_management_app/core/components/custom_glass_alert.dart';
 import 'package:gym_management_app/core/components/custom_text.dart';
-import 'package:gym_management_app/core/theme/colors_app.dart';
-import 'package:gym_management_app/core/utils/assets.dart';
+import 'package:gym_management_app/core/theme/app_colors.dart';
+import 'package:gym_management_app/core/constants/app_assets.dart';
 import 'package:gym_management_app/features/subscription/views/widgets/details_member_ship_card.dart';
 import 'package:gym_management_app/features/subscription/views/widgets/member_ship_card.dart';
 
@@ -17,7 +17,7 @@ class NotSubscribedSection extends StatelessWidget {
       children: [
         CustomGlassAlert(
           text: 'أنت غير مشترك حالياً',
-          color: ColorsApp.error,
+          color: AppColors.error,
           icon: Icons.cancel_outlined,
         ),
         const Gap(24),
@@ -27,21 +27,21 @@ class NotSubscribedSection extends StatelessWidget {
         ),
         const Gap(16),
         const _PackageCard(
-          picCard: Assets.cardsGymCard,
+          picCard: AppAssets.cardsGymCard,
           price: 300,
           color: Color(0xff9EB1BC),
         ),
         const Gap(16),
         _PackageCard(
-          picCard: Assets.cardsFitnessCard,
+          picCard: AppAssets.cardsFitnessCard,
           price: 400,
           color: Colors.grey,
         ),
         const Gap(16),
         _PackageCard(
-          picCard: Assets.cardsPrivateCard,
+          picCard: AppAssets.cardsPrivateCard,
           price: 500,
-          color: ColorsApp.gold,
+          color: AppColors.gold,
         ),
         const Gap(80),
       ],

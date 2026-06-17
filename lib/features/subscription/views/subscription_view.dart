@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:gym_management_app/core/components/custom_text.dart';
-import 'package:gym_management_app/core/utils/assets.dart';
+import 'package:gym_management_app/core/constants/app_assets.dart';
 import 'package:gym_management_app/features/subscription/views/widgets/not_subscribed_section.dart';
 import 'package:gym_management_app/features/subscription/views/widgets/subscribed_section.dart';
 
@@ -20,7 +20,7 @@ class SubscriptionView extends StatelessWidget {
         ),
         Gap(18),
         isSubscribed
-            ? SubscribedSection(picCard: Assets.cardsPrivateCard)
+            ? SubscribedSection(picCard: AppAssets.cardsPrivateCard)
             : NotSubscribedSection(),
       ],
     );

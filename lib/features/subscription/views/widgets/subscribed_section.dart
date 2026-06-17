@@ -4,7 +4,7 @@ import 'package:gym_management_app/core/components/custom_button.dart';
 import 'package:gym_management_app/core/components/custom_glass_alert.dart';
 import 'package:gym_management_app/core/components/custom_text.dart';
 import 'package:gym_management_app/core/components/glass_widget.dart';
-import 'package:gym_management_app/core/theme/colors_app.dart';
+import 'package:gym_management_app/core/theme/app_colors.dart';
 import 'package:gym_management_app/features/subscription/views/widgets/member_ship_card.dart';
 
 class SubscribedSection extends StatelessWidget {
@@ -17,7 +17,7 @@ class SubscribedSection extends StatelessWidget {
       children: [
         CustomGlassAlert(
           text: "عضويتك فعالة حاليًا",
-          color: ColorsApp.success,
+          color: AppColors.success,
           icon: Icons.verified,
         ),
         //  _ActiveSubscriptionStatus(),

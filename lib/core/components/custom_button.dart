@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:gym_management_app/core/theme/colors_app.dart';
+import 'package:gym_management_app/core/theme/app_colors.dart';
 
 class CustomButton extends StatelessWidget {
   const CustomButton({
@@ -36,8 +36,8 @@ class CustomButton extends StatelessWidget {
       ),
       style: FilledButton.styleFrom(
         fixedSize: size,
-        backgroundColor: colorButton ?? ColorsApp.gold,
-        foregroundColor: ColorsApp.black,
+        backgroundColor: colorButton ?? AppColors.gold,
+        foregroundColor: AppColors.black,
         elevation: 0,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(borderRadius),

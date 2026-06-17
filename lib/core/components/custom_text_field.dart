@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:gym_management_app/core/theme/colors_app.dart';
+import 'package:gym_management_app/core/theme/app_colors.dart';
 
 class CustomTextField extends StatelessWidget {
   const CustomTextField({
@@ -27,24 +27,35 @@ class CustomTextField extends StatelessWidget {
   Widget build(BuildContext context) {
     return TextFormField(
       controller: controller,
+
       keyboardType: textInputType,
       initialValue: controller != null ? null : initialValue,
       obscureText: obscureText ?? false,
       validator: validator,
-      cursorColor: ColorsApp.gold,
+      cursorColor: AppColors.gold,
       style: const TextStyle(color: Colors.white),
 
       decoration: InputDecoration(
-        prefixIconColor: ColorsApp.gold.withValues(alpha: 0.75),
-        suffixIconColor: ColorsApp.gold.withValues(alpha: 0.75),
+        prefixIconColor: AppColors.gold.withValues(alpha: 0.75),
+        suffixIconColor: AppColors.gold.withValues(alpha: 0.75),
         prefixIcon: Icon(prefixIcon),
         suffixIcon: IconButton(onPressed: onTapSufffix, icon: Icon(suffixIcon)),
         labelText: labelText,
-        focusColor: ColorsApp.gold,
-        focusedBorder: OutlineInputBorder(
-          borderSide: BorderSide(color: ColorsApp.gold),
+        focusColor: AppColors.gold,
+        errorStyle: TextStyle(color: AppColors.gold),
+        enabledBorder: OutlineInputBorder(
+          borderSide: BorderSide(color: AppColors.black),
         ),
-        labelStyle: TextStyle(color: ColorsApp.gray, fontSize: 14),
+        focusedErrorBorder: OutlineInputBorder(
+          borderSide: BorderSide(color: AppColors.error),
+        ),
+        errorBorder: OutlineInputBorder(
+          borderSide: BorderSide(color: AppColors.error),
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderSide: BorderSide(color: AppColors.gold),
+        ),
+        labelStyle: TextStyle(color: AppColors.gray, fontSize: 14),
         filled: true,
         fillColor: Colors.white.withValues(alpha: .04),
       ),

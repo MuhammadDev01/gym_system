@@ -357,6 +357,22 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "3.0.1"
+  get_it:
+    dependency: "direct main"
+    description:
+      name: get_it
+      sha256: "568d62f0e68666fb5d95519743b3c24a34c7f19d834b0658c46e26d778461f66"
+      url: "https://pub.dev"
+    source: hosted
+    version: "9.2.1"
+  go_router:
+    dependency: "direct main"
+    description:
+      name: go_router
+      sha256: f02fd7d2a4dc512fec615529824fdd217fecb3a3d3de68360293a551f21634b3
+      url: "https://pub.dev"
+    source: hosted
+    version: "14.8.1"
   google_fonts:
     dependency: "direct main"
     description:
@@ -389,6 +405,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "4.1.2"
+  icon_decoration:
+    dependency: "direct main"
+    description:
+      name: icon_decoration
+      sha256: "3553d73cc1e7e9c0e54c1b21788de89961a92996693bdf0c942a1a4b7f5bb45d"
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.1.0"
   image:
     dependency: transitive
     description:
@@ -525,6 +549,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "6.1.0"
+  loading_overlay:
+    dependency: "direct main"
+    description:
+      name: loading_overlay
+      sha256: "3f8ac2ceec2188ebb4704bd3036c9425f726fb4b67edab9f20db894274eef7dc"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.5.0"
   logging:
     dependency: transitive
     description:
@@ -565,22 +597,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.0.0"
-  modal_progress_hud_nsn:
-    dependency: "direct main"
-    description:
-      name: modal_progress_hud_nsn
-      sha256: "7d1b2eb50da63c994f8ec2da5738183dbc8235a528e840ecbf67439adb7a6cc2"
-      url: "https://pub.dev"
-    source: hosted
-    version: "0.5.1"
-  modal_progress_indicator:
-    dependency: "direct main"
-    description:
-      name: modal_progress_indicator
-      sha256: c3f69a6abd34aecb3001c19ec35a393ded3399df321a035cb7cfde25d44a3982
-      url: "https://pub.dev"
-    source: hosted
-    version: "1.0.3"
   nested:
     dependency: transitive
     description:

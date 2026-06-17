@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:gym_management_app/core/constants/text_app.dart';
-import 'package:gym_management_app/core/theme/colors_app.dart';
+import 'package:gym_management_app/core/constants/app_constants.dart';
+import 'package:gym_management_app/core/theme/app_colors.dart';
 
 class ThemeApp {
   static ThemeData defualtTheme = ThemeData(
-    fontFamily: cairoFont,
+    fontFamily: AppConstants.cairoFont,
 
-    //scaffold
+    //*scaffold
     scaffoldBackgroundColor: Color(0xff282A36),
     textTheme: TextTheme(
       headlineMedium: TextStyle(
@@ -22,13 +22,13 @@ class ThemeApp {
       ),
     ),
 
-    //appbar
+    //*appbar
     appBarTheme: AppBarTheme(
       systemOverlayStyle: SystemUiOverlayStyle(
         statusBarColor: Colors.white,
         statusBarBrightness: Brightness.light,
       ),
-      backgroundColor: ColorsApp.black,
+      backgroundColor: AppColors.black,
       iconTheme: IconThemeData(color: Colors.white),
     ),
 
@@ -38,15 +38,15 @@ class ThemeApp {
 
       selectedItemColor: Colors.yellow,
       unselectedItemColor: Colors.white,
-      selectedLabelStyle: TextStyle(fontFamily: cairoFont),
-      unselectedLabelStyle: TextStyle(fontFamily: cairoFont),
+      selectedLabelStyle: TextStyle(fontFamily: AppConstants.cairoFont),
+      unselectedLabelStyle: TextStyle(fontFamily: AppConstants.cairoFont),
       type: BottomNavigationBarType.fixed,
     ),
 
     textSelectionTheme: TextSelectionThemeData(
-      cursorColor: ColorsApp.gold,
-      selectionColor: ColorsApp.gold,
-      selectionHandleColor: ColorsApp.gold,
+      cursorColor: AppColors.gold,
+      selectionColor: AppColors.gold,
+      selectionHandleColor: AppColors.gold,
     ),
   );
 }
