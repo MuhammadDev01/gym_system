@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:gym_management_app/core/constants/app_constants.dart';
-import 'package:gym_management_app/core/models/user_model.dart';
-import 'package:gym_management_app/core/service/local/local_cache_service.dart';
 import 'package:gym_management_app/features/auth/data/auth_repo.dart';
 
 part 'auth_state.dart';
@@ -40,7 +37,7 @@ class AuthCubit extends Cubit<AuthState> {
   Future<void> memberLogin() async {
     emit(AuthLoadingState());
     try {
-      final credential = await _authRepo.memberLogin(
+      await _authRepo.memberLogin(
         userName: nameController.text.trim(),
         userPhone: phoneController.text.trim(),
       );
@@ -56,12 +53,10 @@ class AuthCubit extends Cubit<AuthState> {
   Future<void> adminLogin() async {
     emit(AuthLoadingState());
     try {
-      final credential = await _authRepo.adminLogin(
+      await _authRepo.adminLogin(
         email: emailController.text,
         password: passwordController.text,
       );
-      debugPrint("User signed in: ${credential.user?.uid}");
-
       emit(AuthSccessState());
     } catch (e) {
       emit(AuthErrorState(_formatError(e)));

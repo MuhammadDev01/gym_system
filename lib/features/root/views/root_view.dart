@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:gym_management_app/core/constants/app_constants.dart';
 import 'package:gym_management_app/core/service/local/local_cache_service.dart';
 import 'package:gym_management_app/features/admin/views/admin_view.dart';
-import 'package:gym_management_app/features/auth/views/login_view.dart';
+import 'package:gym_management_app/features/auth/views/auth_view.dart';
 import 'package:gym_management_app/features/general/views/gerenal_view.dart';
 
 class RootView extends StatelessWidget {
@@ -10,7 +10,7 @@ class RootView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (!_isLogin()) return const LoginView();
+    if (!_isLogin()) return const AuthView();
     final role = LocalCacheService.getString(AppConstants.role);
     if (role == AppConstants.admin) return const AdminView();
     return const GerenalView();

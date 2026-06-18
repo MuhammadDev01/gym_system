@@ -54,35 +54,20 @@ class AuthRepo {
   }
 
   //*Admin Login (email + password)
-  Future<UserCredential> adminLogin({
+  Future<void> adminLogin({
     required String email,
     required String password,
   }) async {
     try {
-      final c = await _firebaseService.signIn(email: email, password: password);
-
-      // final uid = FirebaseAuth.instance.currentUser!.uid;
-      // final doc = await _firebaseService.getDocument(
-      //   collection: 'users',
-      //   docId: uid,
-      // );
-      //  final data = UserModel.fromJson(doc.data() as Map<String, dynamic>, uid);
-
-      // if (data == null) {
-      //   await _firebaseService.signOut();
-      //   throw Exception('لم يتم العثور على بيانات الأدمن في قاعدة البيانات');
-      // }
-
-      // if (data[AppConstants.role] as String != AppConstants.admin) {
-      //   await _firebaseService.signOut();
-      //   throw Exception('ليس لديك صلاحية الدخول كمسؤول');
-      // }
-
-      //  await LocalCacheService.setString(AppConstants.token, uid);
-      //  await LocalCacheService.setString('admin_email', email);
-      // await LocalCacheService.setString('admin_password', password);
-
-      return c;
+      final credential = await _firebaseService.signIn(
+        email: email,
+        password: password,
+      );
+      await LocalCacheService.setString(
+        AppConstants.token,
+        credential.user!.uid,
+      );
+      await LocalCacheService.setString(AppConstants.role, AppConstants.admin);
     } on FirebaseAuthException catch (e) {
       throw Exception(FirebaseExceptionMessages.getMessage(e));
     } on FirebaseException catch (e) {
