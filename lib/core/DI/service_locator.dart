@@ -8,17 +8,18 @@ import 'package:gym_management_app/features/auth/data/auth_repo.dart';
 final GetIt getIt = GetIt.instance;
 
 void serviceLocatorSetup() {
+  //* Network
   getIt.registerLazySingleton<FirebaseService>(() => FirebaseService());
+
+  //* Auth
   getIt.registerLazySingleton<AuthRepo>(
     () => AuthRepo(getIt<FirebaseService>()),
   );
+  getIt.registerFactory<AuthCubit>(() => AuthCubit(getIt<AuthRepo>()));
+
+  //* Admin
   getIt.registerLazySingleton<AdminRepo>(
     () => AdminRepo(getIt<FirebaseService>()),
   );
-  getIt.registerFactory<AuthCubit>(
-    () => AuthCubit(getIt<AuthRepo>()),
-  );
-  getIt.registerFactory<AdminCubit>(
-    () => AdminCubit(getIt<AdminRepo>()),
-  );
+  getIt.registerFactory<AdminCubit>(() => AdminCubit(getIt<AdminRepo>()));
 }

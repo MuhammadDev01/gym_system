@@ -22,4 +22,13 @@ class AppConstants {
   static const String admin = 'admin';
   static const String adminEmail = 'admin_email';
   static const String adminPassword = 'admin_password';
+
+  //*Subscription
+  static const String subscriptionMonths = 'subscriptionMonths';
+  static const String subscriptionType = 'subscriptionType';
+  static const String subscriptionStart = 'subscriptionStart';
+  static const String subscriptionEnd = 'subscriptionEnd';
+  static const String typeFitness = 'fitness';
+  static const String typeGym = 'gym';
+  static const String typePrivate = 'private';
 }

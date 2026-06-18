@@ -6,6 +6,8 @@ class AppRoutes {
   // views
   static const String authView = '/auth-view';
   static const String adminView = '/admin-view';
+  static const String addMemberView = '/add-member-view';
+  static const String membersListView = '/members-list-view';
   static const String gerenalView = '/gerenal-view';
   static const String homeView = '/home-view';
   static const String subscriptionView = '/subscription-view';

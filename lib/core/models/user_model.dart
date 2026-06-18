@@ -7,6 +7,10 @@ class UserModel {
   final String phone;
   final String image;
   final String role;
+  final int subscriptionMonths;
+  final String subscriptionType;
+  final DateTime? subscriptionStart;
+  final DateTime? subscriptionEnd;
   final DateTime? createdAt;
 
   UserModel({
@@ -15,6 +19,10 @@ class UserModel {
     required this.phone,
     this.image = '',
     this.role = AppConstants.member,
+    this.subscriptionMonths = 0,
+    this.subscriptionType = '',
+    this.subscriptionStart,
+    this.subscriptionEnd,
     this.createdAt,
   });
 
@@ -25,6 +33,12 @@ class UserModel {
       phone: json[AppConstants.phone] as String? ?? '',
       image: json[AppConstants.image] as String? ?? '',
       role: json[AppConstants.role] as String? ?? AppConstants.member,
+      subscriptionMonths: json[AppConstants.subscriptionMonths] as int? ?? 0,
+      subscriptionType: json[AppConstants.subscriptionType] as String? ?? '',
+      subscriptionStart:
+          (json[AppConstants.subscriptionStart] as Timestamp?)?.toDate(),
+      subscriptionEnd:
+          (json[AppConstants.subscriptionEnd] as Timestamp?)?.toDate(),
       createdAt: (json['createdAt'] as Timestamp?)?.toDate(),
     );
   }
@@ -35,11 +49,15 @@ class UserModel {
       AppConstants.phone: phone,
       AppConstants.image: image,
       AppConstants.role: role,
+      AppConstants.subscriptionMonths: subscriptionMonths,
+      AppConstants.subscriptionType: subscriptionType,
+      if (subscriptionStart != null)
+        AppConstants.subscriptionStart: Timestamp.fromDate(subscriptionStart!),
+      if (subscriptionEnd != null)
+        AppConstants.subscriptionEnd: Timestamp.fromDate(subscriptionEnd!),
       if (createdAt != null) 'createdAt': Timestamp.fromDate(createdAt!),
     };
   }
 
   bool get isAdmin => role == AppConstants.admin;
-
-  void operator [](String other) {}
 }
