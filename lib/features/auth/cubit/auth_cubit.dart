@@ -1,85 +1,67 @@
-import 'dart:convert';
-import 'dart:io';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:gym_management_app/core/service/local/image_picker_service.dart';
-import 'package:gym_management_app/core/service/local/qr_service.dart';
+import 'package:gym_management_app/core/constants/app_constants.dart';
+import 'package:gym_management_app/core/models/user_model.dart';
+import 'package:gym_management_app/core/service/local/local_cache_service.dart';
 import 'package:gym_management_app/features/auth/data/auth_repo.dart';
 
 part 'auth_state.dart';
 
 class AuthCubit extends Cubit<AuthState> {
-  AuthCubit(this._imagePickerService, this._authRepo, this._qrService)
-    : super(AuthInitial());
-  final ImagePickerService _imagePickerService;
+  AuthCubit(this._authRepo) : super(AuthInitial());
   final AuthRepo _authRepo;
-  final QrService _qrService;
-  bool login = true;
-  String? image;
-  bool _isPicking = false;
+
+  bool isAdmin = false;
+  bool obscurePassword = true;
   final nameController = TextEditingController();
   final phoneController = TextEditingController();
+  final emailController = TextEditingController();
+  final passwordController = TextEditingController();
+
   @override
   Future<void> close() {
     nameController.dispose();
     phoneController.dispose();
+    emailController.dispose();
+    passwordController.dispose();
     return super.close();
   }
 
-  void changeField() {
-    nameController.clear();
-    phoneController.clear();
-    login = !login;
-    emit(AuthChangeFieldState());
+  void toggleAdmin(bool? value) {
+    isAdmin = value ?? false;
+    emit(AuthAdminToggleState());
   }
 
-  //pick-image
-  Future<void> pickImage() async {
-    if (_isPicking) return;
-    _isPicking = true;
-
-    try {
-      final picked = await _imagePickerService.pickImageFromGallery();
-      emit(LoadingPickState());
-      if (picked != null) {
-        image = await compute(_encodeImage, picked.path);
-      }
-      emit(ImagePickedState());
-    } finally {
-      _isPicking = false;
-    }
+  void toggleObscurePassword() {
+    obscurePassword = !obscurePassword;
+    emit(AuthAdminToggleState());
   }
 
-  //register
-  Future<void> memeberRegister() async {
+  Future<void> memberLogin() async {
     emit(AuthLoadingState());
-
     try {
-      final data = await _qrService.createQR(
-        name: nameController.text.trim(),
-        phone: phoneController.text.trim(),
-        image: image!,
+      final credential = await _authRepo.memberLogin(
+        userName: nameController.text.trim(),
+        userPhone: phoneController.text.trim(),
       );
-      await _authRepo.addMember(
-        username: nameController.text.trim(),
-        phone: phoneController.text.trim(),
-        qrData: data,
-        image: image!,
-      );
+
+      //  await LocalCacheService.setString(AppConstants.name, user.name);
+      //  await LocalCacheService.setString(AppConstants.phone, user.phone);
       emit(AuthSccessState());
     } catch (e) {
       emit(AuthErrorState(_formatError(e)));
     }
   }
 
-  Future<void> memberLogin() async {
+  Future<void> adminLogin() async {
     emit(AuthLoadingState());
     try {
-      await _authRepo.memberLogin(
-        userName: nameController.text.trim(),
-        userPhone: phoneController.text.trim(),
+      final credential = await _authRepo.adminLogin(
+        email: emailController.text,
+        password: passwordController.text,
       );
+      debugPrint("User signed in: ${credential.user?.uid}");
+
       emit(AuthSccessState());
     } catch (e) {
       emit(AuthErrorState(_formatError(e)));
@@ -88,9 +70,7 @@ class AuthCubit extends Cubit<AuthState> {
 
   Future<void> logout() async {
     emit(AuthLoadingState());
-
     await _authRepo.logout();
-
     emit(AuthLogoutedState());
   }
 
@@ -99,5 +79,3 @@ class AuthCubit extends Cubit<AuthState> {
     return msg.startsWith('Exception: ') ? msg.substring(11) : msg;
   }
 }
-
-String _encodeImage(String path) => base64Encode(File(path).readAsBytesSync());

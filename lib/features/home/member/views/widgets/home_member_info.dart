@@ -1,9 +1,11 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:gym_management_app/core/components/custom_text.dart';
 import 'package:gym_management_app/core/components/glass_widget.dart';
 import 'package:gym_management_app/core/constants/app_constants.dart';
 import 'package:gym_management_app/core/service/local/local_cache_service.dart';
+import 'package:gym_management_app/core/service/local/local_image_service.dart';
 import 'package:gym_management_app/core/theme/app_colors.dart';
 
 class HomeMemberInfo extends StatelessWidget {
@@ -11,6 +13,7 @@ class HomeMemberInfo extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final userId = LocalCacheService.getString(AppConstants.token);
     return GlassWidget(
       child: Padding(
         padding: const EdgeInsets.all(12.0),
@@ -18,9 +21,13 @@ class HomeMemberInfo extends StatelessWidget {
           children: [
             CircleAvatar(
               radius: 35,
-              backgroundImage: AssetImage(
-                LocalCacheService.getString(AppConstants.image)!,
-              ),
+              backgroundImage: userId != null
+                  ? FileImage(
+                      File(
+                        '${LocalImageService.getImagePathSync('profile_$userId.png')}',
+                      ),
+                    )
+                  : null,
             ),
             const Gap(12),
             Expanded(

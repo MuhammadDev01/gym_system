@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gym_management_app/core/constants/app_assets.dart';
-import 'package:gym_management_app/features/home/views/home_view.dart';
+import 'package:gym_management_app/features/home/member/views/home_view.dart';
 import 'package:gym_management_app/features/market/views/market_view.dart';
 import 'package:gym_management_app/features/profile/views/profile_view.dart';
 import 'package:gym_management_app/features/general/cubit/gerenal_cubit.dart';

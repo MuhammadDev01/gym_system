@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
-import 'package:gym_management_app/features/home/views/widgets/announcement_section.dart';
-import 'package:gym_management_app/features/home/views/widgets/home_banner.dart';
-import 'package:gym_management_app/features/home/views/widgets/home_member_info.dart';
-import 'package:gym_management_app/features/home/views/widgets/training_today_section.dart';
+import 'package:gym_management_app/features/home/member/views/widgets/announcement_section.dart';
+import 'package:gym_management_app/features/home/member/views/widgets/home_banner.dart';
+import 'package:gym_management_app/features/home/member/views/widgets/home_member_info.dart';
+import 'package:gym_management_app/features/home/member/views/widgets/training_today_section.dart';
 
 class HomeView extends StatefulWidget {
   const HomeView({super.key});

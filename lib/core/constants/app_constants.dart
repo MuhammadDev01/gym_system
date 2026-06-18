@@ -17,4 +17,9 @@ class AppConstants {
   static const String name = 'name';
   static const String phone = 'phone';
   static const String image = 'image';
+  static const String role = 'role';
+  static const String member = 'member';
+  static const String admin = 'admin';
+  static const String adminEmail = 'admin_email';
+  static const String adminPassword = 'admin_password';
 }

@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:gym_management_app/core/constants/app_constants.dart';
 import 'package:gym_management_app/core/service/local/local_cache_service.dart';
-import 'package:gym_management_app/features/auth/views/auth_view.dart';
+import 'package:gym_management_app/features/admin/views/admin_view.dart';
+import 'package:gym_management_app/features/auth/views/login_view.dart';
 import 'package:gym_management_app/features/general/views/gerenal_view.dart';
 
 class RootView extends StatelessWidget {
@@ -9,18 +10,14 @@ class RootView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return _isLogin() ? GerenalView() : AuthView();
+    if (!_isLogin()) return const LoginView();
+    final role = LocalCacheService.getString(AppConstants.role);
+    if (role == AppConstants.admin) return const AdminView();
+    return const GerenalView();
   }
 
   bool _isLogin() {
-    if (LocalCacheService.containsKey(AppConstants.token)) {
-      if (LocalCacheService.getString(AppConstants.token) != null) {
-        return true;
-      } else {
-        return false;
-      }
-    } else {
-      return false;
-    }
+    final token = LocalCacheService.getString(AppConstants.token);
+    return token != null;
   }
 }

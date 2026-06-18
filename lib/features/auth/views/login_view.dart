@@ -1,66 +1,89 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
-import 'package:gym_management_app/core/components/custom_button.dart';
-import 'package:gym_management_app/core/components/custom_text.dart';
-import 'package:gym_management_app/core/components/custom_text_field.dart';
-import 'package:gym_management_app/core/helper/validators.dart';
-import 'package:gym_management_app/core/theme/app_colors.dart';
+import 'package:gym_management_app/core/components/custom_loading_overlay.dart';
+import 'package:gym_management_app/core/components/glass_widget.dart';
+import 'package:gym_management_app/core/constants/app_assets.dart';
 import 'package:gym_management_app/features/auth/cubit/auth_cubit.dart';
-import 'package:gym_management_app/features/auth/views/widgets/gold_line.dart';
+import 'package:gym_management_app/features/auth/views/widgets/login_view_body.dart';
 
 class LoginView extends StatelessWidget {
-  LoginView({super.key});
-  final _formKey = GlobalKey<FormState>();
+  const LoginView({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final cubit = context.read<AuthCubit>();
-    return Form(
-      key: _formKey,
-      child: Column(
+    return GestureDetector(
+      onTap: () => FocusScope.of(context).unfocus(),
+      child: Stack(
         children: [
-          CustomText(
-            text: 'تسجيل الدخول',
-            style: Theme.of(context).textTheme.headlineLarge,
+          Positioned.fill(
+            child: Image.asset(AppAssets.manHandADumbel, fit: BoxFit.cover),
           ),
-          const Gap(12),
-          GoldLine(),
-          const Gap(24),
-          CustomTextField(
-            controller: cubit.nameController,
-            labelText: 'الاسم الثلاثي بالعربي',
-            prefixIcon: Icons.person,
-            textInputType: TextInputType.name,
-            validator: (v) => Validators.requiredField(v),
-          ),
-          const Gap(16),
-          CustomTextField(
-            controller: cubit.phoneController,
-            labelText: 'رقم الهاتف',
-            prefixIcon: Icons.phone,
-            textInputType: TextInputType.phone,
-            validator: (v) => Validators.requiredField(v),
-          ),
-          const Gap(24),
-          CustomButton(
-            onPressed: () async {
-              if (_formKey.currentState!.validate()) {
-                await cubit.memberLogin();
-              }
-            },
-            text: 'دخول',
-          ),
-          const Gap(16),
-          GestureDetector(
-            onTap: () => cubit.changeField(),
-            child: CustomText(
-              text: 'ليس لديك حساب؟ سجل الآن',
-              color: AppColors.gold,
-              fontSize: 13,
+          _backgroundImageEffect(),
+
+          Scaffold(
+            backgroundColor: Colors.transparent,
+            body: BlocBuilder<AuthCubit, AuthState>(
+              builder: (_, state) {
+                return CustomLoadingOverlay(
+                  isLoading: state is AuthLoadingState,
+                  child: SafeArea(
+                    child: SingleChildScrollView(
+                      keyboardDismissBehavior:
+                          ScrollViewKeyboardDismissBehavior.onDrag,
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Image.asset(AppAssets.logo, height: 120),
+                          const Gap(24),
+                          Padding(
+                            padding: const EdgeInsets.all(24),
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(24),
+                              child: BackdropFilter(
+                                filter: ImageFilter.blur(
+                                  sigmaX: 12,
+                                  sigmaY: 12,
+                                ),
+                                child: GlassWidget(
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: 24,
+                                    vertical: 32,
+                                  ),
+                                  child: LoginViewBody(),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                );
+              },
             ),
           ),
         ],
+      ),
+    );
+  }
+
+  Positioned _backgroundImageEffect() {
+    return Positioned.fill(
+      child: Container(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+            colors: [
+              Colors.black.withValues(alpha: .15),
+              Colors.black.withValues(alpha: .45),
+              Colors.black.withValues(alpha: .92),
+            ],
+          ),
+        ),
       ),
     );
   }

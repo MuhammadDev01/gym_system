@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:gym_management_app/core/routes/app_routes.dart';
-import 'package:gym_management_app/features/auth/views/auth_view.dart';
 import 'package:gym_management_app/features/auth/views/login_view.dart';
-import 'package:gym_management_app/features/auth/views/register_view.dart';
 import 'package:gym_management_app/features/general/views/gerenal_view.dart';
-import 'package:gym_management_app/features/home/views/home_view.dart';
+import 'package:gym_management_app/features/home/member/views/home_view.dart';
 import 'package:gym_management_app/features/market/views/market_view.dart';
 import 'package:gym_management_app/features/profile/views/profile_view.dart';
 import 'package:gym_management_app/features/root/views/root_view.dart';
@@ -22,19 +20,7 @@ final goRouter = GoRouter(
       path: AppRoutes.authView,
       builder: (_, _) => const Directionality(
         textDirection: TextDirection.rtl,
-        child: AuthView(),
-      ),
-    ),
-    GoRoute(
-      path: AppRoutes.loginView,
-      builder: (_, _) =>
-          Directionality(textDirection: TextDirection.rtl, child: LoginView()),
-    ),
-    GoRoute(
-      path: AppRoutes.registerView,
-      builder: (_, _) => Directionality(
-        textDirection: TextDirection.rtl,
-        child: RegisterView(),
+        child: LoginView(),
       ),
     ),
     GoRoute(

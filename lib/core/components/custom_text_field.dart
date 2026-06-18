@@ -39,7 +39,9 @@ class CustomTextField extends StatelessWidget {
         prefixIconColor: AppColors.gold.withValues(alpha: 0.75),
         suffixIconColor: AppColors.gold.withValues(alpha: 0.75),
         prefixIcon: Icon(prefixIcon),
-        suffixIcon: IconButton(onPressed: onTapSufffix, icon: Icon(suffixIcon)),
+        suffixIcon: suffixIcon != null
+            ? IconButton(onPressed: onTapSufffix, icon: Icon(suffixIcon))
+            : null,
         labelText: labelText,
         focusColor: AppColors.gold,
         errorStyle: TextStyle(color: AppColors.gold),

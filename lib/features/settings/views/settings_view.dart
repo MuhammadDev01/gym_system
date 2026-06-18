@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
+import 'package:gym_management_app/core/constants/app_constants.dart';
 import 'package:gym_management_app/core/routes/app_routes.dart';
+import 'package:gym_management_app/core/service/local/local_cache_service.dart';
 import 'package:gym_management_app/features/settings/views/widgets/logout_button.dart';
 import 'package:gym_management_app/features/settings/views/widgets/settings_footer.dart';
 import 'package:gym_management_app/features/settings/views/widgets/settings_item.dart';
@@ -12,8 +14,19 @@ class SettingsView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isAdmin =
+        LocalCacheService.getString(AppConstants.role) == AppConstants.admin;
     return Column(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
+        if (isAdmin) ...[
+          NavCard(
+            title: 'لوحة التحكم',
+            icon: Icons.admin_panel_settings,
+            onTap: () => context.push(AppRoutes.adminView),
+          ),
+          const Gap(12),
+        ],
         NavCard(
           title: 'فروع الجيم',
           icon: Icons.location_on,

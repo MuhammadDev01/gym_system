@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:gym_management_app/core/components/custom_text.dart';
 import 'package:gym_management_app/core/components/glass_widget.dart';
-import 'package:gym_management_app/features/home/views/widgets/failed_training.dart';
-import 'package:gym_management_app/features/home/views/widgets/success_training.dart';
+import 'package:gym_management_app/features/home/member/views/widgets/failed_training.dart';
+import 'package:gym_management_app/features/home/member/views/widgets/success_training.dart';
 
 class TrainingTodaySection extends StatelessWidget {
   const TrainingTodaySection({super.key, required this.isAttendToday});

@@ -5,8 +5,7 @@ import 'package:go_router/go_router.dart';
 class AppRoutes {
   // views
   static const String authView = '/auth-view';
-  static const String loginView = '/login-view';
-  static const String registerView = '/register-view';
+  static const String adminView = '/admin-view';
   static const String gerenalView = '/gerenal-view';
   static const String homeView = '/home-view';
   static const String subscriptionView = '/subscription-view';
