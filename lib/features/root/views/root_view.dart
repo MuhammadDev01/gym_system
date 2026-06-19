@@ -3,7 +3,7 @@ import 'package:gym_management_app/core/constants/app_constants.dart';
 import 'package:gym_management_app/core/service/local/local_cache_service.dart';
 import 'package:gym_management_app/features/admin/views/admin_view.dart';
 import 'package:gym_management_app/features/auth/views/auth_view.dart';
-import 'package:gym_management_app/features/general/views/gerenal_view.dart';
+import 'package:gym_management_app/features/user/general/views/gerenal_view.dart';
 
 class RootView extends StatelessWidget {
   const RootView({super.key});

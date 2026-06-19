@@ -2,27 +2,27 @@ import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:gym_management_app/core/components/custom_text.dart';
 import 'package:gym_management_app/core/components/glass_widget.dart';
-import 'package:gym_management_app/core/models/user_model.dart';
+import 'package:gym_management_app/core/models/member_model.dart';
 import 'package:gym_management_app/core/theme/app_colors.dart';
 
-class MembersList extends StatelessWidget {
-  final List<UserModel> members;
+class MemberList extends StatelessWidget {
+  final List<MemberModel> member;
 
-  const MembersList({super.key, required this.members});
+  const MemberList({super.key, required this.member});
 
   @override
   Widget build(BuildContext context) {
-    if (members.isEmpty) {
+    if (member.isEmpty) {
       return const Center(
         child: CustomText(text: 'لا يوجد أعضاء', color: Colors.white38),
       );
     }
     return ListView.separated(
       padding: const EdgeInsets.all(16),
-      itemCount: members.length,
+      itemCount: member.length,
       separatorBuilder: (_, _) => const Gap(8),
       itemBuilder: (_, i) {
-        final m = members[i];
+        final m = member[i];
         final typeLabel = _typeLabel(m.subscriptionType);
         final endDate = m.subscriptionEnd != null
             ? '${m.subscriptionEnd!.day}/${m.subscriptionEnd!.month}/${m.subscriptionEnd!.year}'

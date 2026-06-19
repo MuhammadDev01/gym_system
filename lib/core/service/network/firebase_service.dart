@@ -67,7 +67,19 @@ class FirebaseService {
         .get();
   }
 
-  Stream<QuerySnapshot> streamCollection({required String collection}) {
+  Stream<QuerySnapshot> streamCollection(String collection) {
     return _firestore.collection(collection).snapshots();
+  }
+
+  Future<QuerySnapshot> getCollection({required String collection}) async {
+    return _firestore.collection(collection).get();
+  }
+
+  Future<void> updateDocument({
+    required String collection,
+    required String docId,
+    required Map<String, dynamic> data,
+  }) async {
+    await _firestore.collection(collection).doc(docId).update(data);
   }
 }

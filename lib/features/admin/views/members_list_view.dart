@@ -6,30 +6,31 @@ import 'package:gym_management_app/core/components/custom_loading_overlay.dart';
 import 'package:gym_management_app/core/components/custom_text.dart';
 import 'package:gym_management_app/core/components/glass_widget.dart';
 import 'package:gym_management_app/core/helper/app_snackbar.dart';
-import 'package:gym_management_app/features/admin/cubit/admin_cubit.dart';
+import 'package:gym_management_app/features/admin/cubit/member/member_cubit.dart';
+import 'package:gym_management_app/features/admin/cubit/member/member_state.dart';
 import 'package:gym_management_app/features/admin/views/widgets/members_list.dart';
 
-class MembersListView extends StatefulWidget {
-  const MembersListView({super.key});
+class MemberListView extends StatefulWidget {
+  const MemberListView({super.key});
 
   @override
-  State<MembersListView> createState() => _MembersListViewState();
+  State<MemberListView> createState() => _MemberListViewState();
 }
 
-class _MembersListViewState extends State<MembersListView> {
+class _MemberListViewState extends State<MemberListView> {
   @override
   void initState() {
     super.initState();
-    context.read<AdminCubit>().getMembers();
+    context.read<MemberCubit>().getMember();
   }
 
   @override
   Widget build(BuildContext context) {
     return AppBackground(
       child: SafeArea(
-        child: BlocConsumer<AdminCubit, AdminState>(
+        child: BlocConsumer<MemberCubit, MemberState>(
           listener: (_, state) {
-            if (state is MembersErrorState) {
+            if (state is MemberErrorState) {
               appSnackbar(context, state.message);
             }
           },
@@ -38,12 +39,12 @@ class _MembersListViewState extends State<MembersListView> {
               padding: const EdgeInsets.all(12),
               child: Column(
                 children: [
-                  _membersListViewHeader(),
+                  _memberListViewHeader(),
                   Expanded(
                     child: CustomLoadingOverlay(
-                      isLoading: state is MembersLoadingState,
-                      child: state is MembersLoadedState
-                          ? MembersList(members: state.members)
+                      isLoading: state is MemberLoadingState,
+                      child: state is MemberLoadedState
+                          ? MemberList(member: state.member)
                           : SizedBox.shrink(),
                     ),
                   ),
@@ -56,7 +57,7 @@ class _MembersListViewState extends State<MembersListView> {
     );
   }
 
-  GlassWidget _membersListViewHeader() {
+  GlassWidget _memberListViewHeader() {
     return GlassWidget(
       padding: EdgeInsets.all(12),
       child: Row(

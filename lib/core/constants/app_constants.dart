@@ -20,8 +20,6 @@ class AppConstants {
   static const String role = 'role';
   static const String member = 'member';
   static const String admin = 'admin';
-  static const String adminEmail = 'admin_email';
-  static const String adminPassword = 'admin_password';
 
   //*Subscription
   static const String subscriptionMonths = 'subscriptionMonths';

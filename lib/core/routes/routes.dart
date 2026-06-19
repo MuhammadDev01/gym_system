@@ -3,17 +3,18 @@ import 'package:go_router/go_router.dart';
 import 'package:gym_management_app/core/routes/app_routes.dart';
 import 'package:gym_management_app/features/admin/views/add_member_view.dart';
 import 'package:gym_management_app/features/admin/views/admin_view.dart';
+import 'package:gym_management_app/features/admin/views/advertisements_view.dart';
 import 'package:gym_management_app/features/admin/views/members_list_view.dart';
 import 'package:gym_management_app/features/auth/views/auth_view.dart';
-import 'package:gym_management_app/features/general/views/gerenal_view.dart';
-import 'package:gym_management_app/features/home/member/views/home_view.dart';
-import 'package:gym_management_app/features/market/views/market_view.dart';
-import 'package:gym_management_app/features/profile/views/profile_view.dart';
+import 'package:gym_management_app/features/user/general/views/gerenal_view.dart';
+import 'package:gym_management_app/features/user/general/home/views/home_view.dart';
+import 'package:gym_management_app/features/user/market/views/market_view.dart';
+import 'package:gym_management_app/features/user/profile/views/profile_view.dart';
 import 'package:gym_management_app/features/root/views/root_view.dart';
-import 'package:gym_management_app/features/settings/views/branches_view.dart';
-import 'package:gym_management_app/features/settings/views/settings_view.dart';
-import 'package:gym_management_app/features/settings/views/subscription_history_view.dart';
-import 'package:gym_management_app/features/subscription/views/subscription_view.dart';
+import 'package:gym_management_app/features/user/settings/views/branches_view.dart';
+import 'package:gym_management_app/features/user/settings/views/settings_view.dart';
+import 'package:gym_management_app/features/user/settings/views/subscription_history_view.dart';
+import 'package:gym_management_app/features/user/subscription/views/subscription_view.dart';
 
 final goRouter = GoRouter(
   initialLocation: AppRoutes.rootView,
@@ -48,10 +49,17 @@ final goRouter = GoRouter(
       ),
     ),
     GoRoute(
-      path: AppRoutes.membersListView,
+      path: AppRoutes.memberListView,
       builder: (_, _) => Directionality(
         textDirection: TextDirection.rtl,
-        child: MembersListView(),
+        child: MemberListView(),
+      ),
+    ),
+    GoRoute(
+      path: AppRoutes.advertisementsView,
+      builder: (_, _) => const Directionality(
+        textDirection: TextDirection.rtl,
+        child: AdvertisementsView(),
       ),
     ),
     GoRoute(

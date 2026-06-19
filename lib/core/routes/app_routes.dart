@@ -7,7 +7,9 @@ class AppRoutes {
   static const String authView = '/auth-view';
   static const String adminView = '/admin-view';
   static const String addMemberView = '/add-member-view';
-  static const String membersListView = '/members-list-view';
+  static const String memberListView = '/member-list-view';
+  static const String addAdView = '/add-ad-view';
+  static const String advertisementsView = '/advertisements-view';
   static const String gerenalView = '/gerenal-view';
   static const String homeView = '/home-view';
   static const String subscriptionView = '/subscription-view';

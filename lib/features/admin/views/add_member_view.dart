@@ -13,7 +13,8 @@ import 'package:gym_management_app/core/constants/app_assets.dart';
 import 'package:gym_management_app/core/helper/app_snackbar.dart';
 import 'package:gym_management_app/core/helper/validators.dart';
 import 'package:gym_management_app/core/theme/app_colors.dart';
-import 'package:gym_management_app/features/admin/cubit/admin_cubit.dart';
+import 'package:gym_management_app/features/admin/cubit/member/member_cubit.dart';
+import 'package:gym_management_app/features/admin/cubit/member/member_state.dart';
 import 'package:gym_management_app/features/admin/views/widgets/months_selector.dart';
 import 'package:gym_management_app/features/admin/views/widgets/type_selector.dart';
 
@@ -24,7 +25,7 @@ class AddMemberView extends StatelessWidget {
   Widget build(BuildContext context) {
     return AppBackground(
       child: SafeArea(
-        child: BlocConsumer<AdminCubit, AdminState>(
+        child: BlocConsumer<MemberCubit, MemberState>(
           listener: (_, state) {
             if (state is MemberAddedState) {
               appSnackbar(
@@ -70,7 +71,7 @@ class AddMemberView extends StatelessWidget {
                               const Gap(24),
                               CustomTextField(
                                 controller: context
-                                    .read<AdminCubit>()
+                                    .read<MemberCubit>()
                                     .nameController,
                                 labelText: 'اسم المشترك ثلاثي',
                                 prefixIcon: Icons.person,
@@ -79,7 +80,7 @@ class AddMemberView extends StatelessWidget {
                               const Gap(12),
                               CustomTextField(
                                 controller: context
-                                    .read<AdminCubit>()
+                                    .read<MemberCubit>()
                                     .phoneController,
                                 labelText: 'رقم الهاتف',
                                 prefixIcon: Icons.phone,
@@ -94,7 +95,7 @@ class AddMemberView extends StatelessWidget {
                               CustomButton(
                                 onPressed: () {
                                   if (_formKey.currentState!.validate()) {
-                                    context.read<AdminCubit>().addMember();
+                                    context.read<MemberCubit>().addMember();
                                   }
                                 },
                                 text: 'إضافة',

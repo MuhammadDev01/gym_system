@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gym_management_app/core/components/custom_text.dart';
 import 'package:gym_management_app/core/components/glass_widget.dart';
-import 'package:gym_management_app/features/admin/cubit/admin_cubit.dart';
+import 'package:gym_management_app/features/admin/cubit/member/member_cubit.dart';
 
 class MonthsSelector extends StatelessWidget {
   const MonthsSelector({super.key});
@@ -22,7 +22,7 @@ class MonthsSelector extends StatelessWidget {
   ];
   @override
   Widget build(BuildContext context) {
-    final cubit = context.read<AdminCubit>();
+    final cubit = context.read<MemberCubit>();
     return GlassWidget(
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       child: Row(
@@ -42,7 +42,11 @@ class MonthsSelector extends StatelessWidget {
               items: _months.map((e) {
                 return DropdownMenuItem<int>(
                   value: _months.indexOf(e),
-                  child: Text(e, textDirection: TextDirection.rtl),
+                  child: CustomText(
+                    text: e,
+                    textDirection: TextDirection.rtl,
+                    fontSize: 18,
+                  ),
                 );
               }).toList(),
               onChanged: (v) {

@@ -6,28 +6,32 @@ class CustomTextField extends StatelessWidget {
     super.key,
     this.controller,
     this.initialValue,
-    required this.labelText,
+    this.labelText,
     this.obscureText,
     this.onTapSufffix,
     this.prefixIcon,
     this.suffixIcon,
     this.textInputType,
     this.validator,
+    this.hintText,
+    this.maxLines,
   });
   final TextEditingController? controller;
   final String? initialValue;
-  final String labelText;
+  final String? labelText;
+  final String? hintText;
   final bool? obscureText;
   final VoidCallback? onTapSufffix;
   final IconData? prefixIcon;
   final IconData? suffixIcon;
+  final int? maxLines;
   final TextInputType? textInputType;
   final String? Function(String?)? validator;
   @override
   Widget build(BuildContext context) {
     return TextFormField(
       controller: controller,
-
+      maxLines: maxLines,
       keyboardType: textInputType,
       initialValue: controller != null ? null : initialValue,
       obscureText: obscureText ?? false,
@@ -43,6 +47,7 @@ class CustomTextField extends StatelessWidget {
             ? IconButton(onPressed: onTapSufffix, icon: Icon(suffixIcon))
             : null,
         labelText: labelText,
+        hintText: hintText,
         focusColor: AppColors.gold,
         errorStyle: TextStyle(color: AppColors.gold),
         enabledBorder: OutlineInputBorder(

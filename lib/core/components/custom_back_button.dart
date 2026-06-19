@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gym_management_app/core/theme/app_colors.dart';
-import 'package:gym_management_app/extentions/navigator_extention.dart';
+import 'package:gym_management_app/core/extentions/navigator_extention.dart';
 
 class CustomBackButton extends StatelessWidget {
   const CustomBackButton({super.key});

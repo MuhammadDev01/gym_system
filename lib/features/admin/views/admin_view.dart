@@ -30,8 +30,8 @@ class AdminView extends StatelessWidget {
                 const Gap(12),
                 AdminCard(
                   icon: Icons.campaign,
-                  title: 'إضافة اعلانات',
-                  onTap: () {},
+                  title: 'الإعلانات',
+                  onTap: () => context.push(AppRoutes.advertisementsView),
                 ),
                 const Gap(12),
                 AdminCard(
@@ -49,7 +49,7 @@ class AdminView extends StatelessWidget {
                 AdminCard(
                   icon: Icons.people,
                   title: 'قائمة الأعضاء',
-                  onTap: () => context.push(AppRoutes.membersListView),
+                  onTap: () => context.push(AppRoutes.memberListView),
                 ),
                 const Gap(12),
                 AdminCard(

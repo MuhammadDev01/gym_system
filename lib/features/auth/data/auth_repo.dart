@@ -1,6 +1,6 @@
 import "package:firebase_auth/firebase_auth.dart";
 import "package:gym_management_app/core/constants/app_constants.dart";
-import "package:gym_management_app/core/models/user_model.dart";
+import "package:gym_management_app/core/models/member_model.dart";
 import "package:gym_management_app/core/service/local/local_cache_service.dart";
 import "package:gym_management_app/core/service/network/firebase_exceptions.dart";
 import "package:gym_management_app/core/service/network/firebase_service.dart";
@@ -10,7 +10,7 @@ class AuthRepo {
   final FirebaseService _firebaseService;
 
   //*Member Login (name + phone)
-  Future<UserModel> memberLogin({
+  Future<MemberModel> memberLogin({
     required String userName,
     required String userPhone,
   }) async {
@@ -25,7 +25,7 @@ class AuthRepo {
         collection: 'users',
         docId: uid,
       );
-      final UserModel data = UserModel.fromJson(
+      final MemberModel data = MemberModel.fromJson(
         doc.data() as Map<String, dynamic>,
         uid,
       );
