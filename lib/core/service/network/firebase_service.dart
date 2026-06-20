@@ -82,4 +82,11 @@ class FirebaseService {
   }) async {
     await _firestore.collection(collection).doc(docId).update(data);
   }
+
+  Future<void> deleteDocument({
+    required String collection,
+    required String docId,
+  }) async {
+    await _firestore.collection(collection).doc(docId).delete();
+  }
 }

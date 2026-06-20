@@ -8,8 +8,8 @@ import 'package:gym_management_app/core/service/local/local_cache_service.dart';
 import 'package:gym_management_app/core/service/network/fcm_service.dart';
 import 'package:gym_management_app/core/service/network/firebase_service.dart';
 import 'package:gym_management_app/core/theme/app_theme.dart';
-import 'package:gym_management_app/features/admin/cubit/alert/alert_cubit.dart';
-import 'package:gym_management_app/features/admin/cubit/member/member_cubit.dart';
+import 'package:gym_management_app/features/alerts/cubit/alert_cubit.dart';
+import 'package:gym_management_app/features/members/cubit/member_cubit.dart';
 import 'package:gym_management_app/features/user/general/cubit/gerenal_cubit.dart';
 import 'package:gym_management_app/features/auth/cubit/auth_cubit.dart';
 

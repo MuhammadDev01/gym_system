@@ -6,7 +6,7 @@ import 'package:gym_management_app/core/components/glass_widget.dart';
 import 'package:gym_management_app/core/models/announcement_model.dart';
 import 'package:gym_management_app/core/theme/app_colors.dart';
 import 'package:gym_management_app/core/DI/service_locator.dart';
-import 'package:gym_management_app/features/admin/data/Alert_repo.dart';
+import 'package:gym_management_app/features/alerts/data/alert_repo.dart';
 
 class AlertSection extends StatelessWidget {
   const AlertSection({super.key, required List<String> alerts});

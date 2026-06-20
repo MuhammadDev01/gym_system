@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gym_management_app/core/constants/app_assets.dart';
+import 'package:gym_management_app/features/market/cubit/user/market_cubit.dart';
 import 'package:gym_management_app/features/user/general/home/views/home_view.dart';
-import 'package:gym_management_app/features/user/market/views/market_view.dart';
+import 'package:gym_management_app/features/market/views/user/market_view.dart';
 import 'package:gym_management_app/features/user/profile/views/profile_view.dart';
 import 'package:gym_management_app/features/user/general/cubit/gerenal_cubit.dart';
 import 'package:gym_management_app/features/user/general/views/widgets/custom_nav_bar.dart';
@@ -14,12 +15,15 @@ class GerenalView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final views = const [
-      HomeView(),
-      SubscriptionView(),
-      ProfileView(),
-      MarketView(),
-      SettingsView(),
+    final views = <Widget>[
+      const HomeView(),
+      const SubscriptionView(),
+      const ProfileView(),
+      BlocProvider<MarketCubit>(
+        create: (_) => MarketCubit(),
+        child: const MarketView(),
+      ),
+      const SettingsView(),
     ];
 
     return BlocBuilder<GerenalCubit, GerenalState>(
