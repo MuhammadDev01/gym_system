@@ -18,8 +18,8 @@ final class AlertErrorState extends AlertState {
 }
 
 final class AlertSuccessState extends AlertState {
-  final List<AlertModel> alert;
-  AlertSuccessState({required this.alert});
+  final List<AlertModel> alerts;
+  AlertSuccessState({required this.alerts});
 }
 
 final class AlertUpdatedState extends AlertState {}

@@ -11,6 +11,7 @@ class MemberModel {
   final String subscriptionType;
   final DateTime? subscriptionStart;
   final DateTime? subscriptionEnd;
+  final DateTime? lastAttendance;
   final DateTime? createdAt;
 
   MemberModel({
@@ -23,8 +24,17 @@ class MemberModel {
     this.subscriptionType = '',
     this.subscriptionStart,
     this.subscriptionEnd,
+    this.lastAttendance,
     this.createdAt,
   });
+
+  bool get attendedToday {
+    if (lastAttendance == null) return false;
+    final now = DateTime.now();
+    return lastAttendance!.day == now.day &&
+        lastAttendance!.month == now.month &&
+        lastAttendance!.year == now.year;
+  }
 
   factory MemberModel.fromJson(Map<String, dynamic> json, String docId) {
     return MemberModel(
@@ -39,6 +49,7 @@ class MemberModel {
           ?.toDate(),
       subscriptionEnd: (json[AppConstants.subscriptionEnd] as Timestamp?)
           ?.toDate(),
+      lastAttendance: (json['lastAttendance'] as Timestamp?)?.toDate(),
       createdAt: (json['createdAt'] as Timestamp?)?.toDate(),
     );
   }
@@ -55,9 +66,36 @@ class MemberModel {
         AppConstants.subscriptionStart: Timestamp.fromDate(subscriptionStart!),
       if (subscriptionEnd != null)
         AppConstants.subscriptionEnd: Timestamp.fromDate(subscriptionEnd!),
+      if (lastAttendance != null)
+        'lastAttendance': Timestamp.fromDate(lastAttendance!),
       if (createdAt != null) 'createdAt': Timestamp.fromDate(createdAt!),
     };
   }
 
   bool get isAdmin => role == AppConstants.admin;
+
+  MemberModel copyWith({
+    String? name,
+    String? phone,
+    String? image,
+    int? subscriptionMonths,
+    String? subscriptionType,
+    DateTime? subscriptionStart,
+    DateTime? subscriptionEnd,
+    DateTime? lastAttendance,
+  }) {
+    return MemberModel(
+      id: id,
+      name: name ?? this.name,
+      phone: phone ?? this.phone,
+      image: image ?? this.image,
+      role: role,
+      subscriptionMonths: subscriptionMonths ?? this.subscriptionMonths,
+      subscriptionType: subscriptionType ?? this.subscriptionType,
+      subscriptionStart: subscriptionStart ?? this.subscriptionStart,
+      subscriptionEnd: subscriptionEnd ?? this.subscriptionEnd,
+      lastAttendance: lastAttendance ?? this.lastAttendance,
+      createdAt: createdAt,
+    );
+  }
 }

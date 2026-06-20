@@ -6,11 +6,13 @@ sealed class MemberState {}
 
 final class MemberInitial extends MemberState {}
 
-final class MemberFormChangedState extends MemberState {}
+final class MemberSelectedState extends MemberState {}
 
 final class MemberLoadingState extends MemberState {}
 
 final class MemberAddedState extends MemberState {}
+
+final class MemberUpdatedState extends MemberState {}
 
 final class MemberErrorState extends MemberState {
   final String message;
@@ -18,6 +20,8 @@ final class MemberErrorState extends MemberState {
 }
 
 final class MemberLoadedState extends MemberState {
-  final List<MemberModel> member;
-  MemberLoadedState({required this.member});
+  final List<MemberModel> members;
+  MemberLoadedState({required this.members});
 }
+
+final class MemberEditFormState extends MemberState {}

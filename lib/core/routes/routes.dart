@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:gym_management_app/core/routes/app_routes.dart';
-import 'package:gym_management_app/features/admin/views/add_member_view.dart';
+import 'package:gym_management_app/features/admin/views/members/add_member_view.dart';
 import 'package:gym_management_app/features/admin/views/admin_view.dart';
-import 'package:gym_management_app/features/admin/views/advertisements_view.dart';
-import 'package:gym_management_app/features/admin/views/members_list_view.dart';
+import 'package:gym_management_app/features/admin/views/alerts/alerts_view.dart';
+import 'package:gym_management_app/features/admin/views/members/members_list_view.dart';
+import 'package:gym_management_app/features/admin/views/members/scan_member_view.dart';
 import 'package:gym_management_app/features/auth/views/auth_view.dart';
 import 'package:gym_management_app/features/user/general/views/gerenal_view.dart';
 import 'package:gym_management_app/features/user/general/home/views/home_view.dart';
@@ -20,6 +21,7 @@ final goRouter = GoRouter(
   initialLocation: AppRoutes.rootView,
   debugLogDiagnostics: true,
   routes: [
+    //*main
     GoRoute(
       path: AppRoutes.authView,
       builder: (_, _) => const Directionality(
@@ -34,6 +36,7 @@ final goRouter = GoRouter(
         child: RootView(),
       ),
     ),
+    //*Main
     GoRoute(
       path: AppRoutes.adminView,
       builder: (_, _) => const Directionality(
@@ -56,12 +59,21 @@ final goRouter = GoRouter(
       ),
     ),
     GoRoute(
-      path: AppRoutes.advertisementsView,
+      path: AppRoutes.alertsView,
       builder: (_, _) => const Directionality(
         textDirection: TextDirection.rtl,
-        child: AdvertisementsView(),
+        child: AlertView(),
       ),
     ),
+    GoRoute(
+      path: AppRoutes.scanMemberView,
+      builder: (_, _) => const Directionality(
+        textDirection: TextDirection.rtl,
+        child: ScanMemberView(),
+      ),
+    ),
+
+    //* User
     GoRoute(
       path: AppRoutes.gerenalView,
       builder: (_, _) => const Directionality(

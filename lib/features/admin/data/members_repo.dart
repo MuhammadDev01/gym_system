@@ -9,7 +9,23 @@ class MemberRepo {
   MemberRepo(this._firebaseService);
   final FirebaseService _firebaseService;
 
-  Future<List<MemberModel>> getMember() async {
+  //* get by phone
+  Future<MemberModel?> getMemberByPhone(String phone) async {
+    try {
+      final doc = await _firebaseService.getDocument(
+        collection: 'users',
+        docId: phone.trim(),
+      );
+      if (!doc.exists) return null;
+      final data = doc.data() as Map<String, dynamic>;
+      return MemberModel.fromJson(data, doc.id);
+    } on FirebaseException catch (e) {
+      throw Exception(FirebaseExceptionMessages.getFirestoreMessage(e));
+    }
+  }
+
+  //* get All Members
+  Future<List<MemberModel>> getAllMembers() async {
     try {
       final result = await _firebaseService.queryCollection(
         collection: 'users',
@@ -20,6 +36,57 @@ class MemberRepo {
         final data = doc.data() as Map<String, dynamic>;
         return MemberModel.fromJson(data, doc.id);
       }).toList();
+    } on FirebaseException catch (e) {
+      throw Exception(FirebaseExceptionMessages.getFirestoreMessage(e));
+    }
+  }
+
+  //* Add
+  Future<void> updateMember({
+    required String docId,
+    required String name,
+    required String phone,
+    required int subscriptionMonths,
+    required String subscriptionType,
+    DateTime? subscriptionEnd,
+  }) async {
+    try {
+      final data = <String, dynamic>{
+        AppConstants.name: name.trim(),
+        AppConstants.phone: phone.trim(),
+        AppConstants.subscriptionMonths: subscriptionMonths,
+        AppConstants.subscriptionType: subscriptionType,
+      };
+      if (subscriptionEnd != null) {
+        data[AppConstants.subscriptionEnd] = Timestamp.fromDate(subscriptionEnd);
+      }
+      await _firebaseService.updateDocument(
+        collection: 'users',
+        docId: docId,
+        data: data,
+      );
+    } on FirebaseException catch (e) {
+      throw Exception(FirebaseExceptionMessages.getFirestoreMessage(e));
+    }
+  }
+
+  Future<void> toggleAttendance(String docId, {required bool attended}) async {
+    try {
+      if (attended) {
+        final now = DateTime.now();
+        final today = DateTime(now.year, now.month, now.day);
+        await _firebaseService.updateDocument(
+          collection: 'users',
+          docId: docId,
+          data: {'lastAttendance': Timestamp.fromDate(today)},
+        );
+      } else {
+        await _firebaseService.updateDocument(
+          collection: 'users',
+          docId: docId,
+          data: {'lastAttendance': FieldValue.delete()},
+        );
+      }
     } on FirebaseException catch (e) {
       throw Exception(FirebaseExceptionMessages.getFirestoreMessage(e));
     }

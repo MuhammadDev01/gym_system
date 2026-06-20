@@ -5,11 +5,15 @@ import 'package:go_router/go_router.dart';
 class AppRoutes {
   // views
   static const String authView = '/auth-view';
+  //admin
   static const String adminView = '/admin-view';
   static const String addMemberView = '/add-member-view';
   static const String memberListView = '/member-list-view';
   static const String addAdView = '/add-ad-view';
-  static const String advertisementsView = '/advertisements-view';
+  static const String alertsView = '/alerts-view';
+  static const String scanMemberView = '/scan-member-view';
+
+  //user
   static const String gerenalView = '/gerenal-view';
   static const String homeView = '/home-view';
   static const String subscriptionView = '/subscription-view';

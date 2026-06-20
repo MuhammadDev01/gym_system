@@ -14,7 +14,7 @@ class AppBackground extends StatelessWidget {
             child: Image.asset(AppAssets.manHandADumbel, fit: BoxFit.cover),
           ),
           _backgroundImageEffect(),
-          Scaffold(backgroundColor: Colors.transparent, body: child),
+          child,
         ],
       ),
     );

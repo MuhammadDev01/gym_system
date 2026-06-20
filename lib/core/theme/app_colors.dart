@@ -7,4 +7,8 @@ class AppColors {
   static Color success = const Color(0xFF4CAF50);
   static Color error = const Color(0xFFF44336);
   static Color snackError = const Color(0xFFF44336);
+  static Color background = const Color(0xFF282A36);
+  static Color surface = const Color(0xFF1E1E2E);
+  static Color textSecondary = const Color(0xFFB0B0B0);
+  static Color get primary => gold;
 }

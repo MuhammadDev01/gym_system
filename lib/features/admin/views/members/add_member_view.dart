@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:gym_management_app/core/components/app_background.dart';
-import 'package:gym_management_app/core/components/custom_back_button.dart';
+import 'package:gym_management_app/core/components/glass_appbar.dart';
 import 'package:gym_management_app/core/components/custom_button.dart';
 import 'package:gym_management_app/core/components/custom_loading_overlay.dart';
 import 'package:gym_management_app/core/components/custom_text.dart';
@@ -24,8 +24,10 @@ class AddMemberView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AppBackground(
-      child: SafeArea(
-        child: BlocConsumer<MemberCubit, MemberState>(
+      child: Scaffold(
+        backgroundColor: Colors.transparent,
+        appBar: GlassAppBar(title: 'المشتركين'),
+        body: BlocConsumer<MemberCubit, MemberState>(
           listener: (_, state) {
             if (state is MemberAddedState) {
               appSnackbar(
@@ -50,8 +52,6 @@ class AddMemberView extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      CustomBackButton(),
-                      const Gap(24),
                       GlassWidget(
                         padding: const EdgeInsets.symmetric(
                           horizontal: 24,

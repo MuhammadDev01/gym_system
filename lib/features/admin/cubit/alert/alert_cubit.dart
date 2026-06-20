@@ -49,7 +49,7 @@ class AlertCubit extends Cubit<AlertState> {
     emit(AlertLoadingState());
     try {
       final list = await _alertRepo.getAllAlerts();
-      emit(AlertSuccessState(alert: list));
+      emit(AlertSuccessState(alerts: list));
     } catch (e) {
       final msg = e.toString();
       emit(

@@ -15,6 +15,7 @@ class CustomTextField extends StatelessWidget {
     this.validator,
     this.hintText,
     this.maxLines,
+    this.onChanged,
   });
   final TextEditingController? controller;
   final String? initialValue;
@@ -26,6 +27,7 @@ class CustomTextField extends StatelessWidget {
   final IconData? suffixIcon;
   final int? maxLines;
   final TextInputType? textInputType;
+  final Function(String)? onChanged;
   final String? Function(String?)? validator;
   @override
   Widget build(BuildContext context) {
@@ -38,7 +40,7 @@ class CustomTextField extends StatelessWidget {
       validator: validator,
       cursorColor: AppColors.gold,
       style: const TextStyle(color: Colors.white),
-
+      onChanged: onChanged,
       decoration: InputDecoration(
         prefixIconColor: AppColors.gold.withValues(alpha: 0.75),
         suffixIconColor: AppColors.gold.withValues(alpha: 0.75),
@@ -48,8 +50,9 @@ class CustomTextField extends StatelessWidget {
             : null,
         labelText: labelText,
         hintText: hintText,
-        focusColor: AppColors.gold,
-        errorStyle: TextStyle(color: AppColors.gold),
+        hintStyle: TextStyle(color: AppColors.gray),
+        focusColor: AppColors.primary,
+        errorStyle: TextStyle(color: AppColors.primary),
         enabledBorder: OutlineInputBorder(
           borderSide: BorderSide(color: AppColors.black),
         ),
@@ -60,7 +63,7 @@ class CustomTextField extends StatelessWidget {
           borderSide: BorderSide(color: AppColors.error),
         ),
         focusedBorder: OutlineInputBorder(
-          borderSide: BorderSide(color: AppColors.gold),
+          borderSide: BorderSide(color: AppColors.primary),
         ),
         labelStyle: TextStyle(color: AppColors.gray, fontSize: 14),
         filled: true,
