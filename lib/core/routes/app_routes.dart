@@ -11,6 +11,7 @@ class AppRoutes {
   static const String memberListView = '/member-list-view';
   static const String addAdView = '/add-ad-view';
   static const String alertsView = '/alerts-view';
+  static const String addAlertView = '/add-alert-view';
   static const String scanMemberView = '/scan-member-view';
 
   //user

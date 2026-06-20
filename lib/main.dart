@@ -5,6 +5,7 @@ import 'package:gym_management_app/core/DI/service_locator.dart';
 import 'package:gym_management_app/core/observer/bloc_observer.dart';
 import 'package:gym_management_app/core/routes/routes.dart';
 import 'package:gym_management_app/core/service/local/local_cache_service.dart';
+import 'package:gym_management_app/core/service/network/fcm_service.dart';
 import 'package:gym_management_app/core/service/network/firebase_service.dart';
 import 'package:gym_management_app/core/theme/app_theme.dart';
 import 'package:gym_management_app/features/admin/cubit/alert/alert_cubit.dart';
@@ -17,6 +18,9 @@ void main() async {
   await FirebaseService.init();
   await LocalCacheService.init();
   serviceLocatorSetup();
+  try {
+    await getIt<FcmService>().initialize();
+  } catch (_) {}
   Bloc.observer = AppBlocObserver();
   SystemChrome.setSystemUIOverlayStyle(
     const SystemUiOverlayStyle(

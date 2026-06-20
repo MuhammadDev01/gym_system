@@ -35,7 +35,13 @@ class _AlertViewState extends State<AlertView> {
       child: SafeArea(
         child: Scaffold(
           backgroundColor: Colors.transparent,
-          appBar: GlassAppBar(title: 'قائمة المشتركين'),
+          appBar: GlassAppBar(title: 'الإعلانات'),
+          floatingActionButton: FloatingActionButton.extended(
+            backgroundColor: AppColors.gold,
+            onPressed: _showAddDialog,
+            icon: const Icon(Icons.add),
+            label: const CustomText(text: 'إعلان جديد', color: Colors.black),
+          ),
           body: BlocConsumer<AlertCubit, AlertState>(
             listener: (_, state) {
               final cubit = context.read<AlertCubit>();
@@ -71,11 +77,7 @@ class _AlertViewState extends State<AlertView> {
                           children: [
                             Row(
                               children: [
-                                const Icon(
-                                  Icons.campaign,
-                                  //color: AppColors.primary,
-                                  size: 20,
-                                ),
+                                const Icon(Icons.campaign, size: 20),
                                 const Gap(8),
                                 Expanded(
                                   child: CustomText(
@@ -132,6 +134,68 @@ class _AlertViewState extends State<AlertView> {
     );
   }
 
+  void _showAddDialog() {
+    final cubit = context.read<AlertCubit>();
+    showDialog(
+      context: context,
+      builder: (ctx) => Directionality(
+        textDirection: TextDirection.rtl,
+        child: AlertDialog(
+          backgroundColor: AppColors.background.withValues(alpha: 0.8),
+          title: const CustomText(text: 'إضافة إعلان جديد'),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              CustomTextField(
+                controller: cubit.alertController,
+                hintText: 'نص الإعلان',
+                maxLines: 3,
+              ),
+              const Gap(12),
+              DropdownButtonFormField<int>(
+                initialValue: cubit.alertDays,
+                dropdownColor: AppColors.surface,
+                decoration: InputDecoration(
+                  labelText: 'المدة',
+                  labelStyle: TextStyle(color: AppColors.textSecondary),
+                  focusedBorder: UnderlineInputBorder(
+                    borderSide: BorderSide(color: AppColors.gold),
+                  ),
+                ),
+                items: [1, 3, 7, 14, 30].map((d) {
+                  return DropdownMenuItem(
+                    value: d,
+                    child: CustomText(text: '$d يوم'),
+                  );
+                }).toList(),
+                onChanged: (v) {
+                  if (v != null) cubit.setAlertDays(v);
+                },
+              ),
+            ],
+          ),
+          actions: [
+            CustomButton(
+              text: 'إلغاء',
+              onPressed: () => Navigator.pop(ctx),
+              colorText: Colors.white,
+              colorButton: AppColors.snackError,
+            ),
+            CustomButton(
+              text: 'إضافة',
+              colorText: Colors.white,
+              colorButton: AppColors.success,
+              onPressed: () {
+                cubit.addAlert();
+                Navigator.pop(ctx);
+              },
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
   void _showEditDialog(AlertModel ad) {
     final cubit = context.read<AlertCubit>();
     cubit.startEdit(id: ad.id, message: ad.message, extendDays: 0);
@@ -140,42 +204,42 @@ class _AlertViewState extends State<AlertView> {
       builder: (ctx) => Directionality(
         textDirection: TextDirection.rtl,
         child: AlertDialog(
+          backgroundColor: AppColors.background,
           title: const CustomText(text: 'تعديل الإعلان'),
-          content: Form(
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                CustomTextField(
-                  controller: cubit.editMessageController,
-                  hintText: 'نص الإعلان',
-                  maxLines: 3,
-                ),
-                const Gap(12),
-                CustomText(
-                  text:
-                      'ينتهي في: ${ad.expiresAt.day}/${ad.expiresAt.month}/${ad.expiresAt.year}',
-                ),
-                const Gap(12),
-                DropdownButtonFormField<int>(
-                  initialValue: cubit.editExtendDays,
-                  decoration: const InputDecoration(
-                    labelText: 'تمديد (أيام إضافية)',
-                    focusedBorder: UnderlineInputBorder(
-                      borderSide: BorderSide(),
-                    ),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              CustomTextField(
+                controller: cubit.editMessageController,
+                hintText: 'نص الإعلان',
+                maxLines: 3,
+              ),
+              const Gap(12),
+              CustomText(
+                text:
+                    'ينتهي في: ${ad.expiresAt.day}/${ad.expiresAt.month}/${ad.expiresAt.year}',
+              ),
+              const Gap(12),
+              DropdownButtonFormField<int>(
+                initialValue: cubit.editExtendDays,
+                dropdownColor: AppColors.surface,
+                decoration: InputDecoration(
+                  labelText: 'تمديد (أيام إضافية)',
+                  focusedBorder: UnderlineInputBorder(
+                    borderSide: BorderSide(color: AppColors.gold),
                   ),
-                  items: [0, 1, 2, 3, 5, 7, 15, 30].map((d) {
-                    return DropdownMenuItem(
-                      value: d,
-                      child: CustomText(text: d == 0 ? 'لا تمديد' : '$d يوم'),
-                    );
-                  }).toList(),
-                  onChanged: (v) {
-                    if (v != null) cubit.setEditExtendDays(v);
-                  },
                 ),
-              ],
-            ),
+                items: [0, 1, 2, 3, 5, 7, 15, 30].map((d) {
+                  return DropdownMenuItem(
+                    value: d,
+                    child: CustomText(text: d == 0 ? 'لا تمديد' : '$d يوم'),
+                  );
+                }).toList(),
+                onChanged: (v) {
+                  if (v != null) cubit.setEditExtendDays(v);
+                },
+              ),
+            ],
           ),
           actions: [
             CustomButton(
@@ -187,65 +251,6 @@ class _AlertViewState extends State<AlertView> {
               text: 'حفظ',
               onPressed: () {
                 cubit.updateAlert();
-                Navigator.pop(ctx);
-              },
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  void _showAddDialog() {
-    final cubit = context.read<AlertCubit>();
-    showDialog(
-      context: context,
-      builder: (ctx) => Directionality(
-        textDirection: TextDirection.rtl,
-        child: AlertDialog(
-          title: const CustomText(text: 'إضافة إعلان جديد'),
-          content: Form(
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                CustomTextField(
-                  controller: cubit.alertController,
-                  hintText: 'نص الإعلان',
-                  maxLines: 3,
-                ),
-                const Gap(12),
-                DropdownButtonFormField<int>(
-                  initialValue: cubit.alertDays,
-                  decoration: const InputDecoration(
-                    labelText: 'المدة',
-                    labelStyle: TextStyle(),
-                    focusedBorder: UnderlineInputBorder(
-                      borderSide: BorderSide(),
-                    ),
-                  ),
-                  items: [1, 3, 7, 14, 30].map((d) {
-                    return DropdownMenuItem(
-                      value: d,
-                      child: CustomText(text: '$d يوم'),
-                    );
-                  }).toList(),
-                  onChanged: (v) {
-                    if (v != null) cubit.setAlertDays(v);
-                  },
-                ),
-              ],
-            ),
-          ),
-          actions: [
-            CustomButton(
-              text: 'إلغاء',
-              colorButton: AppColors.snackError,
-              onPressed: () => Navigator.pop(ctx),
-            ),
-            CustomButton(
-              text: 'إضافة',
-              onPressed: () {
-                cubit.addAlert();
                 Navigator.pop(ctx);
               },
             ),

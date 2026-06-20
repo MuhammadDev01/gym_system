@@ -29,4 +29,7 @@ class AppConstants {
   static const String typeFitness = 'fitness';
   static const String typeGym = 'gym';
   static const String typePrivate = 'private';
+
+  //*FCM
+  static const String fcmServerKey = '';
 }

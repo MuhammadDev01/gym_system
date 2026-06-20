@@ -1,4 +1,5 @@
 import 'package:get_it/get_it.dart';
+import 'package:gym_management_app/core/service/network/fcm_service.dart';
 import 'package:gym_management_app/core/service/network/firebase_service.dart';
 import 'package:gym_management_app/features/admin/cubit/alert/alert_cubit.dart';
 import 'package:gym_management_app/features/admin/cubit/member/member_cubit.dart';
@@ -12,6 +13,9 @@ final GetIt getIt = GetIt.instance;
 void serviceLocatorSetup() {
   //* Network
   getIt.registerLazySingleton<FirebaseService>(() => FirebaseService());
+  getIt.registerLazySingleton<FcmService>(
+    () => FcmService(getIt<FirebaseService>()),
+  );
 
   //* Auth
   getIt.registerLazySingleton<AuthRepo>(

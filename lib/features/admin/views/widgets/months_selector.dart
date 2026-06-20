@@ -24,37 +24,28 @@ class MonthsSelector extends StatelessWidget {
   Widget build(BuildContext context) {
     final cubit = context.read<MemberCubit>();
     return GlassWidget(
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-      child: Row(
-        children: [
-          const CustomText(text: 'مدة الاشتراك', fontSize: 14),
-          const Spacer(),
-          SizedBox(
-            width: 120,
-            child: DropdownButtonFormField<int>(
-              initialValue: 0,
-              dropdownColor: const Color(0xFF282A36),
-              style: const TextStyle(color: Colors.white),
-              decoration: const InputDecoration(
-                border: InputBorder.none,
-                contentPadding: EdgeInsets.symmetric(horizontal: 8),
-              ),
-              items: _months.map((e) {
-                return DropdownMenuItem<int>(
-                  value: _months.indexOf(e),
-                  child: CustomText(
-                    text: e,
-                    textDirection: TextDirection.rtl,
-                    fontSize: 18,
-                  ),
-                );
-              }).toList(),
-              onChanged: (v) {
-                if (v != null) cubit.setMonths(v);
-              },
+      padding: const EdgeInsets.symmetric(horizontal: 8),
+      child: DropdownButtonFormField<int>(
+        initialValue: 0,
+        dropdownColor: const Color(0xFF282A36),
+        style: const TextStyle(color: Colors.white),
+        decoration: const InputDecoration(
+          border: InputBorder.none,
+          contentPadding: EdgeInsets.symmetric(horizontal: 8),
+        ),
+        items: _months.map((e) {
+          return DropdownMenuItem<int>(
+            value: _months.indexOf(e),
+            child: CustomText(
+              text: e,
+              textDirection: TextDirection.rtl,
+              fontSize: 18,
             ),
-          ),
-        ],
+          );
+        }).toList(),
+        onChanged: (v) {
+          if (v != null) cubit.setMonths(v);
+        },
       ),
     );
   }

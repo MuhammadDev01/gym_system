@@ -44,13 +44,7 @@ final goRouter = GoRouter(
         child: AdminView(),
       ),
     ),
-    GoRoute(
-      path: AppRoutes.addMemberView,
-      builder: (_, _) => Directionality(
-        textDirection: TextDirection.rtl,
-        child: AddMemberView(),
-      ),
-    ),
+
     GoRoute(
       path: AppRoutes.memberListView,
       builder: (_, _) => Directionality(

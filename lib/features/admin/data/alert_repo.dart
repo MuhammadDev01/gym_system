@@ -1,5 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:get_it/get_it.dart';
 import 'package:gym_management_app/core/models/announcement_model.dart';
+import 'package:gym_management_app/core/service/network/fcm_service.dart';
 import 'package:gym_management_app/core/service/network/firebase_exceptions.dart';
 import 'package:gym_management_app/core/service/network/firebase_service.dart';
 
@@ -82,6 +84,12 @@ class AlertRepo {
           'expiresAt': Timestamp.fromDate(expiresAt),
         },
       );
+      try {
+        await GetIt.I<FcmService>().sendNotification(
+          title: 'إعلان جديد',
+          body: message.trim(),
+        );
+      } catch (_) {}
     } on FirebaseException catch (e) {
       throw Exception(FirebaseExceptionMessages.getFirestoreMessage(e));
     }

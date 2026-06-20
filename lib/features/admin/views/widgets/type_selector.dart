@@ -5,6 +5,7 @@ import 'package:gym_management_app/core/components/custom_text.dart';
 import 'package:gym_management_app/core/components/glass_widget.dart';
 import 'package:gym_management_app/core/theme/app_colors.dart';
 import 'package:gym_management_app/features/admin/cubit/member/member_cubit.dart';
+import 'package:gym_management_app/features/admin/cubit/member/member_state.dart';
 
 class TypeSelector extends StatelessWidget {
   const TypeSelector({super.key});
@@ -12,39 +13,43 @@ class TypeSelector extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final cubit = context.read<MemberCubit>();
-    return GlassWidget(
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          const CustomText(text: 'نوع الاشتراك', fontSize: 14),
-          const Gap(8),
-          Row(
+    return BlocBuilder<MemberCubit, MemberState>(
+      builder: (context, state) {
+        return GlassWidget(
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              _TypeChip(
-                label: 'فتنس',
-                value: 'fitness',
-                selected: cubit.selectedType == 'fitness',
-                onSelected: () => cubit.setType('fitness'),
-              ),
+              const CustomText(text: 'نوع الاشتراك', fontSize: 14),
               const Gap(8),
-              _TypeChip(
-                label: 'جيم',
-                value: 'gym',
-                selected: cubit.selectedType == 'gym',
-                onSelected: () => cubit.setType('gym'),
-              ),
-              const Gap(8),
-              _TypeChip(
-                label: 'برايفت',
-                value: 'private',
-                selected: cubit.selectedType == 'private',
-                onSelected: () => cubit.setType('private'),
+              Row(
+                children: [
+                  _TypeChip(
+                    label: 'فتنس',
+                    value: 'fitness',
+                    selected: cubit.selectedType == 'fitness',
+                    onSelected: () => cubit.setType('fitness'),
+                  ),
+                  const Gap(8),
+                  _TypeChip(
+                    label: 'جيم',
+                    value: 'gym',
+                    selected: cubit.selectedType == 'gym',
+                    onSelected: () => cubit.setType('gym'),
+                  ),
+                  const Gap(8),
+                  _TypeChip(
+                    label: 'برايفت',
+                    value: 'private',
+                    selected: cubit.selectedType == 'private',
+                    onSelected: () => cubit.setType('private'),
+                  ),
+                ],
               ),
             ],
           ),
-        ],
-      ),
+        );
+      },
     );
   }
 }

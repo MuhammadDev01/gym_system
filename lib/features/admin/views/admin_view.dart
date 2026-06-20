@@ -13,55 +13,53 @@ class AdminView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AppBackground(
-      child: SafeArea(
-        child: Scaffold(
-          backgroundColor: Colors.transparent,
-          body: SingleChildScrollView(
-            keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
-            child: Padding(
-              padding: const EdgeInsets.all(24),
-              child: Column(
-                children: [
-                  AdminViewHeader(),
-                  const Gap(24),
-                  AdminCard(
-                    icon: Icons.person_add_alt_1,
-                    title: 'المشتركين',
-                    onTap: () => context.push(AppRoutes.memberListView),
-                  ),
-                  const Gap(12),
-                  AdminCard(
-                    icon: Icons.campaign,
-                    title: 'الإعلانات',
-                    onTap: () => context.push(AppRoutes.alertsView),
-                  ),
-                  const Gap(12),
-                  AdminCard(
-                    icon: Icons.inventory_2,
-                    title: 'إضافة ادوات و مكملات',
-                    onTap: () {},
-                  ),
-                  const Gap(12),
-                  AdminCard(
-                    icon: Icons.timer_outlined,
-                    title: 'تمديد اشتراك',
-                    onTap: () {},
-                  ),
-                  const Gap(12),
-                  AdminCard(
-                    icon: Icons.people,
-                    title: 'قائمة الأعضاء',
-                    onTap: () => context.push(AppRoutes.memberListView),
-                  ),
-                  const Gap(12),
-                  AdminCard(
-                    icon: Icons.logout,
-                    title: 'تسجيل الخروج',
-                    onTap: () => context.go(AppRoutes.gerenalView),
-                    color: AppColors.snackError,
-                  ),
-                ],
-              ),
+      child: Scaffold(
+        backgroundColor: Colors.transparent,
+        body: SingleChildScrollView(
+          keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 48),
+            child: Column(
+              children: [
+                AdminViewHeader(),
+                const Gap(24),
+                AdminCard(
+                  icon: Icons.person_add_alt_1,
+                  title: 'المشتركين',
+                  onTap: () => context.push(AppRoutes.memberListView),
+                ),
+                const Gap(12),
+                AdminCard(
+                  icon: Icons.campaign,
+                  title: 'الإعلانات',
+                  onTap: () => context.push(AppRoutes.alertsView),
+                ),
+                const Gap(12),
+                AdminCard(
+                  icon: Icons.inventory_2,
+                  title: 'إضافة ادوات و مكملات',
+                  onTap: () {},
+                ),
+                const Gap(12),
+                AdminCard(
+                  icon: Icons.timer_outlined,
+                  title: 'تمديد اشتراك',
+                  onTap: () {},
+                ),
+                const Gap(12),
+                AdminCard(
+                  icon: Icons.people,
+                  title: 'قائمة الأعضاء',
+                  onTap: () => context.push(AppRoutes.memberListView),
+                ),
+                const Gap(12),
+                AdminCard(
+                  icon: Icons.logout,
+                  title: 'تسجيل الخروج',
+                  onTap: () => context.go(AppRoutes.gerenalView),
+                  color: AppColors.snackError,
+                ),
+              ],
             ),
           ),
         ),
