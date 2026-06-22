@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:gap/gap.dart';
 import 'package:gym_management_app/core/components/app_background.dart';
+import 'package:gym_management_app/core/components/custom_empty_list.dart';
 import 'package:gym_management_app/core/components/custom_loading_overlay.dart';
 import 'package:gym_management_app/core/components/glass_appbar.dart';
 import 'package:gym_management_app/core/theme/app_colors.dart';
 import 'package:gym_management_app/features/members/cubit/member_cubit.dart';
 import 'package:gym_management_app/features/members/cubit/member_state.dart';
+import 'package:gym_management_app/features/members/views/widgets/member_item_builder.dart';
 import 'package:gym_management_app/features/members/views/widgets/member_search_bar.dart';
-import 'package:gym_management_app/features/members/views/widgets/members_list.dart';
 
 class MembersListView extends StatefulWidget {
   const MembersListView({super.key});
@@ -20,7 +22,7 @@ class _MembersListViewState extends State<MembersListView> {
   @override
   void initState() {
     super.initState();
-    if (context.read<MemberCubit>().allMembers.isEmpty) {
+    if (context.read<MemberCubit>().members.isEmpty) {
       context.read<MemberCubit>().getAllMembers();
     }
   }
@@ -41,6 +43,7 @@ class _MembersListViewState extends State<MembersListView> {
         ),
         body: BlocBuilder<MemberCubit, MemberState>(
           builder: (_, state) {
+            final cubit = context.read<MemberCubit>();
             return Column(
               children: [
                 MemberSearchBar(),
@@ -49,9 +52,17 @@ class _MembersListViewState extends State<MembersListView> {
                     padding: const EdgeInsets.all(12),
                     child: CustomLoadingOverlay(
                       isLoading: state is MemberLoadingState,
-                      child: MemberList(
-                        member: context.watch<MemberCubit>().allMembers,
-                      ),
+                      child: cubit.members.isNotEmpty
+                          ? ListView.separated(
+                              itemCount: cubit.members.length,
+                              separatorBuilder: (_, _) => const Gap(16),
+                              itemBuilder: (_, index) {
+                                return MemberItemBuilder(
+                                  member: cubit.members[index],
+                                );
+                              },
+                            )
+                          : CustomEmptyList(text: 'أعضاء'),
                     ),
                   ),
                 ),

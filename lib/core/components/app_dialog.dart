@@ -4,6 +4,7 @@ import 'package:gym_management_app/core/components/custom_text.dart';
 import 'package:gym_management_app/core/extentions/navigator_extention.dart';
 import 'package:gym_management_app/core/theme/app_colors.dart';
 
+//Delete
 void showDeleteConfirm(
   BuildContext context, {
   required String title,
@@ -29,4 +30,57 @@ void showDeleteConfirm(
       ),
     ),
   );
+}
+
+//Edit
+void showEditDialog(
+  BuildContext context, {
+  required VoidCallback onConfirmDelete,
+  required VoidCallback onConfirmUpdate,
+  required String deleteTitle,
+  required String editTitle,
+  required Widget content,
+}) {
+  showDialog(
+    context: context,
+    builder: (_) => Directionality(
+      textDirection: TextDirection.rtl,
+
+      child: AlertDialog(
+        actions: _editMemberActions(
+          onconfirmDelete: onConfirmDelete,
+          onconfirmUpdate: onConfirmUpdate,
+          title: deleteTitle,
+          context,
+        ),
+        backgroundColor: AppColors.background.withValues(alpha: 0.8),
+        title: CustomText(text: editTitle),
+        content: content,
+      ),
+    ),
+  );
+}
+
+List<Widget> _editMemberActions(
+  BuildContext context, {
+  required VoidCallback onconfirmDelete,
+  required VoidCallback onconfirmUpdate,
+  required String title,
+}) {
+  return [
+    CustomButton(
+      text: 'حذف',
+      colorButton: AppColors.snackError,
+      colorText: Colors.white,
+      onPressed: () =>
+          showDeleteConfirm(onConfirm: onconfirmDelete, context, title: title),
+    ),
+    CustomButton(text: 'إلغاء', onPressed: () => context.pop()),
+    CustomButton(
+      text: 'حفظ',
+      colorText: Colors.white,
+      colorButton: AppColors.success,
+      onPressed: onconfirmUpdate,
+    ),
+  ];
 }

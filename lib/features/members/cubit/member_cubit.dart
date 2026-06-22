@@ -38,6 +38,7 @@ class MemberCubit extends Cubit<MemberState> {
       selectedMonths = 1;
       selectedType = 'gym';
       emit(MemberAddedState());
+      await getAllMembers();
     } catch (e) {
       final msg = e.toString();
       emit(
@@ -48,13 +49,13 @@ class MemberCubit extends Cubit<MemberState> {
     }
   }
 
-  List<MemberModel> allMembers = [];
+  List<MemberModel> members = [];
 
   Future<void> getAllMembers() async {
     emit(MemberLoadingState());
     try {
-      allMembers = await _memberRepo.getAllMembers();
-      emit(MemberLoadedState(members: allMembers));
+      members = await _memberRepo.getAllMembers();
+      emit(MemberLoadedState(members: members));
     } catch (e) {
       final msg = e.toString();
       emit(
@@ -67,10 +68,10 @@ class MemberCubit extends Cubit<MemberState> {
 
   void searchMembers(String query) {
     if (query.isEmpty) {
-      emit(MemberLoadedState(members: allMembers));
+      emit(MemberLoadedState(members: members));
       return;
     }
-    final filtered = allMembers.where((m) {
+    final filtered = members.where((m) {
       return m.name.contains(query) || m.phone.contains(query);
     }).toList();
     emit(MemberLoadedState(members: filtered));
@@ -95,17 +96,6 @@ class MemberCubit extends Cubit<MemberState> {
     editStartDate = member.subscriptionStart;
     editEndDate = member.subscriptionEnd;
     emit(MemberEditFormState());
-  }
-
-  void cancelEdit() {
-    editTarget = null;
-    editNameController.clear();
-    editPhoneController.clear();
-    editMonths = 1;
-    editType = 'gym';
-    editStartDate = null;
-    editEndDate = null;
-    emit(MemberLoadedState(members: allMembers));
   }
 
   void setEditStartDate(DateTime date) {
@@ -140,7 +130,6 @@ class MemberCubit extends Cubit<MemberState> {
         subscriptionStart: editStartDate,
         subscriptionEnd: editEndDate,
       );
-      cancelEdit();
       await getAllMembers();
       emit(MemberUpdatedState());
     } catch (e) {
@@ -153,10 +142,10 @@ class MemberCubit extends Cubit<MemberState> {
     }
   }
 
-  Future<void> deleteMember(String docId) async {
+  Future<void> deleteMember() async {
     emit(MemberLoadingState());
     try {
-      await _memberRepo.deleteMember(docId);
+      await _memberRepo.deleteMember(editTarget!.id);
       emit(MemberDeletedState());
       await getAllMembers();
     } catch (e) {

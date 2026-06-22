@@ -44,9 +44,11 @@ class AlertAdminCubit extends Cubit<AlertAdminState> {
     emit(AlertFormChangedState());
   }
 
-  String editAlertId = '';
+  String alertId = '';
   final editMessageController = TextEditingController();
   int editExtendDays = 0;
+  DateTime? alertStartDate;
+  DateTime? alertEndDate;
 
   List<AlertModel> alerts = [];
   Future<void> getAlerts() async {
@@ -64,14 +66,11 @@ class AlertAdminCubit extends Cubit<AlertAdminState> {
     }
   }
 
-  void startEdit({
-    required String id,
-    required String message,
-    required int extendDays,
-  }) {
-    editAlertId = id;
-    editMessageController.text = message;
-    editExtendDays = extendDays;
+  void startEdit(AlertModel alert) {
+    alertId = alert.id;
+    editMessageController.text = alert.message;
+    alertStartDate = alert.createdAt;
+    alertEndDate = alert.expiresAt;
   }
 
   void setEditExtendDays(int days) {
@@ -79,10 +78,10 @@ class AlertAdminCubit extends Cubit<AlertAdminState> {
     emit(AlertFormChangedState());
   }
 
-  Future<void> deleteAlert(String docId) async {
+  Future<void> deleteAlert() async {
     emit(AlertLoadingState());
     try {
-      await _alertRepo.deleteAlert(docId);
+      await _alertRepo.deleteAlert(alertId);
       emit(AlertDeletedState());
       await getAlerts();
     } catch (e) {
@@ -99,11 +98,11 @@ class AlertAdminCubit extends Cubit<AlertAdminState> {
     emit(AlertLoadingState());
     try {
       await _alertRepo.updateAlert(
-        docId: editAlertId,
+        docId: alertId,
         message: editMessageController.text.trim(),
         extendDays: editExtendDays,
       );
-      editAlertId = '';
+      alertId = '';
       editMessageController.clear();
       editExtendDays = 0;
       emit(AlertUpdatedState());
