@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:gym_management_app/core/components/app_background.dart';
@@ -24,40 +25,30 @@ class AdminView extends StatelessWidget {
                 AdminViewHeader(),
                 const Gap(24),
                 AdminCard(
-                  icon: Icons.person_add_alt_1,
-                  title: 'المشتركين',
-                  onTap: () => context.push(AppRoutes.memberListView),
+                  icon: FontAwesomeIcons.usersGear,
+                  title: 'إدارة المشتركين',
+                  onTap: () => context.push(AppRoutes.membersManagementView),
                 ),
                 const Gap(12),
                 AdminCard(
-                  icon: Icons.campaign,
+                  icon: FontAwesomeIcons.bullhorn,
                   title: 'الإعلانات',
-                  onTap: () => context.push(AppRoutes.alertsView),
+                  onTap: () => context.push(AppRoutes.alertsManagementView),
                 ),
                 const Gap(12),
                 AdminCard(
-                  icon: Icons.inventory_2,
+                  icon: FontAwesomeIcons.shop,
                   title: 'إضافة ادوات و مكملات',
                   onTap: () {},
                 ),
+
                 const Gap(12),
                 AdminCard(
-                  icon: Icons.timer_outlined,
-                  title: 'تمديد اشتراك',
-                  onTap: () {},
-                ),
-                const Gap(12),
-                AdminCard(
-                  icon: Icons.people,
-                  title: 'قائمة الأعضاء',
-                  onTap: () => context.push(AppRoutes.memberListView),
-                ),
-                const Gap(12),
-                AdminCard(
-                  icon: Icons.logout,
+                  icon: FontAwesomeIcons.arrowRightFromBracket,
                   title: 'تسجيل الخروج',
                   onTap: () => context.go(AppRoutes.gerenalView),
                   color: AppColors.snackError,
+                  iconColor: AppColors.snackError,
                 ),
               ],
             ),

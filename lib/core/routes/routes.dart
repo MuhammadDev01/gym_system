@@ -2,9 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:gym_management_app/core/routes/app_routes.dart';
 import 'package:gym_management_app/features/admin/views/admin_view.dart';
-import 'package:gym_management_app/features/alerts/views/admin/alerts_view.dart';
-import 'package:gym_management_app/features/members/views/admin/members_list_view.dart';
-import 'package:gym_management_app/features/members/views/admin/scan_member_view.dart';
+import 'package:gym_management_app/features/alerts/views/add_alert_view.dart';
+import 'package:gym_management_app/features/alerts/views/alerts_management_view.dart';
+import 'package:gym_management_app/features/alerts/views/alerts_view.dart';
+import 'package:gym_management_app/features/alerts/views/edit_alert_view.dart';
+import 'package:gym_management_app/features/members/views/add_member_view.dart';
+import 'package:gym_management_app/features/members/views/edit_member_view.dart';
+import 'package:gym_management_app/features/members/views/members_list_view.dart';
+import 'package:gym_management_app/features/members/views/members_management_view.dart';
+import 'package:gym_management_app/features/members/views/scan_member_view.dart';
 import 'package:gym_management_app/features/auth/views/auth_view.dart';
 import 'package:gym_management_app/features/user/general/views/gerenal_view.dart';
 import 'package:gym_management_app/features/user/general/home/views/home_view.dart';
@@ -45,17 +51,66 @@ final goRouter = GoRouter(
     ),
 
     GoRoute(
-      path: AppRoutes.memberListView,
+      path: AppRoutes.membersManagementView,
       builder: (_, _) => Directionality(
         textDirection: TextDirection.rtl,
-        child: MemberListView(),
+        child: MembersManagementView(),
+      ),
+    ),
+    GoRoute(
+      path: AppRoutes.addMemberView,
+      builder: (_, _) => Directionality(
+        textDirection: TextDirection.rtl,
+        child: AddMemberView(),
+      ),
+    ),
+    GoRoute(
+      path: AppRoutes.editMemberView,
+      builder: (_, _) => Directionality(
+        textDirection: TextDirection.rtl,
+        child: EditMemberView(),
+      ),
+    ),
+    GoRoute(
+      path: AppRoutes.membersListView,
+      builder: (_, _) => Directionality(
+        textDirection: TextDirection.rtl,
+        child: MembersListView(),
+      ),
+    ),
+    GoRoute(
+      path: AppRoutes.alertsManagementView,
+      builder: (_, _) => const Directionality(
+        textDirection: TextDirection.rtl,
+        child: AlertsManagementView(),
+      ),
+    ),
+    GoRoute(
+      path: AppRoutes.addAlertView,
+      builder: (_, _) => const Directionality(
+        textDirection: TextDirection.rtl,
+        child: AddAlertView(),
+      ),
+    ),
+    GoRoute(
+      path: AppRoutes.editAlertView,
+      builder: (_, _) => const Directionality(
+        textDirection: TextDirection.rtl,
+        child: EditAlertView(),
+      ),
+    ),
+    GoRoute(
+      path: AppRoutes.alertsListView,
+      builder: (_, _) => const Directionality(
+        textDirection: TextDirection.rtl,
+        child: AlertsListView(),
       ),
     ),
     GoRoute(
       path: AppRoutes.alertsView,
       builder: (_, _) => const Directionality(
         textDirection: TextDirection.rtl,
-        child: AlertView(),
+        child: AlertsManagementView(),
       ),
     ),
     GoRoute(

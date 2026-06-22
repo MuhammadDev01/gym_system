@@ -9,36 +9,27 @@ import 'package:gym_management_app/core/components/custom_text.dart';
 import 'package:gym_management_app/core/components/custom_text_field.dart';
 import 'package:gym_management_app/core/components/glass_appbar.dart';
 import 'package:gym_management_app/core/helper/app_snackbar.dart';
-import 'package:gym_management_app/core/helper/validators.dart';
 import 'package:gym_management_app/core/models/member_model.dart';
-import 'package:gym_management_app/core/routes/app_routes.dart';
 import 'package:gym_management_app/core/theme/app_colors.dart';
 import 'package:gym_management_app/features/members/cubit/member_cubit.dart';
 import 'package:gym_management_app/features/members/cubit/member_state.dart';
-import 'package:gym_management_app/features/members/views/admin/widgets/members_list.dart';
-import 'package:gym_management_app/features/members/views/admin/widgets/months_selector.dart';
-import 'package:gym_management_app/features/members/views/admin/widgets/type_selector.dart';
+import 'package:gym_management_app/features/members/views/widgets/member_search_bar.dart';
+import 'package:gym_management_app/features/members/views/widgets/member_edit_list.dart';
 
-class MemberListView extends StatefulWidget {
-  const MemberListView({super.key});
+class EditMemberView extends StatefulWidget {
+  const EditMemberView({super.key});
 
   @override
-  State<MemberListView> createState() => _MemberListViewState();
+  State<EditMemberView> createState() => _EditMemberViewState();
 }
 
-class _MemberListViewState extends State<MemberListView> {
-  final _searchController = TextEditingController();
-
+class _EditMemberViewState extends State<EditMemberView> {
   @override
   void initState() {
     super.initState();
-    context.read<MemberCubit>().getAllMembers();
-  }
-
-  @override
-  void dispose() {
-    _searchController.dispose();
-    super.dispose();
+    if (context.read<MemberCubit>().allMembers.isEmpty) {
+      context.read<MemberCubit>().getAllMembers();
+    }
   }
 
   @override
@@ -46,69 +37,34 @@ class _MemberListViewState extends State<MemberListView> {
     return AppBackground(
       child: Scaffold(
         backgroundColor: Colors.transparent,
-        appBar: GlassAppBar(
-          title: 'المشتركين',
-          actions: [
-            IconButton(
-              icon: const Icon(Icons.qr_code_scanner, color: Colors.white70),
-              onPressed: () => context.push(AppRoutes.scanMemberView),
-            ),
-          ],
-        ),
-        floatingActionButton: FloatingActionButton.extended(
-          backgroundColor: AppColors.gold,
-          onPressed: _showAddDialog,
-          icon: const Icon(Icons.person_add),
-          label: const CustomText(text: 'مشترك جديد', color: Colors.black),
-        ),
+        appBar: GlassAppBar(title: 'تعديل بيانات مشترك'),
         body: BlocConsumer<MemberCubit, MemberState>(
-          listener: (_, state) async {
-            if (state is MemberAddedState) {
-              appSnackbar(
-                context,
-                'تم إضافة المشترك بنجاح',
-                color: AppColors.success,
-              );
-              context.pop();
-              await context.read<MemberCubit>().getAllMembers();
-            } else if (state is MemberErrorState) {
-              appSnackbar(context, state.message);
-            } else if (state is MemberUpdatedState) {
+          listener: (_, state) {
+            if (state is MemberUpdatedState) {
               appSnackbar(
                 context,
                 'تم التحديث بنجاح',
                 color: AppColors.success,
               );
+            } else if (state is MemberDeletedState) {
+              appSnackbar(context, 'تم الحذف بنجاح', color: AppColors.success);
+            } else if (state is MemberErrorState) {
+              appSnackbar(context, state.message);
             }
           },
           builder: (_, state) {
             return Column(
               children: [
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(16, 12, 16, 4),
-                  child: CustomTextField(
-                    controller: _searchController,
-                    hintText: 'بحث بالاسم أو رقم الهاتف...',
-                    prefixIcon: Icons.search,
-                    onChanged: (v) {
-                      context.read<MemberCubit>().searchMembers(v);
-                    },
-                  ),
-                ),
+                MemberSearchBar(),
                 Expanded(
                   child: Padding(
                     padding: const EdgeInsets.all(12),
                     child: CustomLoadingOverlay(
                       isLoading: state is MemberLoadingState,
-                      child: state is MemberLoadedState
-                          ? MemberList(
-                              member: state.members,
-                              onEdit: _showEditDialog,
-                              onToggleAttendance: (m) {
-                                context.read<MemberCubit>().toggleAttendance(m);
-                              },
-                            )
-                          : const SizedBox.shrink(),
+                      child: MemberEditList(
+                        member: context.watch<MemberCubit>().allMembers,
+                        onEdit: _showEditDialog,
+                      ),
                     ),
                   ),
                 ),
@@ -127,8 +83,10 @@ class _MemberListViewState extends State<MemberListView> {
       context: context,
       builder: (ctx) => Directionality(
         textDirection: TextDirection.rtl,
+
         child: AlertDialog(
-          backgroundColor: AppColors.background,
+          actions: _editMemberActions(ctx, member, cubit),
+          backgroundColor: AppColors.background.withValues(alpha: 0.8),
           title: const CustomText(text: 'تعديل المشترك'),
           content: Column(
             mainAxisSize: MainAxisSize.min,
@@ -144,6 +102,72 @@ class _MemberListViewState extends State<MemberListView> {
                 labelText: 'رقم الهاتف',
                 prefixIcon: Icons.phone,
                 textInputType: TextInputType.phone,
+              ),
+              const Gap(16),
+              BlocBuilder<MemberCubit, MemberState>(
+                builder: (_, _) {
+                  return Row(
+                    children: [
+                      Expanded(
+                        child: InkWell(
+                          onTap: () async {
+                            final picked = await showDatePicker(
+                              context: context,
+                              initialDate:
+                                  cubit.editStartDate ?? DateTime.now(),
+                              firstDate: DateTime(2020),
+                              lastDate: DateTime(2100),
+                            );
+                            if (picked != null) cubit.setEditStartDate(picked);
+                          },
+                          child: InputDecorator(
+                            decoration: InputDecoration(
+                              labelText: 'بداية الاشتراك',
+                              labelStyle: TextStyle(color: AppColors.gold),
+                              isDense: true,
+                              border: OutlineInputBorder(),
+                            ),
+                            child: CustomText(
+                              text: cubit.editStartDate != null
+                                  ? '${cubit.editStartDate!.day}/${cubit.editStartDate!.month}/${cubit.editStartDate!.year}'
+                                  : 'اختر تاريخ',
+                              fontSize: 13,
+                            ),
+                          ),
+                        ),
+                      ),
+                      const Gap(8),
+                      Expanded(
+                        child: InkWell(
+                          onTap: () async {
+                            final picked = await showDatePicker(
+                              context: context,
+                              initialDate: cubit.editEndDate ?? DateTime.now(),
+                              firstDate: DateTime(2020),
+                              lastDate: DateTime(2100),
+                            );
+                            if (picked != null) cubit.setEditEndDate(picked);
+                          },
+                          child: InputDecorator(
+                            decoration: InputDecoration(
+                              labelText: 'نهاية الاشتراك',
+                              isDense: true,
+                              labelStyle: TextStyle(color: AppColors.gold),
+
+                              border: OutlineInputBorder(),
+                            ),
+                            child: CustomText(
+                              text: cubit.editEndDate != null
+                                  ? '${cubit.editEndDate!.day}/${cubit.editEndDate!.month}/${cubit.editEndDate!.year}'
+                                  : 'اختر تاريخ',
+                              fontSize: 13,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  );
+                },
               ),
               const Gap(16),
               Row(
@@ -173,6 +197,7 @@ class _MemberListViewState extends State<MemberListView> {
                   ),
                 ],
               ),
+
               const Gap(12),
               Row(
                 children: [
@@ -211,86 +236,63 @@ class _MemberListViewState extends State<MemberListView> {
               ),
             ],
           ),
-          actions: [
-            CustomButton(
-              text: 'إلغاء',
-              colorText: AppColors.snackError,
-              onPressed: () {
-                cubit.cancelEdit();
-                Navigator.pop(ctx);
-              },
-            ),
-            CustomButton(
-              text: 'حفظ',
-              onPressed: () {
-                cubit.updateMember();
-                Navigator.pop(ctx);
-              },
-            ),
-          ],
         ),
       ),
     );
   }
 
-  void _showAddDialog() {
-    final cubit = context.read<MemberCubit>();
-    final formKey = GlobalKey<FormState>();
+  List<Widget> _editMemberActions(
+    BuildContext ctx,
+    MemberModel member,
+    MemberCubit cubit,
+  ) {
+    return [
+      CustomButton(
+        text: 'حذف',
+        colorButton: AppColors.snackError,
+        colorText: Colors.white,
+        onPressed: () {
+          Navigator.pop(ctx);
+          _showDeleteConfirm(member);
+        },
+      ),
+      CustomButton(
+        text: 'إلغاء',
+        onPressed: () {
+          cubit.cancelEdit();
+          Navigator.pop(ctx);
+        },
+      ),
+      CustomButton(
+        text: 'حفظ',
+        colorText: Colors.white,
+        colorButton: AppColors.success,
+        onPressed: () {
+          cubit.updateMember();
+          Navigator.pop(ctx);
+        },
+      ),
+    ];
+  }
+
+  void _showDeleteConfirm(MemberModel member) {
     showDialog(
       context: context,
       builder: (ctx) => Directionality(
         textDirection: TextDirection.rtl,
         child: AlertDialog(
-          backgroundColor: AppColors.background.withValues(alpha: 0.8),
-          title: const CustomText(text: 'إضافة مشترك جديد'),
-          content: Form(
-            key: formKey,
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                CustomTextField(
-                  controller: cubit.nameController,
-                  labelText: 'اسم المشترك ثلاثي',
-                  prefixIcon: Icons.person,
-                  validator: (v) => Validators.requiredField(v),
-                ),
-                const Gap(12),
-                CustomTextField(
-                  controller: cubit.phoneController,
-                  labelText: 'رقم الهاتف',
-                  prefixIcon: Icons.phone,
-                  textInputType: TextInputType.phone,
-                  validator: (v) => Validators.requiredField(v),
-                ),
-                const Gap(16),
-                Row(
-                  children: [
-                    CustomText(text: 'المدة:', fontSize: 13),
-                    const Gap(8),
-                    Expanded(child: MonthsSelector()),
-                  ],
-                ),
-                const Gap(12),
-
-                TypeSelector(),
-              ],
-            ),
-          ),
+          backgroundColor: AppColors.background.withValues(alpha: 0.6),
+          title: const CustomText(text: 'تأكيد الحذف'),
+          content: CustomText(text: 'هل أنت متأكد من حذف ${member.name}?'),
           actions: [
+            CustomButton(text: 'إلغاء', onPressed: () => context.pop()),
             CustomButton(
-              text: 'إلغاء',
+              text: 'حذف',
               colorButton: AppColors.snackError,
               colorText: Colors.white,
-              onPressed: () => Navigator.pop(ctx),
-            ),
-            CustomButton(
-              text: 'إضافة',
-              colorText: Colors.white,
-              colorButton: AppColors.success,
               onPressed: () async {
-                if (formKey.currentState!.validate()) {
-                  await cubit.addMember();
-                }
+                context.pop();
+                await context.read<MemberCubit>().deleteMember(member.id);
               },
             ),
           ],

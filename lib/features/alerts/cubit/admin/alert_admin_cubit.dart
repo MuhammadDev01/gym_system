@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:gym_management_app/features/alerts/cubit/alert_state.dart';
+import 'package:gym_management_app/core/models/announcement_model.dart';
+import 'package:gym_management_app/features/alerts/cubit/admin/alert_admin_state.dart';
 import 'package:gym_management_app/features/alerts/data/alert_repo.dart';
 
-class AlertCubit extends Cubit<AlertState> {
-  AlertCubit(this._alertRepo) : super(AlertInitial());
+class AlertAdminCubit extends Cubit<AlertAdminState> {
+  AlertAdminCubit(this._alertRepo) : super(AlertInitial());
   final AlertRepo _alertRepo;
 
   @override
@@ -24,6 +25,7 @@ class AlertCubit extends Cubit<AlertState> {
       alertController.clear();
       alertDays = 7;
       emit(AlertAddedState());
+      await getAlerts();
     } catch (e) {
       final msg = e.toString();
       emit(
@@ -46,11 +48,12 @@ class AlertCubit extends Cubit<AlertState> {
   final editMessageController = TextEditingController();
   int editExtendDays = 0;
 
+  List<AlertModel> alerts = [];
   Future<void> getAlerts() async {
     emit(AlertLoadingState());
     try {
-      final list = await _alertRepo.getAllAlerts();
-      emit(AlertSuccessState(alerts: list));
+      alerts = await _alertRepo.getAllAlerts();
+      emit(AlertSuccessState());
     } catch (e) {
       final msg = e.toString();
       emit(
@@ -76,6 +79,22 @@ class AlertCubit extends Cubit<AlertState> {
     emit(AlertFormChangedState());
   }
 
+  Future<void> deleteAlert(String docId) async {
+    emit(AlertLoadingState());
+    try {
+      await _alertRepo.deleteAlert(docId);
+      emit(AlertDeletedState());
+      await getAlerts();
+    } catch (e) {
+      final msg = e.toString();
+      emit(
+        AlertErrorState(
+          msg.startsWith('Exception: ') ? msg.substring(11) : msg,
+        ),
+      );
+    }
+  }
+
   Future<void> updateAlert() async {
     emit(AlertLoadingState());
     try {
@@ -88,6 +107,7 @@ class AlertCubit extends Cubit<AlertState> {
       editMessageController.clear();
       editExtendDays = 0;
       emit(AlertUpdatedState());
+      await getAlerts();
     } catch (e) {
       final msg = e.toString();
       emit(

@@ -8,7 +8,8 @@ import 'package:gym_management_app/core/service/local/local_cache_service.dart';
 import 'package:gym_management_app/core/service/network/fcm_service.dart';
 import 'package:gym_management_app/core/service/network/firebase_service.dart';
 import 'package:gym_management_app/core/theme/app_theme.dart';
-import 'package:gym_management_app/features/alerts/cubit/alert_cubit.dart';
+import 'package:gym_management_app/features/alerts/cubit/admin/alert_admin_cubit.dart';
+import 'package:gym_management_app/features/alerts/cubit/alert_user_cubit.dart';
 import 'package:gym_management_app/features/members/cubit/member_cubit.dart';
 import 'package:gym_management_app/features/user/general/cubit/gerenal_cubit.dart';
 import 'package:gym_management_app/features/auth/cubit/auth_cubit.dart';
@@ -41,7 +42,8 @@ class GymSystemApp extends StatelessWidget {
         BlocProvider(create: (context) => getIt<AuthCubit>()),
         BlocProvider(create: (context) => GerenalCubit()),
         BlocProvider(create: (context) => getIt<MemberCubit>()),
-        BlocProvider(create: (context) => getIt<AlertCubit>()),
+        BlocProvider(create: (context) => getIt<AlertUserCubit>()),
+        BlocProvider(create: (context) => getIt<AlertAdminCubit>()),
       ],
       child: MaterialApp.router(
         debugShowCheckedModeBanner: false,

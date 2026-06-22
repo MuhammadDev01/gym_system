@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:gym_management_app/core/components/custom_text.dart';
 import 'package:gym_management_app/core/components/glass_widget.dart';
+import 'package:gym_management_app/core/theme/app_colors.dart';
 
 class AdminCard extends StatelessWidget {
   const AdminCard({
@@ -9,11 +11,13 @@ class AdminCard extends StatelessWidget {
     required this.title,
     required this.onTap,
     this.color,
+    this.iconColor,
   });
-  final IconData icon;
+  final FaIconData icon;
   final String title;
   final VoidCallback onTap;
   final Color? color;
+  final Color? iconColor;
 
   @override
   Widget build(BuildContext context) {
@@ -23,7 +27,7 @@ class AdminCard extends StatelessWidget {
         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
         child: Row(
           children: [
-            Icon(icon, color: color ?? const Color(0xFFFDCD03), size: 28),
+            FaIcon(icon, color: iconColor ?? AppColors.gold),
             const SizedBox(width: 16),
             CustomText(text: title, fontSize: 17, color: color),
             const Spacer(),

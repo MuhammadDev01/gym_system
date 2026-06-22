@@ -26,25 +26,25 @@ class MonthsSelector extends StatelessWidget {
     return GlassWidget(
       padding: const EdgeInsets.symmetric(horizontal: 8),
       child: DropdownButtonFormField<int>(
-        initialValue: 0,
+        initialValue: cubit.selectedMonths - 1,
         dropdownColor: const Color(0xFF282A36),
         style: const TextStyle(color: Colors.white),
         decoration: const InputDecoration(
           border: InputBorder.none,
           contentPadding: EdgeInsets.symmetric(horizontal: 8),
         ),
-        items: _months.map((e) {
+        items: _months.asMap().entries.map((e) {
           return DropdownMenuItem<int>(
-            value: _months.indexOf(e),
+            value: e.key,
             child: CustomText(
-              text: e,
+              text: e.value,
               textDirection: TextDirection.rtl,
               fontSize: 18,
             ),
           );
         }).toList(),
         onChanged: (v) {
-          if (v != null) cubit.setMonths(v);
+          if (v != null) cubit.setMonths(v + 1);
         },
       ),
     );

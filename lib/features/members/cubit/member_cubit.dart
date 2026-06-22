@@ -23,6 +23,7 @@ class MemberCubit extends Cubit<MemberState> {
     emit(MemberSelectedState());
   }
 
+  //* ADD
   Future<void> addMember() async {
     emit(MemberLoadingState());
     try {
@@ -47,13 +48,13 @@ class MemberCubit extends Cubit<MemberState> {
     }
   }
 
-  List<MemberModel> _allMembers = [];
+  List<MemberModel> allMembers = [];
 
   Future<void> getAllMembers() async {
     emit(MemberLoadingState());
     try {
-      _allMembers = await _memberRepo.getAllMembers();
-      emit(MemberLoadedState(members: _allMembers));
+      allMembers = await _memberRepo.getAllMembers();
+      emit(MemberLoadedState(members: allMembers));
     } catch (e) {
       final msg = e.toString();
       emit(
@@ -66,10 +67,10 @@ class MemberCubit extends Cubit<MemberState> {
 
   void searchMembers(String query) {
     if (query.isEmpty) {
-      emit(MemberLoadedState(members: _allMembers));
+      emit(MemberLoadedState(members: allMembers));
       return;
     }
-    final filtered = _allMembers.where((m) {
+    final filtered = allMembers.where((m) {
       return m.name.contains(query) || m.phone.contains(query);
     }).toList();
     emit(MemberLoadedState(members: filtered));
@@ -80,13 +81,19 @@ class MemberCubit extends Cubit<MemberState> {
   final editPhoneController = TextEditingController();
   int editMonths = 1;
   String editType = 'gym';
+  DateTime? editStartDate;
+  DateTime? editEndDate;
 
   void startEdit(MemberModel member) {
     editTarget = member;
     editNameController.text = member.name;
     editPhoneController.text = member.phone;
-    editMonths = member.subscriptionMonths;
-    editType = member.subscriptionType;
+    editMonths = member.subscriptionMonths < 1 ? 1 : member.subscriptionMonths;
+    editType = ['fitness', 'gym', 'private'].contains(member.subscriptionType)
+        ? member.subscriptionType
+        : 'gym';
+    editStartDate = member.subscriptionStart;
+    editEndDate = member.subscriptionEnd;
     emit(MemberEditFormState());
   }
 
@@ -96,7 +103,19 @@ class MemberCubit extends Cubit<MemberState> {
     editPhoneController.clear();
     editMonths = 1;
     editType = 'gym';
-    emit(MemberLoadedState(members: _allMembers));
+    editStartDate = null;
+    editEndDate = null;
+    emit(MemberLoadedState(members: allMembers));
+  }
+
+  void setEditStartDate(DateTime date) {
+    editStartDate = date;
+    emit(MemberEditFormState());
+  }
+
+  void setEditEndDate(DateTime date) {
+    editEndDate = date;
+    emit(MemberEditFormState());
   }
 
   void setEditMonths(int months) {
@@ -118,10 +137,28 @@ class MemberCubit extends Cubit<MemberState> {
         phone: editPhoneController.text.trim(),
         subscriptionMonths: editMonths,
         subscriptionType: editType,
+        subscriptionStart: editStartDate,
+        subscriptionEnd: editEndDate,
       );
       cancelEdit();
       await getAllMembers();
       emit(MemberUpdatedState());
+    } catch (e) {
+      final msg = e.toString();
+      emit(
+        MemberErrorState(
+          msg.startsWith('Exception: ') ? msg.substring(11) : msg,
+        ),
+      );
+    }
+  }
+
+  Future<void> deleteMember(String docId) async {
+    emit(MemberLoadingState());
+    try {
+      await _memberRepo.deleteMember(docId);
+      emit(MemberDeletedState());
+      await getAllMembers();
     } catch (e) {
       final msg = e.toString();
       emit(

@@ -65,6 +65,17 @@ class AlertRepo {
     });
   }
 
+  Future<void> deleteAlert(String docId) async {
+    try {
+      await _firebaseService.deleteDocument(
+        collection: 'Alerts',
+        docId: docId,
+      );
+    } on FirebaseException catch (e) {
+      throw Exception(FirebaseExceptionMessages.getFirestoreMessage(e));
+    }
+  }
+
   Future<void> addAlert({
     required String message,
     required int durationDays,

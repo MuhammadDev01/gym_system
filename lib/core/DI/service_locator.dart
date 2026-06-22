@@ -1,7 +1,8 @@
 import 'package:get_it/get_it.dart';
 import 'package:gym_management_app/core/service/network/fcm_service.dart';
 import 'package:gym_management_app/core/service/network/firebase_service.dart';
-import 'package:gym_management_app/features/alerts/cubit/alert_cubit.dart';
+import 'package:gym_management_app/features/alerts/cubit/admin/alert_admin_cubit.dart';
+import 'package:gym_management_app/features/alerts/cubit/alert_user_cubit.dart';
 import 'package:gym_management_app/features/alerts/data/alert_repo.dart';
 import 'package:gym_management_app/features/market/cubit/admin/market_admin_cubit.dart';
 import 'package:gym_management_app/features/market/data/market_repo.dart';
@@ -30,7 +31,12 @@ void serviceLocatorSetup() {
   getIt.registerLazySingleton<AlertRepo>(
     () => AlertRepo(getIt<FirebaseService>()),
   );
-  getIt.registerFactory<AlertCubit>(() => AlertCubit(getIt<AlertRepo>()));
+  getIt.registerFactory<AlertUserCubit>(
+    () => AlertUserCubit(getIt<AlertRepo>()),
+  );
+  getIt.registerFactory<AlertAdminCubit>(
+    () => AlertAdminCubit(getIt<AlertRepo>()),
+  );
 
   // member
   getIt.registerLazySingleton<MemberRepo>(
@@ -42,5 +48,7 @@ void serviceLocatorSetup() {
   getIt.registerLazySingleton<MarketRepo>(
     () => MarketRepo(getIt<FirebaseService>()),
   );
-  getIt.registerFactory<MarketAdminCubit>(() => MarketAdminCubit(getIt<MarketRepo>()));
+  getIt.registerFactory<MarketAdminCubit>(
+    () => MarketAdminCubit(getIt<MarketRepo>()),
+  );
 }

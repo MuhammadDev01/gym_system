@@ -5,38 +5,35 @@ import 'package:gym_management_app/core/components/glass_widget.dart';
 import 'package:gym_management_app/core/models/member_model.dart';
 import 'package:gym_management_app/core/theme/app_colors.dart';
 
-class MemberList extends StatelessWidget {
+class MemberEditList extends StatelessWidget {
   final List<MemberModel> member;
   final void Function(MemberModel) onEdit;
-  final void Function(MemberModel) onToggleAttendance;
+  final void Function(MemberModel)? onDelete;
 
-  const MemberList({
+  const MemberEditList({
     super.key,
     required this.member,
     required this.onEdit,
-    required this.onToggleAttendance,
+    this.onDelete,
   });
 
   @override
   Widget build(BuildContext context) {
     if (member.isEmpty) {
-      return const Center(
-        child: CustomText(text: 'لا يوجد أعضاء', color: Colors.white38),
+      return Center(
+        child: CustomText(text: 'لا يوجد أعضاء', color: AppColors.gray),
       );
     }
     return ListView.separated(
-      padding: const EdgeInsets.all(16),
       itemCount: member.length,
-      separatorBuilder: (_, _) => const Gap(8),
+      separatorBuilder: (_, _) => const Gap(16),
       itemBuilder: (_, i) {
         final m = member[i];
         final typeLabel = _typeLabel(m.subscriptionType);
         final endDate = m.subscriptionEnd != null
             ? '${m.subscriptionEnd!.day}/${m.subscriptionEnd!.month}/${m.subscriptionEnd!.year}'
             : '—';
-        final isExpired =
-            m.subscriptionEnd != null &&
-            DateTime.now().isAfter(m.subscriptionEnd!);
+
         return GestureDetector(
           onTap: () => onEdit(m),
           child: GlassWidget(
@@ -114,50 +111,6 @@ class MemberList extends StatelessWidget {
                           ),
                         ],
                       ),
-                    ),
-                    Column(
-                      children: [
-                        GestureDetector(
-                          onTap: () => onToggleAttendance(m),
-                          child: Container(
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: 10,
-                              vertical: 6,
-                            ),
-                            decoration: BoxDecoration(
-                              color: m.attendedToday
-                                  ? AppColors.success
-                                  : Colors.white12,
-                              borderRadius: BorderRadius.circular(20),
-                            ),
-                            child: CustomText(
-                              text: m.attendedToday ? 'حاضر' : 'غائب',
-                              fontSize: 12,
-                              color: m.attendedToday
-                                  ? Colors.black
-                                  : Colors.white54,
-                            ),
-                          ),
-                        ),
-                        if (isExpired) ...[
-                          const Gap(4),
-                          Container(
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: 8,
-                              vertical: 2,
-                            ),
-                            decoration: BoxDecoration(
-                              color: AppColors.snackError,
-                              borderRadius: BorderRadius.circular(8),
-                            ),
-                            child: const CustomText(
-                              text: 'منتهي',
-                              fontSize: 10,
-                              color: Colors.black,
-                            ),
-                          ),
-                        ],
-                      ],
                     ),
                   ],
                 ),

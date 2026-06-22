@@ -17,7 +17,7 @@ class GlassAppBar extends StatelessWidget implements PreferredSizeWidget {
         leading: CustomBackButton(),
         actions: actions,
         centerTitle: true,
-        title: CustomText(text: title ?? '', fontSize: 24),
+        title: CustomText(text: title ?? '', fontSize: 22),
       ),
     );
   }

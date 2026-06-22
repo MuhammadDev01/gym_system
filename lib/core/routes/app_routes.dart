@@ -8,11 +8,16 @@ class AppRoutes {
   //admin
   static const String adminView = '/admin-view';
   static const String addMemberView = '/add-member-view';
-  static const String memberListView = '/member-list-view';
+  static const String membersManagementView = '/members-management-list-view';
   static const String addAdView = '/add-ad-view';
   static const String alertsView = '/alerts-view';
+  static const String alertsManagementView = '/alerts-management-view';
   static const String addAlertView = '/add-alert-view';
+  static const String editAlertView = '/edit-alert-view';
+  static const String alertsListView = '/alerts-list-view';
   static const String scanMemberView = '/scan-member-view';
+  static const String editMemberView = '/edit-member-view';
+  static const String membersListView = '/members-list-view';
 
   //user
   static const String gerenalView = '/gerenal-view';

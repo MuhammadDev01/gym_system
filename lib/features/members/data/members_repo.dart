@@ -45,6 +45,7 @@ class MemberRepo {
     required String phone,
     required int subscriptionMonths,
     required String subscriptionType,
+    DateTime? subscriptionStart,
     DateTime? subscriptionEnd,
   }) async {
     try {
@@ -54,6 +55,9 @@ class MemberRepo {
         AppConstants.subscriptionMonths: subscriptionMonths,
         AppConstants.subscriptionType: subscriptionType,
       };
+      if (subscriptionStart != null) {
+        data[AppConstants.subscriptionStart] = Timestamp.fromDate(subscriptionStart);
+      }
       if (subscriptionEnd != null) {
         data[AppConstants.subscriptionEnd] = Timestamp.fromDate(subscriptionEnd);
       }
@@ -61,6 +65,17 @@ class MemberRepo {
         collection: 'users',
         docId: docId,
         data: data,
+      );
+    } on FirebaseException catch (e) {
+      throw Exception(FirebaseExceptionMessages.getFirestoreMessage(e));
+    }
+  }
+
+  Future<void> deleteMember(String docId) async {
+    try {
+      await _firebaseService.deleteDocument(
+        collection: 'users',
+        docId: docId,
       );
     } on FirebaseException catch (e) {
       throw Exception(FirebaseExceptionMessages.getFirestoreMessage(e));
