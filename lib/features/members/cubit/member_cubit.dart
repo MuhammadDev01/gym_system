@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:gym_management_app/core/models/member_model.dart';
+import 'package:gym_management_app/features/members/data/member_model.dart';
 import 'package:gym_management_app/features/members/cubit/member_state.dart';
 import 'package:gym_management_app/features/members/data/members_repo.dart';
 

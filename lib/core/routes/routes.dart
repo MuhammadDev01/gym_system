@@ -6,6 +6,12 @@ import 'package:gym_management_app/features/alerts/views/add_alert_view.dart';
 import 'package:gym_management_app/features/alerts/views/alerts_management_view.dart';
 import 'package:gym_management_app/features/alerts/views/alerts_view.dart';
 import 'package:gym_management_app/features/alerts/views/edit_alert_view.dart';
+import 'package:gym_management_app/features/market/views/admin/add_item_on_market_view.dart';
+import 'package:gym_management_app/features/market/views/admin/edit_item_on_market_view.dart';
+import 'package:gym_management_app/features/market/views/admin/market_items_list_view.dart';
+import 'package:gym_management_app/features/market/views/admin/market_management_view.dart';
+import 'package:gym_management_app/features/market/views/user/market_item_detail_view.dart';
+import 'package:gym_management_app/features/market/data/market_item_model.dart';
 import 'package:gym_management_app/features/members/views/add_member_view.dart';
 import 'package:gym_management_app/features/members/views/edit_member_view.dart';
 import 'package:gym_management_app/features/members/views/members_list_view.dart';
@@ -50,6 +56,7 @@ final goRouter = GoRouter(
       ),
     ),
 
+    //*Members
     GoRoute(
       path: AppRoutes.membersManagementView,
       builder: (_, _) => Directionality(
@@ -78,6 +85,14 @@ final goRouter = GoRouter(
         child: MembersListView(),
       ),
     ),
+    GoRoute(
+      path: AppRoutes.scanMemberView,
+      builder: (_, _) => const Directionality(
+        textDirection: TextDirection.rtl,
+        child: ScanMemberView(),
+      ),
+    ),
+    //* Alerts
     GoRoute(
       path: AppRoutes.alertsManagementView,
       builder: (_, _) => const Directionality(
@@ -113,11 +128,34 @@ final goRouter = GoRouter(
         child: AlertsManagementView(),
       ),
     ),
+
+    //* Market
     GoRoute(
-      path: AppRoutes.scanMemberView,
+      path: AppRoutes.marketManagementView,
       builder: (_, _) => const Directionality(
         textDirection: TextDirection.rtl,
-        child: ScanMemberView(),
+        child: MarketManagementView(),
+      ),
+    ),
+    GoRoute(
+      path: AppRoutes.addItemOnMarketView,
+      builder: (_, _) => const Directionality(
+        textDirection: TextDirection.rtl,
+        child: AddItemOnMarketView(),
+      ),
+    ),
+    GoRoute(
+      path: AppRoutes.editItemOnMarketView,
+      builder: (_, _) => const Directionality(
+        textDirection: TextDirection.rtl,
+        child: EditItemOnMarketView(),
+      ),
+    ),
+    GoRoute(
+      path: AppRoutes.marketItemsListView,
+      builder: (_, _) => const Directionality(
+        textDirection: TextDirection.rtl,
+        child: MarketItemsListView(),
       ),
     ),
 
@@ -155,6 +193,24 @@ final goRouter = GoRouter(
       builder: (_, _) => const Directionality(
         textDirection: TextDirection.rtl,
         child: MarketView(),
+      ),
+    ),
+    GoRoute(
+      path: AppRoutes.marketItemDetailView,
+      pageBuilder: (_, state) => CustomTransitionPage(
+        key: state.pageKey,
+        transitionDuration: const Duration(milliseconds: 400),
+        child: Directionality(
+          textDirection: TextDirection.rtl,
+          child: MarketItemDetailView(item: state.extra as MarketItemModel),
+        ),
+        transitionsBuilder: (_, animation, _, child) => SlideTransition(
+          position: Tween<Offset>(begin: const Offset(0, 1), end: Offset.zero)
+              .animate(
+                CurvedAnimation(parent: animation, curve: Curves.easeOutCubic),
+              ),
+          child: child,
+        ),
       ),
     ),
     GoRoute(

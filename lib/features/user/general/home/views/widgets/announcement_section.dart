@@ -3,7 +3,7 @@ import 'package:gap/gap.dart';
 import 'package:gym_management_app/core/components/custom_status_icon.dart';
 import 'package:gym_management_app/core/components/custom_text.dart';
 import 'package:gym_management_app/core/components/glass_widget.dart';
-import 'package:gym_management_app/core/models/announcement_model.dart';
+import 'package:gym_management_app/features/alerts/data/alert_model.dart';
 import 'package:gym_management_app/core/theme/app_colors.dart';
 import 'package:gym_management_app/core/DI/service_locator.dart';
 import 'package:gym_management_app/features/alerts/data/alert_repo.dart';

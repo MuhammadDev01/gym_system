@@ -1,4 +1,4 @@
-class MarketModel {
+class MarketItemModel {
   final String id;
   final String name;
   final String description;
@@ -6,7 +6,7 @@ class MarketModel {
   final int price;
   final ItemType type;
 
-  MarketModel({
+  MarketItemModel({
     required this.id,
     required this.name,
     required this.description,
@@ -15,8 +15,8 @@ class MarketModel {
     required this.type,
   });
 
-  factory MarketModel.fromJson(Map<String, dynamic> json, String docId) {
-    return MarketModel(
+  factory MarketItemModel.fromJson(Map<String, dynamic> json, String docId) {
+    return MarketItemModel(
       id: docId,
       name: json['name'] as String? ?? '',
       description: json['description'] as String? ?? '',
@@ -36,14 +36,14 @@ class MarketModel {
     };
   }
 
-  MarketModel copyWith({
+  MarketItemModel copyWith({
     String? name,
     String? description,
     String? image,
     int? price,
     ItemType? type,
   }) {
-    return MarketModel(
+    return MarketItemModel(
       id: id,
       name: name ?? this.name,
       description: description ?? this.description,

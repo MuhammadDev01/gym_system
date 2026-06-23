@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gym_management_app/core/service/local/image_picker_service.dart';
 import 'package:gym_management_app/features/market/cubit/admin/market_admin_state.dart';
@@ -10,21 +11,53 @@ import 'package:gym_management_app/features/market/data/market_repo.dart';
 class MarketAdminCubit extends Cubit<MarketAdminState> {
   MarketAdminCubit(this._marketRepo) : super(MarketAdminInitial());
   final MarketRepo _marketRepo;
-
-  List<MarketModel> _allProducts = [];
-
-  Future<String?> pickImage() async {
-    final file = await ImagePickerService.pickImageFromGallery();
-    if (file == null) return null;
-    final bytes = await File(file.path).readAsBytes();
-    return base64Encode(bytes);
+  final nameController = TextEditingController();
+  final descController = TextEditingController();
+  final priceController = TextEditingController();
+  String selectedType = 'supplement';
+  String? imageBase64;
+  @override
+  Future<void> close() async {
+    nameController.dispose();
+    descController.dispose();
+    priceController.dispose();
+    super.close();
   }
 
+  void resetValues() {
+    nameController.clear();
+    descController.clear();
+    priceController.clear();
+    imageBase64 = null;
+    selectedType = 'supplement';
+  }
+
+  List<MarketItemModel> allProducts = [];
+
+  Future<void> pickImage() async {
+    emit(MarketAdminLoading());
+    final file = await ImagePickerService.pickImageFromGallery();
+    if (file == null) {
+      emit(MarketAdminInitial());
+      return;
+    }
+    final bytes = await File(file.path).readAsBytes();
+    imageBase64 = base64Encode(bytes);
+    emit(MarketAdminImagePicked());
+  }
+
+  void setType(String? v) {
+    if (v != null) selectedType = v;
+    emit(MarketAdmintypeChange());
+  }
+
+  //*GET
   Future<void> getProducts() async {
     emit(MarketAdminLoading());
     try {
-      _allProducts = await _marketRepo.getAllProducts();
-      emit(MarketAdminLoaded(products: _allProducts));
+      allProducts = await _marketRepo.getAllProducts();
+      emit(MarketAdminLoaded(products: allProducts));
+      resetValues();
     } catch (e) {
       final msg = e.toString();
       emit(
@@ -35,24 +68,20 @@ class MarketAdminCubit extends Cubit<MarketAdminState> {
     }
   }
 
-  Future<void> addProduct({
-    required String name,
-    required String description,
-    required String image,
-    required int price,
-    required String type,
-  }) async {
+  //* ADD
+  Future<void> addProduct() async {
     emit(MarketAdminLoading());
     try {
       await _marketRepo.addProduct(
-        name: name,
-        description: description,
-        image: image,
-        price: price,
-        type: type,
+        name: nameController.text.trim(),
+        description: descController.text.trim(),
+        image: imageBase64 ?? '',
+        price: int.tryParse(priceController.text.trim()) ?? 0,
+        type: selectedType,
       );
-      await getProducts();
       emit(MarketAdminAdded());
+      resetValues();
+      await getProducts();
     } catch (e) {
       final msg = e.toString();
       emit(
@@ -63,26 +92,33 @@ class MarketAdminCubit extends Cubit<MarketAdminState> {
     }
   }
 
-  Future<void> updateProduct({
-    required String docId,
-    required String name,
-    required String description,
-    required String image,
-    required int price,
-    required String type,
-  }) async {
+  String? itemImage;
+  String? itemId;
+  void startEdit(MarketItemModel item) {
+    nameController.text = item.name;
+    descController.text = item.description;
+    priceController.text = item.price.toString();
+    itemId = item.id;
+    itemImage = item.image;
+    imageBase64 = null;
+    selectedType = item.type == ItemType.tool ? 'tool' : 'supplement';
+  }
+
+  //*UPDATE
+  Future<void> updateProduct() async {
     emit(MarketAdminLoading());
     try {
       await _marketRepo.updateProduct(
-        docId: docId,
-        name: name,
-        description: description,
-        image: image,
-        price: price,
-        type: type,
+        docId: itemId!,
+        name: nameController.text.trim(),
+        description: descController.text.trim(),
+        image: imageBase64 ?? itemImage!,
+        price: int.parse(priceController.text.trim()),
+        type: selectedType,
       );
-      await getProducts();
       emit(MarketAdminUpdated());
+      resetValues();
+      await getProducts();
     } catch (e) {
       final msg = e.toString();
       emit(
@@ -93,6 +129,7 @@ class MarketAdminCubit extends Cubit<MarketAdminState> {
     }
   }
 
+  //*Delete
   Future<void> deleteProduct(String docId) async {
     emit(MarketAdminLoading());
     try {

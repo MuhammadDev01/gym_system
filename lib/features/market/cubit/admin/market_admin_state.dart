@@ -9,9 +9,13 @@ final class MarketAdminInitial extends MarketAdminState {}
 final class MarketAdminLoading extends MarketAdminState {}
 
 final class MarketAdminLoaded extends MarketAdminState {
-  final List<MarketModel> products;
+  final List<MarketItemModel> products;
   MarketAdminLoaded({required this.products});
 }
+
+final class MarketAdmintypeChange extends MarketAdminState {}
+
+final class MarketAdminImagePicked extends MarketAdminState {}
 
 final class MarketAdminAdded extends MarketAdminState {}
 

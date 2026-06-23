@@ -7,13 +7,14 @@ class MarketRepo {
   MarketRepo(this._firebaseService);
   final FirebaseService _firebaseService;
 
-  Future<List<MarketModel>> getAllProducts() async {
+  Future<List<MarketItemModel>> getAllProducts() async {
     try {
-      final result =
-          await _firebaseService.getCollection(collection: 'products');
+      final result = await _firebaseService.getCollection(
+        collection: 'products',
+      );
       return result.docs.map((doc) {
         final data = doc.data() as Map<String, dynamic>;
-        return MarketModel.fromJson(data, doc.id);
+        return MarketItemModel.fromJson(data, doc.id);
       }).toList();
     } on FirebaseException catch (e) {
       throw Exception(FirebaseExceptionMessages.getFirestoreMessage(e));

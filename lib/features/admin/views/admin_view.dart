@@ -32,21 +32,21 @@ class AdminView extends StatelessWidget {
                 const Gap(12),
                 AdminCard(
                   icon: FontAwesomeIcons.bullhorn,
-                  title: 'الإعلانات',
+                  title: 'إدارة الإعلانات',
                   onTap: () => context.push(AppRoutes.alertsManagementView),
                 ),
                 const Gap(12),
                 AdminCard(
                   icon: FontAwesomeIcons.shop,
-                  title: 'إضافة ادوات و مكملات',
-                  onTap: () {},
+                  title: 'إدارة المتجر',
+                  onTap: () => context.push(AppRoutes.marketManagementView),
                 ),
 
                 const Gap(12),
                 AdminCard(
                   icon: FontAwesomeIcons.arrowRightFromBracket,
                   title: 'تسجيل الخروج',
-                  onTap: () => context.go(AppRoutes.gerenalView),
+                  onTap: () {},
                   color: AppColors.snackError,
                   iconColor: AppColors.snackError,
                 ),

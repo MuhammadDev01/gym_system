@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:get_it/get_it.dart';
-import 'package:gym_management_app/core/models/announcement_model.dart';
+import 'package:gym_management_app/features/alerts/data/alert_model.dart';
 import 'package:gym_management_app/core/service/network/fcm_service.dart';
 import 'package:gym_management_app/core/service/network/firebase_exceptions.dart';
 import 'package:gym_management_app/core/service/network/firebase_service.dart';
@@ -67,10 +67,7 @@ class AlertRepo {
 
   Future<void> deleteAlert(String docId) async {
     try {
-      await _firebaseService.deleteDocument(
-        collection: 'Alerts',
-        docId: docId,
-      );
+      await _firebaseService.deleteDocument(collection: 'Alerts', docId: docId);
     } on FirebaseException catch (e) {
       throw Exception(FirebaseExceptionMessages.getFirestoreMessage(e));
     }

@@ -6,6 +6,6 @@ class CustomEmptyList extends StatelessWidget {
   final String text;
   @override
   Widget build(BuildContext context) {
-    return Center(child: CustomText(text: "$text لا توجد"));
+    return Center(child: CustomText(text: "لا توجد $text"));
   }
 }

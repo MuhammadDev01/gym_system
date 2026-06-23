@@ -20,13 +20,10 @@ class ManageProductsList extends StatelessWidget {
             );
           }
           return SliverList(
-            delegate: SliverChildBuilderDelegate(
-              (context, index) {
-                final product = products[index];
-                return _ProductCard(product: product);
-              },
-              childCount: products.length,
-            ),
+            delegate: SliverChildBuilderDelegate((context, index) {
+              final product = products[index];
+              return _ProductCard(product: product);
+            }, childCount: products.length),
           );
         }
         return const SliverFillRemaining(
@@ -39,7 +36,7 @@ class ManageProductsList extends StatelessWidget {
 
 class _ProductCard extends StatelessWidget {
   const _ProductCard({required this.product});
-  final MarketModel product;
+  final MarketItemModel product;
 
   @override
   Widget build(BuildContext context) {

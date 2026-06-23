@@ -4,19 +4,12 @@ import 'package:gym_management_app/features/market/data/market_item_model.dart';
 import 'package:gym_management_app/features/market/views/user/widgets/market_item_filter.dart';
 
 class MarketCubit extends Cubit<MarketState> {
-  MarketCubit() : super(MarketInitial()) {
-    _loadItems();
-  }
+  MarketCubit() : super(MarketInitial());
 
-  final List<MarketModel> _allItems = [];
+  final List<MarketItemModel> _allItems = [];
 
   FilterType selectedFilter = FilterType.all;
-  List<MarketModel> filteredItems = [];
-
-  void _loadItems() {
-    filteredItems = List.from(_allItems);
-    emit(MarketLoaded());
-  }
+  List<MarketItemModel> filteredItems = [];
 
   void filterByType(FilterType filter) {
     selectedFilter = filter;

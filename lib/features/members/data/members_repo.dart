@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:gym_management_app/core/constants/app_constants.dart';
-import 'package:gym_management_app/core/models/member_model.dart';
+import 'package:gym_management_app/features/members/data/member_model.dart';
 import 'package:gym_management_app/core/service/network/firebase_exceptions.dart';
 import 'package:gym_management_app/core/service/network/firebase_service.dart';
 
@@ -56,10 +56,14 @@ class MemberRepo {
         AppConstants.subscriptionType: subscriptionType,
       };
       if (subscriptionStart != null) {
-        data[AppConstants.subscriptionStart] = Timestamp.fromDate(subscriptionStart);
+        data[AppConstants.subscriptionStart] = Timestamp.fromDate(
+          subscriptionStart,
+        );
       }
       if (subscriptionEnd != null) {
-        data[AppConstants.subscriptionEnd] = Timestamp.fromDate(subscriptionEnd);
+        data[AppConstants.subscriptionEnd] = Timestamp.fromDate(
+          subscriptionEnd,
+        );
       }
       await _firebaseService.updateDocument(
         collection: 'users',
@@ -73,10 +77,7 @@ class MemberRepo {
 
   Future<void> deleteMember(String docId) async {
     try {
-      await _firebaseService.deleteDocument(
-        collection: 'users',
-        docId: docId,
-      );
+      await _firebaseService.deleteDocument(collection: 'users', docId: docId);
     } on FirebaseException catch (e) {
       throw Exception(FirebaseExceptionMessages.getFirestoreMessage(e));
     }

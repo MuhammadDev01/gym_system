@@ -7,17 +7,23 @@ class AppRoutes {
   static const String authView = '/auth-view';
   //admin
   static const String adminView = '/admin-view';
+  //members
   static const String addMemberView = '/add-member-view';
   static const String membersManagementView = '/members-management-list-view';
-  static const String addAdView = '/add-ad-view';
+  static const String scanMemberView = '/scan-member-view';
+  static const String editMemberView = '/edit-member-view';
+  static const String membersListView = '/members-list-view';
+  //alerts
   static const String alertsView = '/alerts-view';
   static const String alertsManagementView = '/alerts-management-view';
   static const String addAlertView = '/add-alert-view';
   static const String editAlertView = '/edit-alert-view';
   static const String alertsListView = '/alerts-list-view';
-  static const String scanMemberView = '/scan-member-view';
-  static const String editMemberView = '/edit-member-view';
-  static const String membersListView = '/members-list-view';
+  //market
+  static const String marketManagementView = '/market-management-view';
+  static const String addItemOnMarketView = '/add-item-on-market-view';
+  static const String editItemOnMarketView = '/edit-item-on-market-view';
+  static const String marketItemsListView = '/market-items-list-view';
 
   //user
   static const String gerenalView = '/gerenal-view';
@@ -25,6 +31,7 @@ class AppRoutes {
   static const String subscriptionView = '/subscription-view';
   static const String profileView = '/profile-view';
   static const String marketView = '/market-view';
+  static const String marketItemDetailView = '/market-item-detail-view';
   static const String settingsView = '/settings-view';
   static const String rootView = '/';
 
