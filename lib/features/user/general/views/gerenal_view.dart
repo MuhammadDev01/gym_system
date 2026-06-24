@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gym_management_app/core/constants/app_assets.dart';
-import 'package:gym_management_app/features/market/cubit/user/market_cubit.dart';
 import 'package:gym_management_app/features/user/general/home/views/home_view.dart';
 import 'package:gym_management_app/features/market/views/user/market_view.dart';
 import 'package:gym_management_app/features/user/profile/views/profile_view.dart';
@@ -13,19 +12,15 @@ import 'package:gym_management_app/features/user/subscription/views/subscription
 class GerenalView extends StatelessWidget {
   const GerenalView({super.key});
 
+  final views = const [
+    HomeView(),
+    SubscriptionView(),
+    ProfileView(),
+    MarketView(),
+    SettingsView(),
+  ];
   @override
   Widget build(BuildContext context) {
-    final views = <Widget>[
-      const HomeView(),
-      const SubscriptionView(),
-      const ProfileView(),
-      BlocProvider<MarketCubit>(
-        create: (_) => MarketCubit(),
-        child: const MarketView(),
-      ),
-      const SettingsView(),
-    ];
-
     return BlocBuilder<GerenalCubit, GerenalState>(
       builder: (context, state) {
         return GestureDetector(
@@ -37,17 +32,11 @@ class GerenalView extends StatelessWidget {
               decoration: const BoxDecoration(
                 image: DecorationImage(
                   image: AssetImage(AppAssets.backround),
-
                   fit: BoxFit.cover,
                 ),
               ),
 
-              child: SingleChildScrollView(
-                padding: const EdgeInsets.all(8),
-                child: SafeArea(
-                  child: views[context.read<GerenalCubit>().currentIndex],
-                ),
-              ),
+              child: views[context.read<GerenalCubit>().currentIndex],
             ),
 
             bottomNavigationBar: CustomNavBar(),

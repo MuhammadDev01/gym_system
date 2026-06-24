@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:gym_management_app/features/market/cubit/user/market_cubit.dart';
-import 'package:gym_management_app/features/market/cubit/user/market_state.dart';
+import 'package:gym_management_app/features/market/cubit/user/market_user_cubit.dart';
+import 'package:gym_management_app/features/market/cubit/user/marke_user_state.dart';
 import 'package:gym_management_app/features/market/views/user/widgets/market_item_card.dart';
 import 'package:gym_management_app/features/market/views/user/widgets/market_item_filter.dart';
 
@@ -10,10 +10,10 @@ class MarketView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<MarketCubit, MarketState>(
+    return BlocBuilder<MarketUserCubit, MarketState>(
       builder: (context, state) {
         if (state is MarketLoaded) {
-          final cubit = context.read<MarketCubit>();
+          final cubit = context.read<MarketUserCubit>();
           return Padding(
             padding: const EdgeInsets.all(8),
             child: CustomScrollView(

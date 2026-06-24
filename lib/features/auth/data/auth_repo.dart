@@ -15,39 +15,27 @@ class AuthRepo {
     required String userPhone,
   }) async {
     try {
-      final email = userPhone.trim();
-      final password = userName.trim();
-
-      await _firebaseService.signIn(email: email, password: password);
-
-      final uid = FirebaseAuth.instance.currentUser!.uid;
+      final phone = userPhone.trim();
       final doc = await _firebaseService.getDocument(
         collection: 'users',
-        docId: uid,
-      );
-      final MemberModel data = MemberModel.fromJson(
-        doc.data() as Map<String, dynamic>,
-        uid,
+        docId: phone,
       );
 
-      // if (data == null) {
-      //   await _firebaseService.signOut();
-      //   throw Exception('لم يتم العثور على البيانات');
-      // }
-
-      if (data.name != userName.trim()) {
-        await _firebaseService.signOut();
-        throw Exception('اسم المستخدم أو رقم الهاتف غير صحيح');
-      }
-
-      await LocalCacheService.setString(AppConstants.token, uid);
-
-      return data;
-    } on FirebaseAuthException catch (e) {
-      if (e.code == 'user-not-found' || e.code == 'invalid-credential') {
+      if (!doc.exists) {
         throw Exception('ليس لديك حساب');
       }
-      throw Exception(FirebaseExceptionMessages.getMessage(e));
+
+      final data = doc.data() as Map<String, dynamic>;
+      final member = MemberModel.fromJson(data, doc.id);
+
+      if (member.name != userName.trim()) {
+        throw Exception('اسم المستخدم أو رقم الهاتف غير صحيح');
+      }
+      await LocalCacheService.setString(AppConstants.role, AppConstants.member);
+
+      await LocalCacheService.setString(AppConstants.token, phone);
+
+      return member;
     } on FirebaseException catch (e) {
       throw Exception(FirebaseExceptionMessages.getFirestoreMessage(e));
     }

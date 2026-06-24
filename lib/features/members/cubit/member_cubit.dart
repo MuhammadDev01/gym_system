@@ -158,6 +158,45 @@ class MemberCubit extends Cubit<MemberState> {
     }
   }
 
+  Future<void> getMemberByPhone(String phone) async {
+    emit(MemberLoadingState());
+    try {
+      final member = await _memberRepo.getMemberByPhone(phone);
+      if (member != null) {
+        emit(MemberScannedState(member: member));
+      } else {
+        emit(MemberErrorState('لم يتم العثور على مشترك بهذا الرقم'));
+      }
+    } catch (e) {
+      final msg = e.toString();
+      emit(
+        MemberErrorState(
+          msg.startsWith('Exception: ') ? msg.substring(11) : msg,
+        ),
+      );
+    }
+  }
+
+  Future<void> markAttendanceByPhone(String phone) async {
+    emit(MemberLoadingState());
+    try {
+      final member = await _memberRepo.getMemberByPhone(phone);
+      if (member == null) {
+        emit(MemberErrorState('لم يتم العثور على مشترك بهذا الرقم'));
+        return;
+      }
+      await _memberRepo.toggleAttendance(member.id, attended: true);
+      emit(MemberAttendanceMarked());
+    } catch (e) {
+      final msg = e.toString();
+      emit(
+        MemberErrorState(
+          msg.startsWith('Exception: ') ? msg.substring(11) : msg,
+        ),
+      );
+    }
+  }
+
   Future<void> toggleAttendance(MemberModel member) async {
     try {
       await _memberRepo.toggleAttendance(

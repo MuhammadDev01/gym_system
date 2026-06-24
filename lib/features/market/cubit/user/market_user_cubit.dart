@@ -1,10 +1,10 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:gym_management_app/features/market/cubit/user/market_state.dart';
+import 'package:gym_management_app/features/market/cubit/user/marke_user_state.dart';
 import 'package:gym_management_app/features/market/data/market_item_model.dart';
 import 'package:gym_management_app/features/market/views/user/widgets/market_item_filter.dart';
 
-class MarketCubit extends Cubit<MarketState> {
-  MarketCubit() : super(MarketInitial());
+class MarketUserCubit extends Cubit<MarketState> {
+  MarketUserCubit() : super(MarketInitial());
 
   final List<MarketItemModel> _allItems = [];
 

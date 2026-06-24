@@ -87,11 +87,10 @@ class MemberRepo {
     try {
       if (attended) {
         final now = DateTime.now();
-        final today = DateTime(now.year, now.month, now.day);
         await _firebaseService.updateDocument(
           collection: 'users',
           docId: docId,
-          data: {'lastAttendance': Timestamp.fromDate(today)},
+          data: {'lastAttendance': Timestamp.fromDate(now)},
         );
       } else {
         await _firebaseService.updateDocument(

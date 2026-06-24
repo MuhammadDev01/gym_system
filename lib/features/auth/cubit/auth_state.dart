@@ -9,6 +9,8 @@ final class AuthLoadingState extends AuthState {}
 
 final class AuthLogoutedState extends AuthState {}
 
+final class AuthLoggedState extends AuthState {}
+
 final class AuthAdminToggleState extends AuthState {}
 
 final class AuthSccessState extends AuthState {

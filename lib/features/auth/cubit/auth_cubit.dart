@@ -42,8 +42,6 @@ class AuthCubit extends Cubit<AuthState> {
         userPhone: phoneController.text.trim(),
       );
 
-      //  await LocalCacheService.setString(AppConstants.name, user.name);
-      //  await LocalCacheService.setString(AppConstants.phone, user.phone);
       emit(AuthSccessState());
     } catch (e) {
       emit(AuthErrorState(_formatError(e)));
@@ -57,6 +55,8 @@ class AuthCubit extends Cubit<AuthState> {
         email: emailController.text,
         password: passwordController.text,
       );
+      emailController.clear();
+      passwordController.clear();
       emit(AuthSccessState());
     } catch (e) {
       emit(AuthErrorState(_formatError(e)));

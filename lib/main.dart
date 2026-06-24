@@ -11,9 +11,11 @@ import 'package:gym_management_app/core/theme/app_theme.dart';
 import 'package:gym_management_app/features/alerts/cubit/admin/alert_admin_cubit.dart';
 import 'package:gym_management_app/features/alerts/cubit/alert_user_cubit.dart';
 import 'package:gym_management_app/features/market/cubit/admin/market_admin_cubit.dart';
+import 'package:gym_management_app/features/market/cubit/user/market_user_cubit.dart';
 import 'package:gym_management_app/features/members/cubit/member_cubit.dart';
 import 'package:gym_management_app/features/user/general/cubit/gerenal_cubit.dart';
 import 'package:gym_management_app/features/auth/cubit/auth_cubit.dart';
+import 'package:gym_management_app/features/user/general/home/cubit/home_cubit.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -41,7 +43,9 @@ class GymSystemApp extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider(create: (context) => getIt<AuthCubit>()),
-        BlocProvider(create: (context) => GerenalCubit()),
+        BlocProvider(create: (context) => getIt<GerenalCubit>()),
+        BlocProvider(create: (context) => getIt<HomeCubit>()),
+        BlocProvider(create: (context) => getIt<MarketUserCubit>()),
         BlocProvider(create: (context) => getIt<MemberCubit>()),
         BlocProvider(create: (context) => getIt<AlertUserCubit>()),
         BlocProvider(create: (context) => getIt<AlertAdminCubit>()),

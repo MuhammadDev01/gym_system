@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
 import 'package:gym_management_app/core/components/custom_button.dart';
 import 'package:gym_management_app/core/components/custom_text.dart';
@@ -10,12 +9,12 @@ import 'package:gym_management_app/features/auth/views/widgets/member_login_fiel
 import 'package:gym_management_app/features/auth/views/widgets/gold_line.dart';
 
 class LoginViewBody extends StatelessWidget {
-  LoginViewBody({super.key});
+  LoginViewBody({super.key, required this.cubit});
   final _formKey = GlobalKey<FormState>();
+  final AuthCubit cubit;
 
   @override
   Widget build(BuildContext context) {
-    final cubit = context.watch<AuthCubit>();
     return Form(
       key: _formKey,
       child: Column(

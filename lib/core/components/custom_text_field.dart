@@ -33,7 +33,7 @@ class CustomTextField extends StatelessWidget {
   Widget build(BuildContext context) {
     return TextFormField(
       controller: controller,
-      maxLines: maxLines,
+      maxLines: maxLines ?? 1,
       keyboardType: textInputType,
       initialValue: controller != null ? null : initialValue,
       obscureText: obscureText ?? false,

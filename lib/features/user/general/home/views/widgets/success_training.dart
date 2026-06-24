@@ -5,10 +5,21 @@ import 'package:gym_management_app/core/components/glass_widget.dart';
 import 'package:gym_management_app/core/theme/app_colors.dart';
 
 class SuccessTraining extends StatelessWidget {
-  const SuccessTraining({super.key});
+  const SuccessTraining({super.key, this.lastAttendance});
+
+  final DateTime? lastAttendance;
+
+  String _formatTime(DateTime dt) {
+    final hour = dt.hour > 12 ? dt.hour - 12 : (dt.hour == 0 ? 12 : dt.hour);
+    final min = dt.minute.toString().padLeft(2, '0');
+    final amPm = dt.hour >= 12 ? 'PM' : 'AM';
+    return '$hour:$min $amPm';
+  }
 
   @override
   Widget build(BuildContext context) {
+    final time =
+        lastAttendance != null ? _formatTime(lastAttendance!) : null;
     return Row(
       children: [
         Expanded(
@@ -18,8 +29,10 @@ class SuccessTraining extends StatelessWidget {
             fontSize: 12,
           ),
         ),
-        const Gap(12),
-        _DateSuccessTrain(checkInTime: "7.34 AM"),
+        if (time != null) ...[
+          const Gap(12),
+          _DateSuccessTrain(checkInTime: time),
+        ],
       ],
     );
   }

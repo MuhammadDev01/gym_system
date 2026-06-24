@@ -1,19 +1,24 @@
-import 'dart:io';
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:gym_management_app/core/components/custom_text.dart';
 import 'package:gym_management_app/core/components/glass_widget.dart';
-import 'package:gym_management_app/core/constants/app_constants.dart';
-import 'package:gym_management_app/core/service/local/local_cache_service.dart';
-import 'package:gym_management_app/core/service/local/local_image_service.dart';
 import 'package:gym_management_app/core/theme/app_colors.dart';
+import 'package:gym_management_app/features/members/data/member_model.dart';
 
 class HomeMemberInfo extends StatelessWidget {
-  const HomeMemberInfo({super.key});
+  const HomeMemberInfo({
+    super.key,
+    required this.member,
+    required this.remainingDays,
+  });
+
+  final MemberModel member;
+  final int remainingDays;
 
   @override
   Widget build(BuildContext context) {
-    final userId = LocalCacheService.getString(AppConstants.token);
     return GlassWidget(
       child: Padding(
         padding: const EdgeInsets.all(12.0),
@@ -21,12 +26,11 @@ class HomeMemberInfo extends StatelessWidget {
           children: [
             CircleAvatar(
               radius: 35,
-              backgroundImage: userId != null
-                  ? FileImage(
-                      File(
-                        '${LocalImageService.getImagePathSync('profile_$userId.png')}',
-                      ),
-                    )
+              backgroundImage: member.image.isNotEmpty
+                  ? MemoryImage(base64Decode(member.image))
+                  : null,
+              child: member.image.isEmpty
+                  ? const Icon(Icons.person, color: Colors.white38)
                   : null,
             ),
             const Gap(12),
@@ -34,12 +38,10 @@ class HomeMemberInfo extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  CustomText(
-                    text: LocalCacheService.getString(AppConstants.name)!,
-                  ),
+                  CustomText(text: member.name, fontSize: 16),
                   const Gap(4),
                   CustomText(
-                    text: LocalCacheService.getString(AppConstants.phone)!,
+                    text: member.phone,
                     color: AppColors.gold,
                     fontSize: 12,
                   ),
@@ -48,8 +50,12 @@ class HomeMemberInfo extends StatelessWidget {
             ),
             Column(
               children: [
-                CustomText(text: "18", color: AppColors.gold, fontSize: 20),
-                const CustomText(text: "يوم متبقي", color: Colors.white70),
+                CustomText(
+                  text: remainingDays.toString(),
+                  color: AppColors.gold,
+                  fontSize: 20,
+                ),
+                const CustomText(text: 'يوم متبقي', color: Colors.white70),
               ],
             ),
           ],

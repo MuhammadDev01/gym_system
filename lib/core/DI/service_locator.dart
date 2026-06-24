@@ -5,28 +5,31 @@ import 'package:gym_management_app/features/alerts/cubit/admin/alert_admin_cubit
 import 'package:gym_management_app/features/alerts/cubit/alert_user_cubit.dart';
 import 'package:gym_management_app/features/alerts/data/alert_repo.dart';
 import 'package:gym_management_app/features/market/cubit/admin/market_admin_cubit.dart';
+import 'package:gym_management_app/features/market/cubit/user/market_user_cubit.dart';
 import 'package:gym_management_app/features/market/data/market_repo.dart';
 import 'package:gym_management_app/features/members/cubit/member_cubit.dart';
 import 'package:gym_management_app/features/members/data/members_repo.dart';
 import 'package:gym_management_app/features/auth/cubit/auth_cubit.dart';
 import 'package:gym_management_app/features/auth/data/auth_repo.dart';
+import 'package:gym_management_app/features/user/general/cubit/gerenal_cubit.dart';
+import 'package:gym_management_app/features/user/general/home/cubit/home_cubit.dart';
 
 final GetIt getIt = GetIt.instance;
 
 void serviceLocatorSetup() {
-  //* Network
+  //* NETWORK
   getIt.registerLazySingleton<FirebaseService>(() => FirebaseService());
   getIt.registerLazySingleton<FcmService>(
     () => FcmService(getIt<FirebaseService>()),
   );
 
-  //* Auth
+  //* AUTH
   getIt.registerLazySingleton<AuthRepo>(
     () => AuthRepo(getIt<FirebaseService>()),
   );
   getIt.registerFactory<AuthCubit>(() => AuthCubit(getIt<AuthRepo>()));
 
-  //* admin
+  //* ADMIN
   // Alert
   getIt.registerLazySingleton<AlertRepo>(
     () => AlertRepo(getIt<FirebaseService>()),
@@ -44,11 +47,16 @@ void serviceLocatorSetup() {
   );
   getIt.registerFactory<MemberCubit>(() => MemberCubit(getIt<MemberRepo>()));
 
-  //* market
+  // market
   getIt.registerLazySingleton<MarketRepo>(
     () => MarketRepo(getIt<FirebaseService>()),
   );
   getIt.registerFactory<MarketAdminCubit>(
     () => MarketAdminCubit(getIt<MarketRepo>()),
   );
+
+  //* USER
+  getIt.registerFactory<HomeCubit>(() => HomeCubit());
+  getIt.registerFactory<GerenalCubit>(() => GerenalCubit());
+  getIt.registerFactory<MarketUserCubit>(() => MarketUserCubit());
 }

@@ -6,9 +6,14 @@ import 'package:gym_management_app/features/user/general/home/views/widgets/fail
 import 'package:gym_management_app/features/user/general/home/views/widgets/success_training.dart';
 
 class TrainingTodaySection extends StatelessWidget {
-  const TrainingTodaySection({super.key, required this.isAttendToday});
+  const TrainingTodaySection({
+    super.key,
+    required this.isAttendToday,
+    this.lastAttendance,
+  });
 
   final bool isAttendToday;
+  final DateTime? lastAttendance;
 
   @override
   Widget build(BuildContext context) {
@@ -19,7 +24,9 @@ class TrainingTodaySection extends StatelessWidget {
         children: [
           const CustomText(text: 'حالة الحضور اليوم'),
           Gap(12),
-          isAttendToday ? SuccessTraining() : FailedTraining(),
+          isAttendToday
+              ? SuccessTraining(lastAttendance: lastAttendance)
+              : FailedTraining(),
         ],
       ),
     );

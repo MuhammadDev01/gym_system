@@ -27,3 +27,10 @@ final class MemberLoadedState extends MemberState {
 }
 
 final class MemberEditFormState extends MemberState {}
+
+final class MemberScannedState extends MemberState {
+  final MemberModel member;
+  MemberScannedState({required this.member});
+}
+
+final class MemberAttendanceMarked extends MemberState {}

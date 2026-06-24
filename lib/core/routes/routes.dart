@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:gym_management_app/core/routes/app_routes.dart';
 import 'package:gym_management_app/features/admin/views/admin_view.dart';
+import 'package:gym_management_app/features/admin/views/daily_qr_view.dart';
+import 'package:gym_management_app/features/auth/views/splash_view.dart';
 import 'package:gym_management_app/features/alerts/views/add_alert_view.dart';
 import 'package:gym_management_app/features/alerts/views/alerts_management_view.dart';
 import 'package:gym_management_app/features/alerts/views/alerts_view.dart';
@@ -22,29 +24,29 @@ import 'package:gym_management_app/features/user/general/views/gerenal_view.dart
 import 'package:gym_management_app/features/user/general/home/views/home_view.dart';
 import 'package:gym_management_app/features/market/views/user/market_view.dart';
 import 'package:gym_management_app/features/user/profile/views/profile_view.dart';
-import 'package:gym_management_app/features/root/views/root_view.dart';
 import 'package:gym_management_app/features/user/settings/views/branches_view.dart';
 import 'package:gym_management_app/features/user/settings/views/settings_view.dart';
 import 'package:gym_management_app/features/user/settings/views/subscription_history_view.dart';
 import 'package:gym_management_app/features/user/subscription/views/subscription_view.dart';
 
 final goRouter = GoRouter(
-  initialLocation: AppRoutes.rootView,
+  initialLocation: AppRoutes.splashView,
   debugLogDiagnostics: true,
   routes: [
+    //* Splash
+    GoRoute(
+      path: AppRoutes.splashView,
+      builder: (_, _) => const Directionality(
+        textDirection: TextDirection.rtl,
+        child: SplashView(),
+      ),
+    ),
     //*main
     GoRoute(
       path: AppRoutes.authView,
       builder: (_, _) => const Directionality(
         textDirection: TextDirection.rtl,
         child: AuthView(),
-      ),
-    ),
-    GoRoute(
-      path: AppRoutes.rootView,
-      builder: (_, _) => const Directionality(
-        textDirection: TextDirection.rtl,
-        child: RootView(),
       ),
     ),
     //*Main
@@ -156,6 +158,14 @@ final goRouter = GoRouter(
       builder: (_, _) => const Directionality(
         textDirection: TextDirection.rtl,
         child: MarketItemsListView(),
+      ),
+    ),
+
+    GoRoute(
+      path: AppRoutes.dailyQrView,
+      builder: (_, _) => const Directionality(
+        textDirection: TextDirection.rtl,
+        child: DailyQrView(),
       ),
     ),
 

@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 
 class AppRoutes {
   // views
+  static const String splashView = '/splash-view';
   static const String authView = '/auth-view';
   //admin
   static const String adminView = '/admin-view';
@@ -34,6 +35,8 @@ class AppRoutes {
   static const String marketItemDetailView = '/market-item-detail-view';
   static const String settingsView = '/settings-view';
   static const String rootView = '/';
+
+  static const String dailyQrView = '/daily-qr-view';
 
   //intenral views
   static const String branchesSubView = '/branches-sub-view';

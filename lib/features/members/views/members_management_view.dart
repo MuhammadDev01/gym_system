@@ -15,7 +15,15 @@ class MembersManagementView extends StatelessWidget {
     return AppBackground(
       child: Scaffold(
         backgroundColor: Colors.transparent,
-        appBar: GlassAppBar(title: 'ادارة المشتركين'),
+        appBar: GlassAppBar(
+          title: 'ادارة المشتركين',
+          actions: [
+            IconButton(
+              onPressed: () => context.push(AppRoutes.scanMemberView),
+              icon: FaIcon(FontAwesomeIcons.qrcode),
+            ),
+          ],
+        ),
         body: Padding(
           padding: const EdgeInsets.all(24),
           child: Column(
