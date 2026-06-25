@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:gap/gap.dart';
+import 'package:gym_management_app/core/extentions/navigator_extention.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
 import 'package:gym_management_app/core/components/app_background.dart';
 import 'package:gym_management_app/core/components/custom_button.dart';
@@ -135,7 +136,7 @@ class _MemberScannerPageState extends State<_MemberScannerPage> {
                 color: AppColors.success,
               );
               context.read<HomeCubit>().reload();
-              Navigator.of(context).pop();
+              context.pop();
             } else if (state is MemberErrorState) {
               appSnackbar(context, state.message);
               _resetScanner();

@@ -16,12 +16,14 @@ class CustomTextField extends StatelessWidget {
     this.hintText,
     this.maxLines,
     this.onChanged,
+    this.enabled,
   });
   final TextEditingController? controller;
   final String? initialValue;
   final String? labelText;
   final String? hintText;
   final bool? obscureText;
+  final bool? enabled;
   final VoidCallback? onTapSufffix;
   final IconData? prefixIcon;
   final IconData? suffixIcon;
@@ -37,6 +39,7 @@ class CustomTextField extends StatelessWidget {
       keyboardType: textInputType,
       initialValue: controller != null ? null : initialValue,
       obscureText: obscureText ?? false,
+      enabled: enabled ?? true,
       validator: validator,
       cursorColor: AppColors.gold,
       style: const TextStyle(color: Colors.white),

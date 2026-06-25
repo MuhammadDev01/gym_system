@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
-import 'package:gym_management_app/core/components/custom_appbar.dart';
 import 'package:gym_management_app/core/components/custom_text.dart';
 import 'package:gym_management_app/core/theme/app_colors.dart';
 import 'package:gym_management_app/core/constants/app_assets.dart';
@@ -24,13 +23,6 @@ class SubscriptionHistoryView extends StatelessWidget {
             padding: const EdgeInsets.all(16),
             child: Column(
               children: [
-                CustomAppBar(
-                  title: 'سجل الاشتراكات',
-                  leading: IconButton(
-                    icon: const Icon(Icons.arrow_back_ios, color: Colors.white),
-                    onPressed: () => Navigator.pop(context),
-                  ),
-                ),
                 const Gap(16),
                 Expanded(
                   child: ListView(

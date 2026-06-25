@@ -27,8 +27,8 @@ class AuthRepo {
 
       final data = doc.data() as Map<String, dynamic>;
       final member = MemberModel.fromJson(data, doc.id);
-
-      if (member.name != userName.trim()) {
+      String normalize(String s) => s.trim().replaceAll(RegExp(r'\s+'), ' ');
+      if (normalize(member.name) != normalize(userName)) {
         throw Exception('اسم المستخدم أو رقم الهاتف غير صحيح');
       }
       await LocalCacheService.setString(AppConstants.role, AppConstants.member);

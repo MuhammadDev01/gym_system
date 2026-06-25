@@ -1,28 +1,21 @@
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
 import 'package:gym_management_app/core/components/custom_text.dart';
 import 'package:gym_management_app/core/components/glass_widget.dart';
 import 'package:gym_management_app/core/theme/app_colors.dart';
-import 'package:gym_management_app/core/constants/app_assets.dart';
 import 'package:gym_management_app/features/user/profile/cubit/profile_cubit.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 
 class ProfileHeader extends StatelessWidget {
-  const ProfileHeader({
-    super.key,
-    required this.username,
-    required this.userphone,
-  });
-  final String username;
-  final String userphone;
+  const ProfileHeader({super.key});
 
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<ProfileCubit, ProfileState>(
       builder: (context, state) {
+        final cubit = context.read<ProfileCubit>();
         return Stack(
           children: [
             GlassWidget(
@@ -31,13 +24,21 @@ class ProfileHeader extends StatelessWidget {
               child: Column(
                 children: [
                   GestureDetector(
-                    onTap: () => context.read<ProfileCubit>().pickImage(),
-
+                    onTap: () => cubit.pickImage(),
                     child: Stack(
                       children: [
-                        const CircleAvatar(
+                        CircleAvatar(
                           radius: 50,
-                          backgroundImage: AssetImage(AppAssets.picProfile),
+                          backgroundImage: cubit.imageBase64 != null
+                              ? MemoryImage(base64Decode(cubit.imageBase64!))
+                              : null,
+                          child: cubit.imageBase64 == null
+                              ? const Icon(
+                                  Icons.person,
+                                  color: Colors.white38,
+                                  size: 40,
+                                )
+                              : null,
                         ),
                         _editPicIcon(),
                       ],
@@ -48,14 +49,19 @@ class ProfileHeader extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
-                          CustomText(text: username, fontSize: 20),
+                          CustomText(
+                            text: cubit.nameController.text,
+                            fontSize: 20,
+                          ),
                           const Gap(4),
-                          CustomText(text: userphone, color: Colors.white70),
+                          CustomText(
+                            text: cubit.phoneController.text,
+                            color: Colors.white70,
+                          ),
                         ],
                       ),
-                      const Gap(12),
                     ],
                   ),
                 ],
@@ -89,48 +95,35 @@ class ProfileHeader extends StatelessWidget {
   }
 
   void _showQrDialog(BuildContext context) {
-    final userData = jsonEncode({
-      'name': 'cubit.name',
-      'phone': 'cubit.phone',
-      'imagePath': "cubit.image?.path ?? ''",
-    });
-
     showDialog(
       context: context,
-      builder: (ctx) => Dialog(
-        backgroundColor: Colors.transparent,
-        child: GlassWidget(
-          child: Padding(
-            padding: const EdgeInsets.all(8),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                GestureDetector(
-                  onTap: () => Navigator.pop(ctx),
-                  child: const Icon(Icons.close, color: Colors.white70),
+      builder: (_) => Dialog(
+        backgroundColor: Colors.white,
+        child: Padding(
+          padding: EdgeInsets.all(12),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              QrImageView(
+                data: context.read<ProfileCubit>().phoneController.text,
+                version: QrVersions.auto,
+                size: 250,
+                eyeStyle: const QrEyeStyle(
+                  eyeShape: QrEyeShape.square,
+                  color: Colors.black,
                 ),
-
-                QrImageView(
-                  data: userData,
-                  version: QrVersions.auto,
-                  size: 200,
-                  eyeStyle: QrEyeStyle(
-                    eyeShape: QrEyeShape.square,
-                    color: AppColors.gold,
-                  ),
-                  dataModuleStyle: QrDataModuleStyle(
-                    dataModuleShape: QrDataModuleShape.square,
-                    color: AppColors.gold,
-                  ),
+                dataModuleStyle: const QrDataModuleStyle(
+                  dataModuleShape: QrDataModuleShape.square,
+                  color: Colors.black,
                 ),
-                const Gap(12),
-                CustomText(
-                  text: 'امسح الباركود للوصول لبيانات العضوية',
-                  fontSize: 12,
-                  color: Colors.white70,
-                ),
-              ],
-            ),
+              ),
+              const Gap(12),
+              CustomText(
+                text: 'امسح الباركود للوصول لبيانات العضوية',
+                fontSize: 12,
+                color: Colors.black,
+              ),
+            ],
           ),
         ),
       ),

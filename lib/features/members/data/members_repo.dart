@@ -75,6 +75,28 @@ class MemberRepo {
     }
   }
 
+  Future<void> updateMemberProfile({
+    required String docId,
+    required String name,
+    String? image,
+  }) async {
+    try {
+      final data = <String, dynamic>{
+        AppConstants.name: name.trim(),
+      };
+      if (image != null) {
+        data[AppConstants.image] = image;
+      }
+      await _firebaseService.updateDocument(
+        collection: 'users',
+        docId: docId,
+        data: data,
+      );
+    } on FirebaseException catch (e) {
+      throw Exception(FirebaseExceptionMessages.getFirestoreMessage(e));
+    }
+  }
+
   Future<void> deleteMember(String docId) async {
     try {
       await _firebaseService.deleteDocument(collection: 'users', docId: docId);

@@ -16,6 +16,8 @@ import 'package:gym_management_app/features/members/cubit/member_cubit.dart';
 import 'package:gym_management_app/features/user/general/cubit/gerenal_cubit.dart';
 import 'package:gym_management_app/features/auth/cubit/auth_cubit.dart';
 import 'package:gym_management_app/features/user/general/home/cubit/home_cubit.dart';
+import 'package:gym_management_app/features/user/profile/cubit/profile_cubit.dart';
+import 'package:gym_management_app/features/user/subscription/cubit/subscription_cubit.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -50,6 +52,8 @@ class GymSystemApp extends StatelessWidget {
         BlocProvider(create: (context) => getIt<AlertUserCubit>()),
         BlocProvider(create: (context) => getIt<AlertAdminCubit>()),
         BlocProvider(create: (context) => getIt<MarketAdminCubit>()),
+        BlocProvider(create: (context) => SubscriptionCubit()),
+        BlocProvider(create: (context) => ProfileCubit()),
       ],
       child: MaterialApp.router(
         debugShowCheckedModeBanner: false,

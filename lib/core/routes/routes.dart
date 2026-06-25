@@ -22,7 +22,7 @@ import 'package:gym_management_app/features/members/views/scan_member_view.dart'
 import 'package:gym_management_app/features/auth/views/auth_view.dart';
 import 'package:gym_management_app/features/user/general/views/gerenal_view.dart';
 import 'package:gym_management_app/features/user/general/home/views/home_view.dart';
-import 'package:gym_management_app/features/market/views/user/market_view.dart';
+import 'package:gym_management_app/features/market/views/user/market_user_view.dart';
 import 'package:gym_management_app/features/user/profile/views/profile_view.dart';
 import 'package:gym_management_app/features/user/settings/views/branches_view.dart';
 import 'package:gym_management_app/features/user/settings/views/settings_view.dart';
@@ -172,7 +172,7 @@ final goRouter = GoRouter(
     //* User
     GoRoute(
       path: AppRoutes.gerenalView,
-      builder: (_, _) => const Directionality(
+      builder: (_, _) => Directionality(
         textDirection: TextDirection.rtl,
         child: GerenalView(),
       ),
@@ -193,7 +193,7 @@ final goRouter = GoRouter(
     ),
     GoRoute(
       path: AppRoutes.profileView,
-      builder: (_, _) => const Directionality(
+      builder: (_, _) => Directionality(
         textDirection: TextDirection.rtl,
         child: ProfileView(),
       ),
@@ -202,7 +202,7 @@ final goRouter = GoRouter(
       path: AppRoutes.marketView,
       builder: (_, _) => const Directionality(
         textDirection: TextDirection.rtl,
-        child: MarketView(),
+        child: MarketUserView(),
       ),
     ),
     GoRoute(

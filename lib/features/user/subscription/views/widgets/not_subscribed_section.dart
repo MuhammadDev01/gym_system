@@ -18,7 +18,7 @@ class NotSubscribedSection extends StatelessWidget {
         CustomGlassAlert(
           text: 'أنت غير مشترك حالياً',
           color: AppColors.error,
-          icon: Icons.cancel_outlined,
+          icon: Icon(Icons.cancel_outlined, color: AppColors.error),
         ),
         const Gap(24),
         CustomText(

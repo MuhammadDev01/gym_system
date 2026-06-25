@@ -11,7 +11,7 @@ class CustomGlassAlert extends StatelessWidget {
   });
   final String text;
   final Color color;
-  final IconData icon;
+  final Widget icon;
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -24,7 +24,7 @@ class CustomGlassAlert extends StatelessWidget {
       ),
       child: Row(
         children: [
-          Icon(icon, color: color),
+          icon,
           const Gap(12),
           Expanded(child: CustomText(text: text, fontSize: 16)),
         ],

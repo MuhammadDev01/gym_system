@@ -60,15 +60,12 @@ class _FilterChipItem extends StatelessWidget {
         decoration: BoxDecoration(
           color: isSelected ? AppColors.gold : Colors.white,
           borderRadius: BorderRadius.circular(20),
-          border: Border.all(
-            color: AppColors.gold,
-            width: 1.5,
-          ),
+          border: Border.all(color: AppColors.gold, width: 1.5),
         ),
         child: Text(
           label,
           style: TextStyle(
-            color: isSelected ? Colors.black : AppColors.gold,
+            color: isSelected ? Colors.black : AppColors.black,
             fontWeight: FontWeight.bold,
           ),
         ),

@@ -1,15 +1,38 @@
+import 'dart:developer';
+
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:gym_management_app/core/DI/service_locator.dart';
 import 'package:gym_management_app/features/market/cubit/user/marke_user_state.dart';
 import 'package:gym_management_app/features/market/data/market_item_model.dart';
+import 'package:gym_management_app/features/market/data/market_repo.dart';
 import 'package:gym_management_app/features/market/views/user/widgets/market_item_filter.dart';
 
-class MarketUserCubit extends Cubit<MarketState> {
-  MarketUserCubit() : super(MarketInitial());
+class MarketUserCubit extends Cubit<MarketUserState> {
+  MarketUserCubit() : super(MarketInitial()) {
+    getProducts();
+  }
 
-  final List<MarketItemModel> _allItems = [];
+  List<MarketItemModel> _allItems = [];
 
   FilterType selectedFilter = FilterType.all;
   List<MarketItemModel> filteredItems = [];
+
+  Future<void> getProducts() async {
+    emit(MarketLoading());
+    try {
+      _allItems = await getIt<MarketRepo>().getAllProducts();
+      filteredItems = List.from(_allItems);
+      emit(MarketLoaded());
+      log("Get Products Done");
+    } catch (e) {
+      final msg = e.toString();
+      emit(
+        MarketError(
+          message: msg.startsWith('Exception: ') ? msg.substring(11) : msg,
+        ),
+      );
+    }
+  }
 
   void filterByType(FilterType filter) {
     selectedFilter = filter;

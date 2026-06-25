@@ -25,28 +25,30 @@ class HomeView extends StatelessWidget {
           isLoading: state is HomeLoading,
           child: state is HomeLoaded
               ? SingleChildScrollView(
-                  child: Column(
-                    spacing: 16,
-                    children: [
-                      const HomeBanner(),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 12),
-                        child: Column(
-                          spacing: 16,
-                          children: [
-                            HomeMemberInfo(
-                              member: state.member,
-                              remainingDays: state.remainingDays,
-                            ),
-                            TrainingTodaySection(
-                              isAttendToday: state.member.attendedToday,
-                              lastAttendance: state.member.lastAttendance,
-                            ),
-                            AlertSection(alerts: state.alerts),
-                          ],
+                  child: SafeArea(
+                    child: Column(
+                      spacing: 16,
+                      children: [
+                        const HomeBanner(),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 12),
+                          child: Column(
+                            spacing: 16,
+                            children: [
+                              HomeMemberInfo(
+                                member: state.member,
+                                remainingDays: state.remainingDays,
+                              ),
+                              TrainingTodaySection(
+                                isAttendToday: state.member.attendedToday,
+                                lastAttendance: state.member.lastAttendance,
+                              ),
+                              AlertSection(alerts: state.alerts),
+                            ],
+                          ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 )
               : SizedBox.shrink(),

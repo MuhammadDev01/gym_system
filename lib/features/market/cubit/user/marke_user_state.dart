@@ -1,22 +1,22 @@
 import 'package:flutter/material.dart';
 
 @immutable
-sealed class MarketState {}
+sealed class MarketUserState {}
 
-final class MarketInitial extends MarketState {}
+final class MarketInitial extends MarketUserState {}
 
-final class MarketLoaded extends MarketState {}
+final class MarketLoaded extends MarketUserState {}
 
-final class MarketLoading extends MarketState {}
+final class MarketLoading extends MarketUserState {}
 
-final class MarketItemAdded extends MarketState {}
+final class MarketItemAdded extends MarketUserState {}
 
-final class MarketItemUpdated extends MarketState {}
+final class MarketItemUpdated extends MarketUserState {}
 
-final class MarketItemDeleted extends MarketState {}
+final class MarketItemDeleted extends MarketUserState {}
 
-final class MarketError extends MarketState {
-  final String? message;
+final class MarketError extends MarketUserState {
+  final String message;
 
   MarketError({required this.message});
 }
