@@ -26,7 +26,10 @@ import 'package:gym_management_app/features/market/views/user/market_user_view.d
 import 'package:gym_management_app/features/user/profile/views/profile_view.dart';
 import 'package:gym_management_app/features/user/settings/views/branches_view.dart';
 import 'package:gym_management_app/features/user/settings/views/settings_view.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:gym_management_app/core/DI/service_locator.dart';
 import 'package:gym_management_app/features/user/settings/views/subscription_history_view.dart';
+import 'package:gym_management_app/features/user/subscription/cubit/subscription_history_cubit.dart';
 import 'package:gym_management_app/features/user/subscription/views/subscription_view.dart';
 
 final goRouter = GoRouter(
@@ -239,9 +242,12 @@ final goRouter = GoRouter(
     ),
     GoRoute(
       path: AppRoutes.subscriptionHistorySubView,
-      builder: (_, _) => const Directionality(
-        textDirection: TextDirection.rtl,
-        child: SubscriptionHistoryView(),
+      builder: (_, _) => BlocProvider(
+        create: (_) => getIt<SubscriptionHistoryCubit>(),
+        child: const Directionality(
+          textDirection: TextDirection.rtl,
+          child: SubscriptionHistoryView(),
+        ),
       ),
     ),
   ],

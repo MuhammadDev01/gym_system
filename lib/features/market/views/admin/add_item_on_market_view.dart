@@ -26,6 +26,13 @@ class AddItemOnMarketView extends StatefulWidget {
 
 class _AddItemOnMarketViewState extends State<AddItemOnMarketView> {
   final _formKey = GlobalKey<FormState>();
+  @override
+  void initState() {
+    context.read<MarketAdminCubit>().nameController.clear();
+    context.read<MarketAdminCubit>().priceController.clear();
+    context.read<MarketAdminCubit>().descController.clear();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {

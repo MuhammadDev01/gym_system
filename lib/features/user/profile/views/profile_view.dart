@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gym_management_app/core/components/custom_loading_overlay.dart';
@@ -7,7 +8,7 @@ import 'package:gym_management_app/core/components/glass_widget.dart';
 import 'package:gym_management_app/core/helper/app_snackbar.dart';
 import 'package:gym_management_app/core/theme/app_colors.dart';
 import 'package:gym_management_app/features/user/profile/cubit/profile_cubit.dart';
-import 'package:gym_management_app/features/user/profile/views/widgets/profile_header.dart';
+import 'package:gym_management_app/features/user/profile/views/widgets/qr_icon.dart';
 
 class ProfileView extends StatelessWidget {
   const ProfileView({super.key});
@@ -24,15 +25,14 @@ class ProfileView extends StatelessWidget {
         }
       },
       builder: (_, state) {
-        final cubit = context.read<ProfileCubit>();
         return CustomLoadingOverlay(
           isLoading: state is ProfileLoading,
           child: SafeArea(
             child: SingleChildScrollView(
               padding: EdgeInsets.all(12),
-              child: Column(
-                spacing: 18,
-                children: [ProfileHeader(), _profileFields(context, cubit)],
+              child: _profileHeader(
+                context,
+                cubit: context.read<ProfileCubit>(),
               ),
             ),
           ),
@@ -41,29 +41,66 @@ class ProfileView extends StatelessWidget {
     );
   }
 
-  GlassWidget _profileFields(BuildContext context, ProfileCubit cubit) {
-    return GlassWidget(
-      padding: const EdgeInsets.all(20),
-      child: Column(
-        spacing: 16,
-        crossAxisAlignment: CrossAxisAlignment.start,
+  Widget _profileHeader(BuildContext context, {required ProfileCubit cubit}) =>
+      Stack(
         children: [
-          CustomText(
-            text: 'البيانات الشخصية',
-            style: Theme.of(context).textTheme.headlineMedium,
+          GlassWidget(
+            padding: const EdgeInsets.all(20),
+            width: double.infinity,
+            child: Column(
+              spacing: 16,
+              children: [
+                GestureDetector(
+                  onTap: () => cubit.pickImage(),
+                  child: Stack(
+                    children: [
+                      CircleAvatar(
+                        radius: 50,
+                        backgroundImage: cubit.imageBase64 != null
+                            ? MemoryImage(base64Decode(cubit.imageBase64!))
+                            : null,
+                        child: cubit.imageBase64 == null
+                            ? const Icon(
+                                Icons.person,
+                                color: Colors.white38,
+                                size: 40,
+                              )
+                            : null,
+                      ),
+                      _editPicIcon(),
+                    ],
+                  ),
+                ),
+                CustomText(
+                  text: 'البيانات الشخصية',
+                  style: Theme.of(context).textTheme.headlineMedium,
+                ),
+                CustomTextField(
+                  controller: cubit.nameController,
+                  labelText: 'الاسم ثلاثي',
+                  enabled: false,
+                ),
+                CustomTextField(
+                  controller: cubit.phoneController,
+                  labelText: 'رقم الهاتف',
+                  enabled: false,
+                ),
+              ],
+            ),
           ),
-          CustomTextField(
-            controller: cubit.nameController,
-            labelText: 'الاسم ثلاثي',
-            enabled: false,
-          ),
-          CustomTextField(
-            controller: cubit.phoneController,
-            labelText: 'رقم الهاتف',
-            enabled: false,
-          ),
+          QrIcon(),
         ],
-      ),
-    );
-  }
+      );
+}
+
+Positioned _editPicIcon() {
+  return Positioned(
+    bottom: 0,
+    right: 0,
+    child: Container(
+      padding: const EdgeInsets.all(6),
+      decoration: BoxDecoration(color: AppColors.gold, shape: BoxShape.circle),
+      child: Icon(Icons.edit, size: 18, color: AppColors.black),
+    ),
+  );
 }

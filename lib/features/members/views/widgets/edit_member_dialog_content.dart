@@ -11,26 +11,28 @@ class EditMemberDialogContent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        CustomTextField(
-          controller: cubit.editNameController,
-          labelText: 'الاسم ثلاثي',
-          prefixIcon: Icons.person,
-        ),
-        const Gap(12),
-        CustomTextField(
-          controller: cubit.editPhoneController,
-          labelText: 'رقم الهاتف',
-          prefixIcon: Icons.phone,
-          textInputType: TextInputType.phone,
-        ),
-        const Gap(16),
-        Row(children: [_startDate(context), const Gap(8), _endDate(context)]),
-        const Gap(12),
-        _subscriptionType(),
-      ],
+    return SingleChildScrollView(
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          CustomTextField(
+            controller: cubit.editNameController,
+            labelText: 'الاسم ثلاثي',
+            prefixIcon: Icons.person,
+          ),
+          const Gap(12),
+          CustomTextField(
+            controller: cubit.editPhoneController,
+            labelText: 'رقم الهاتف',
+            prefixIcon: Icons.phone,
+            textInputType: TextInputType.phone,
+          ),
+          const Gap(16),
+          Row(children: [_startDate(context), const Gap(8), _endDate(context)]),
+          const Gap(12),
+          _subscriptionType(),
+        ],
+      ),
     );
   }
 

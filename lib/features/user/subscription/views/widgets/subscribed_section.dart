@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:gap/gap.dart';
-import 'package:gym_management_app/core/components/custom_button.dart';
 import 'package:gym_management_app/core/components/custom_glass_alert.dart';
 import 'package:gym_management_app/core/components/custom_text.dart';
 import 'package:gym_management_app/core/components/glass_widget.dart';
@@ -36,6 +34,7 @@ class SubscribedSection extends StatelessWidget {
         member.subscriptionEnd != null && member.subscriptionEnd!.isAfter(now);
 
     return Column(
+      spacing: 20,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         CustomGlassAlert(
@@ -45,16 +44,12 @@ class SubscribedSection extends StatelessWidget {
               ? Icon(Icons.verified, color: AppColors.success)
               : Icon(Icons.cancel_outlined, color: AppColors.error),
         ),
-        const Gap(20),
         CustomText(
           text: 'عضويتك الحالية',
           style: Theme.of(context).textTheme.headlineMedium,
         ),
-        const Gap(20),
         MemberhipCard(picCard: _cardImage),
-        const Gap(20),
         _SubscriptionInfoCard(member: member, formatDate: _formatDate),
-        const Gap(100),
       ],
     );
   }
@@ -71,7 +66,7 @@ class _SubscriptionInfoCard extends StatelessWidget {
       case 'fitness':
         return 'Fitness';
       case 'private':
-        return 'خصوصي';
+        return 'برايفت';
       default:
         return 'جيم';
     }
@@ -104,8 +99,6 @@ class _SubscriptionInfoCard extends StatelessWidget {
           ),
           const Divider(height: 24),
           _InfoRow(title: 'الأيام المتبقية', value: '$remainingDays يوم'),
-          Gap(40),
-          CustomButton(onPressed: () {}, text: 'اشتراك'),
         ],
       ),
     );

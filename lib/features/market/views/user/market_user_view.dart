@@ -47,7 +47,7 @@ class MarketUserView extends StatelessWidget {
                                   gridDelegate:
                                       const SliverGridDelegateWithFixedCrossAxisCount(
                                         crossAxisCount: 2,
-                                        childAspectRatio: 0.75,
+                                        childAspectRatio: 0.85,
                                         mainAxisSpacing: 8,
                                         crossAxisSpacing: 8,
                                       ),

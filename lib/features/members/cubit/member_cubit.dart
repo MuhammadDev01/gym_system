@@ -1,14 +1,28 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:gym_management_app/core/DI/service_locator.dart';
 import 'package:gym_management_app/features/members/data/member_model.dart';
 import 'package:gym_management_app/features/members/cubit/member_state.dart';
 import 'package:gym_management_app/features/members/data/members_repo.dart';
+import 'package:gym_management_app/features/user/subscription/data/subscription_history_model.dart';
+import 'package:gym_management_app/features/user/subscription/data/subscription_history_repo.dart';
 
 class MemberCubit extends Cubit<MemberState> {
   MemberCubit(this._memberRepo) : super(MemberInitial());
   final MemberRepo _memberRepo;
   final nameController = TextEditingController();
   final phoneController = TextEditingController();
+
+  static int _pricePerMonth(String type) {
+    switch (type) {
+      case 'fitness':
+        return 400;
+      case 'private':
+        return 500;
+      default:
+        return 300;
+    }
+  }
 
   int selectedMonths = 1;
   String selectedType = 'gym';
@@ -33,6 +47,24 @@ class MemberCubit extends Cubit<MemberState> {
         subscriptionMonths: selectedMonths,
         subscriptionType: selectedType,
       );
+
+      final now = DateTime.now();
+      final end = DateTime(now.year, now.month + selectedMonths, now.day);
+      final record = SubscriptionHistoryModel(
+        id: '',
+        userId: phoneController.text.trim(),
+        userName: nameController.text.trim(),
+        userPhone: phoneController.text.trim(),
+        months: selectedMonths,
+        type: selectedType,
+        price: _pricePerMonth(selectedType) * selectedMonths,
+        startDate: now,
+        endDate: end,
+        createdAt: now,
+      );
+      await getIt<SubscriptionHistoryRepo>().addRecord(record);
+      await getIt<SubscriptionHistoryRepo>().deleteOldRecords();
+
       nameController.clear();
       phoneController.clear();
       selectedMonths = 1;
@@ -130,6 +162,23 @@ class MemberCubit extends Cubit<MemberState> {
         subscriptionStart: editStartDate,
         subscriptionEnd: editEndDate,
       );
+
+      final now = DateTime.now();
+      final record = SubscriptionHistoryModel(
+        id: '',
+        userId: editTarget!.id,
+        userName: editNameController.text.trim(),
+        userPhone: editPhoneController.text.trim(),
+        months: editMonths,
+        type: editType,
+        price: _pricePerMonth(editType) * editMonths,
+        startDate: editStartDate ?? now,
+        endDate: editEndDate ?? now,
+        createdAt: now,
+      );
+      await getIt<SubscriptionHistoryRepo>().addRecord(record);
+      await getIt<SubscriptionHistoryRepo>().deleteOldRecords();
+
       await getAllMembers();
       emit(MemberUpdatedState());
     } catch (e) {

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:gym_management_app/core/components/custom_text.dart';
+import 'package:gym_management_app/core/components/glass_appbar.dart';
 import 'package:gym_management_app/core/theme/app_colors.dart';
 import 'package:gym_management_app/core/constants/app_assets.dart';
 
@@ -11,6 +12,7 @@ class BranchesView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.transparent,
+      appBar: GlassAppBar(title: "الفروع"),
       body: Container(
         decoration: const BoxDecoration(
           image: DecorationImage(

@@ -36,6 +36,7 @@ class _EditMemberViewState extends State<EditMemberView> {
     return AppBackground(
       child: Scaffold(
         backgroundColor: Colors.transparent,
+        resizeToAvoidBottomInset: false,
         appBar: GlassAppBar(title: 'تعديل بيانات مشترك'),
         body: BlocConsumer<MemberCubit, MemberState>(
           listener: (_, state) {

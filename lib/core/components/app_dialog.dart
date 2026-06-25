@@ -47,6 +47,7 @@ void showEditDialog(
       textDirection: TextDirection.rtl,
 
       child: AlertDialog(
+        actionsPadding: EdgeInsets.all(12),
         actions: _editMemberActions(
           onconfirmDelete: onConfirmDelete,
           onconfirmUpdate: onConfirmUpdate,
@@ -68,19 +69,28 @@ List<Widget> _editMemberActions(
   required String title,
 }) {
   return [
-    CustomButton(
-      text: 'حذف',
-      colorButton: AppColors.snackError,
-      colorText: Colors.white,
-      onPressed: () =>
-          showDeleteConfirm(onConfirm: onconfirmDelete, context, title: title),
+    Expanded(
+      child: CustomButton(
+        text: 'حذف',
+        colorButton: AppColors.snackError,
+        colorText: Colors.white,
+        onPressed: () => showDeleteConfirm(
+          onConfirm: onconfirmDelete,
+          context,
+          title: title,
+        ),
+      ),
     ),
-    CustomButton(text: 'إلغاء', onPressed: () => context.pop()),
-    CustomButton(
-      text: 'حفظ',
-      colorText: Colors.white,
-      colorButton: AppColors.success,
-      onPressed: onconfirmUpdate,
+    Expanded(
+      child: CustomButton(text: 'إلغاء', onPressed: () => context.pop()),
+    ),
+    Expanded(
+      child: CustomButton(
+        text: 'حفظ',
+        colorText: Colors.white,
+        colorButton: AppColors.success,
+        onPressed: onconfirmUpdate,
+      ),
     ),
   ];
 }

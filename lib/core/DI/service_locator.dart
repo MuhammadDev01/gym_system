@@ -9,6 +9,8 @@ import 'package:gym_management_app/features/market/cubit/user/market_user_cubit.
 import 'package:gym_management_app/features/market/data/market_repo.dart';
 import 'package:gym_management_app/features/members/cubit/member_cubit.dart';
 import 'package:gym_management_app/features/members/data/members_repo.dart';
+import 'package:gym_management_app/features/user/subscription/cubit/subscription_history_cubit.dart';
+import 'package:gym_management_app/features/user/subscription/data/subscription_history_repo.dart';
 import 'package:gym_management_app/features/auth/cubit/auth_cubit.dart';
 import 'package:gym_management_app/features/auth/data/auth_repo.dart';
 import 'package:gym_management_app/features/user/general/cubit/gerenal_cubit.dart';
@@ -53,6 +55,14 @@ void serviceLocatorSetup() {
   );
   getIt.registerFactory<MarketAdminCubit>(
     () => MarketAdminCubit(getIt<MarketRepo>()),
+  );
+
+  // subscription history
+  getIt.registerLazySingleton<SubscriptionHistoryRepo>(
+    () => SubscriptionHistoryRepo(getIt<FirebaseService>()),
+  );
+  getIt.registerFactory<SubscriptionHistoryCubit>(
+    () => SubscriptionHistoryCubit(getIt<SubscriptionHistoryRepo>()),
   );
 
   //* USER

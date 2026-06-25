@@ -17,85 +17,68 @@ class MarketItemGridBuilder extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () => context.push(AppRoutes.marketItemDetailView, extra: item),
-      child: Container(
-        decoration: BoxDecoration(
-          color: Colors.transparent,
-          borderRadius: BorderRadius.circular(12),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black.withValues(alpha: 0.08),
-              blurRadius: 8,
-              offset: const Offset(0, 2),
-            ),
-          ],
-        ),
-        child: GlassWidget(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              ClipRRect(
+      child: GlassWidget(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Expanded(
+              child: ClipRRect(
                 borderRadius: const BorderRadius.vertical(
                   top: Radius.circular(12),
                 ),
-                child: Flexible(
-                  child: Image.memory(
-                    base64Decode(item.image),
-                    width: double.infinity,
-                    height: 150,
-                    fit: BoxFit.cover,
-                  ),
+                child: Image.memory(
+                  base64Decode(item.image),
+                  width: double.infinity,
+                  fit: BoxFit.cover,
                 ),
               ),
-              Padding(
-                padding: const EdgeInsets.all(10),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    CustomText(
-                      text: item.name,
-                      maxLines: 1,
-                      textOverflow: TextOverflow.ellipsis,
-                    ),
-                    Gap(4),
-                    CustomText(
-                      text: item.description,
-                      color: AppColors.gray.withValues(alpha: 0.5),
-                      maxLines: 2,
-                      textOverflow: TextOverflow.ellipsis,
-                    ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(10),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  CustomText(
+                    text: item.name,
+                    maxLines: 1,
+                    textOverflow: TextOverflow.ellipsis,
+                  ),
+                  Gap(4),
+                  CustomText(
+                    text: item.description,
+                    color: AppColors.gray.withValues(alpha: 0.5),
+                    maxLines: 2,
+                    textOverflow: TextOverflow.ellipsis,
+                  ),
 
-                    Gap(8),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        CustomText(
-                          text: '${item.price} ج.م',
+                  Gap(8),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      CustomText(
+                        text: '${item.price} ج.م',
+                        color: AppColors.gold,
+                      ),
+                      Container(
+                        padding: const EdgeInsets.all(6),
+                        decoration: BoxDecoration(
+                          color: AppColors.gold.withValues(alpha: 0.1),
+                          borderRadius: BorderRadius.circular(6),
+                        ),
+                        child: CustomText(
+                          text: item.type == ItemType.supplement
+                              ? 'مكمل'
+                              : 'أداة',
+                          fontSize: 10,
                           color: AppColors.gold,
                         ),
-                        Container(
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 6,
-                            vertical: 3,
-                          ),
-                          decoration: BoxDecoration(
-                            color: AppColors.gold.withValues(alpha: 0.1),
-                            borderRadius: BorderRadius.circular(6),
-                          ),
-                          child: Text(
-                            item.type == ItemType.supplement ? 'مكمل' : 'أداة',
-                            style: TextStyle(
-                              fontSize: 10,
-                              color: AppColors.gold,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
+                      ),
+                    ],
+                  ),
+                ],
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );
