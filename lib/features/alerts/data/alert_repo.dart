@@ -90,7 +90,7 @@ class AlertRepo {
       );
       try {
         await GetIt.I<FcmService>().sendNotification(
-          title: 'إعلان جديد',
+          title: 'عرض لفترة محدودة',
           body: message.trim(),
         );
       } catch (_) {}

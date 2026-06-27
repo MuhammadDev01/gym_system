@@ -1,14 +1,40 @@
 import 'dart:convert';
+import 'package:flutter/services.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:googleapis_auth/auth_io.dart' as auth;
 import 'package:http/http.dart' as http;
-import 'package:gym_management_app/core/constants/app_constants.dart';
 import 'package:gym_management_app/core/service/network/firebase_service.dart';
 
 class FcmService {
   final FirebaseService _firebaseService;
   final FirebaseMessaging _messaging = FirebaseMessaging.instance;
+  static const String _projectId = 'gym-system-5e7e5';
+  auth.ServiceAccountCredentials? _credentials;
 
   FcmService(this._firebaseService);
+
+  Future<auth.ServiceAccountCredentials> _getCredentials() async {
+    if (_credentials != null) return _credentials!;
+    final jsonStr = await rootBundle.loadString('assets/cloud_messages.json');
+    final json = jsonDecode(jsonStr) as Map<String, dynamic>;
+    _credentials = auth.ServiceAccountCredentials.fromJson(json);
+    return _credentials!;
+  }
+
+  Future<String> _getAccessToken() async {
+    final creds = await _getCredentials();
+    final client = http.Client();
+    try {
+      final credsWithToken = await auth.obtainAccessCredentialsViaServiceAccount(
+        creds,
+        ['https://www.googleapis.com/auth/firebase.messaging'],
+        client,
+      );
+      return credsWithToken.accessToken.data;
+    } finally {
+      client.close();
+    }
+  }
 
   Future<void> initialize() async {
     await _messaging.requestPermission(
@@ -48,27 +74,36 @@ class FcmService {
     required String title,
     required String body,
   }) async {
-    final serverKey = AppConstants.fcmServerKey;
-    if (serverKey.isEmpty) return;
-
     try {
-      await http.post(
-        Uri.parse('https://fcm.googleapis.com/fcm/send'),
+      final accessToken = await _getAccessToken();
+      final response = await http.post(
+        Uri.parse(
+          'https://fcm.googleapis.com/v1/projects/$_projectId/messages:send',
+        ),
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': 'key=$serverKey',
+          'Authorization': 'Bearer $accessToken',
         },
         body: jsonEncode({
-          'to': '/topics/allMembers',
-          'notification': {
-            'title': title,
-            'body': body,
-          },
-          'data': {
-            'type': 'alert',
+          'message': {
+            'topic': 'allMembers',
+            'notification': {
+              'title': title,
+              'body': body,
+            },
+            'data': {
+              'type': 'alert',
+            },
           },
         }),
       );
-    } catch (_) {}
+      if (response.statusCode != 200) {
+        // ignore: avoid_print
+        print('FCM Error ${response.statusCode}: ${response.body}');
+      }
+    } catch (e) {
+      // ignore: avoid_print
+      print('FCM Exception: $e');
+    }
   }
 }

@@ -8,7 +8,7 @@ class ThemeApp {
     fontFamily: AppConstants.cairoFont,
 
     //*scaffold
-    scaffoldBackgroundColor: Color(0xff282A36),
+    scaffoldBackgroundColor: Colors.transparent,
     textTheme: TextTheme(
       headlineMedium: TextStyle(
         fontSize: 18,
@@ -26,9 +26,10 @@ class ThemeApp {
     appBarTheme: AppBarTheme(
       systemOverlayStyle: SystemUiOverlayStyle(
         statusBarColor: Colors.white,
+        statusBarIconBrightness: Brightness.light,
         statusBarBrightness: Brightness.light,
       ),
-      backgroundColor: AppColors.black,
+      backgroundColor: Colors.white,
       iconTheme: IconThemeData(color: Colors.white),
     ),
 

@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gym_management_app/core/DI/service_locator.dart';
 import 'package:gym_management_app/features/market/cubit/user/marke_user_state.dart';
@@ -9,7 +7,9 @@ import 'package:gym_management_app/features/market/views/user/widgets/market_ite
 
 class MarketUserCubit extends Cubit<MarketUserState> {
   MarketUserCubit() : super(MarketInitial()) {
-    getProducts();
+    if (_allItems.isEmpty) {
+      getProducts();
+    }
   }
 
   List<MarketItemModel> _allItems = [];
@@ -21,9 +21,10 @@ class MarketUserCubit extends Cubit<MarketUserState> {
     emit(MarketLoading());
     try {
       _allItems = await getIt<MarketRepo>().getAllProducts();
+      if (isClosed) return;
       filteredItems = List.from(_allItems);
+
       emit(MarketLoaded());
-      log("Get Products Done");
     } catch (e) {
       final msg = e.toString();
       emit(

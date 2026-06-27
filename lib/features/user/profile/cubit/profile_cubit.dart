@@ -13,16 +13,19 @@ part 'profile_state.dart';
 
 class ProfileCubit extends Cubit<ProfileState> {
   ProfileCubit() : super(ProfileInitial()) {
-    _init();
+    if (member == null) {
+      getProfile();
+    }
   }
 
   final nameController = TextEditingController();
   final phoneController = TextEditingController();
   String? imageBase64;
-  MemberModel? _member;
+  MemberModel? member;
 
-  Future<void> _init() async {
+  Future<void> getProfile() async {
     emit(ProfileLoading());
+
     try {
       final phone = LocalCacheService.getString(AppConstants.token);
       if (phone == null || phone.isEmpty) {
@@ -30,14 +33,16 @@ class ProfileCubit extends Cubit<ProfileState> {
         return;
       }
       final member = await getIt<MemberRepo>().getMemberByPhone(phone);
+      if (isClosed) return;
       if (member == null) {
         emit(ProfileError('لم يتم العثور على المشترك'));
         return;
       }
-      _member = member;
+      this.member = member;
       nameController.text = member.name;
       phoneController.text = member.phone;
       imageBase64 = member.image.isNotEmpty ? member.image : null;
+
       emit(ProfileLoaded(member: member));
     } catch (e) {
       final msg = e.toString();
@@ -56,23 +61,19 @@ class ProfileCubit extends Cubit<ProfileState> {
     if (image != null) {
       final bytes = await File(image.path).readAsBytes();
       imageBase64 = base64Encode(bytes);
-      emit(ProfileLoaded(member: _member!));
+      emit(ProfileLoaded(member: member!));
     }
   }
 
   Future<void> updateProfile() async {
-    if (_member == null) return;
+    if (member == null) return;
     emit(ProfileLoading());
     try {
       await getIt<MemberRepo>().updateMemberProfile(
-        docId: _member!.id,
-        name: nameController.text.trim(),
+        docId: member!.id,
         image: imageBase64,
       );
-      _member = _member!.copyWith(
-        name: nameController.text.trim(),
-        image: imageBase64,
-      );
+      member = member!.copyWith(image: imageBase64);
       emit(ProfileUpdated());
     } catch (e) {
       final msg = e.toString();

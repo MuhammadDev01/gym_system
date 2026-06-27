@@ -77,13 +77,10 @@ class MemberRepo {
 
   Future<void> updateMemberProfile({
     required String docId,
-    required String name,
     String? image,
   }) async {
     try {
-      final data = <String, dynamic>{
-        AppConstants.name: name.trim(),
-      };
+      final data = <String, dynamic>{};
       if (image != null) {
         data[AppConstants.image] = image;
       }

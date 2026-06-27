@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:gap/gap.dart';
-import 'package:gym_management_app/core/extentions/navigator_extention.dart';
+import 'package:go_router/go_router.dart';
+import 'package:gym_management_app/core/DI/service_locator.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
 import 'package:gym_management_app/core/components/app_background.dart';
 import 'package:gym_management_app/core/components/custom_button.dart';
@@ -127,36 +128,39 @@ class _MemberScannerPageState extends State<_MemberScannerPage> {
       child: Scaffold(
         backgroundColor: Colors.transparent,
         appBar: GlassAppBar(title: 'مسح الكود'),
-        body: BlocConsumer<MemberCubit, MemberState>(
-          listener: (_, state) {
-            if (state is MemberAttendanceMarked) {
-              appSnackbar(
-                context,
-                'تم تسجيل حضورك بنجاح',
-                color: AppColors.success,
-              );
-              context.read<HomeCubit>().reload();
-              context.pop();
-            } else if (state is MemberErrorState) {
-              appSnackbar(context, state.message);
-              _resetScanner();
-            }
-          },
-          builder: (_, _) => Column(
-            children: [
-              Expanded(
-                child: MobileScanner(
-                  controller: _scannerController,
-                  onDetect: _onDetect,
+        body: BlocProvider(
+          create: (context) => getIt<MemberCubit>(),
+          child: BlocConsumer<MemberCubit, MemberState>(
+            listener: (_, state) {
+              if (state is MemberAttendanceMarked) {
+                appSnackbar(
+                  context,
+                  'تم تسجيل حضورك بنجاح',
+                  color: AppColors.success,
+                );
+                context.read<HomeCubit>().reload();
+                context.pop();
+              } else if (state is MemberErrorState) {
+                appSnackbar(context, state.message);
+                _resetScanner();
+              }
+            },
+            builder: (_, _) => Column(
+              children: [
+                Expanded(
+                  child: MobileScanner(
+                    controller: _scannerController,
+                    onDetect: _onDetect,
+                  ),
                 ),
-              ),
-              Container(
-                padding: const EdgeInsets.all(24),
-                child: const CustomText(
-                  text: 'قم بتوجيه الكاميرا نحو QR code الخاص بالتسجيل',
+                Container(
+                  padding: const EdgeInsets.all(24),
+                  child: const CustomText(
+                    text: 'قم بتوجيه الكاميرا نحو QR code الخاص بالتسجيل',
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),

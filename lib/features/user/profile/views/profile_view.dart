@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:gym_management_app/core/DI/service_locator.dart';
 import 'package:gym_management_app/core/components/custom_loading_overlay.dart';
 import 'package:gym_management_app/core/components/custom_text.dart';
 import 'package:gym_management_app/core/components/custom_text_field.dart';
@@ -15,29 +16,32 @@ class ProfileView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<ProfileCubit, ProfileState>(
-      listener: (_, state) {
-        if (state is ProfileUpdated) {
-          appSnackbar(context, 'تم حفظ التغييرات', color: AppColors.success);
-        }
-        if (state is ProfileError) {
-          appSnackbar(context, state.message);
-        }
-      },
-      builder: (_, state) {
-        return CustomLoadingOverlay(
-          isLoading: state is ProfileLoading,
-          child: SafeArea(
-            child: SingleChildScrollView(
-              padding: EdgeInsets.all(12),
-              child: _profileHeader(
-                context,
-                cubit: context.read<ProfileCubit>(),
+    return BlocProvider(
+      create: (context) => getIt<ProfileCubit>(),
+      child: BlocConsumer<ProfileCubit, ProfileState>(
+        listener: (context, state) {
+          if (state is ProfileUpdated) {
+            appSnackbar(context, 'تم حفظ التغييرات', color: AppColors.success);
+          }
+          if (state is ProfileError) {
+            appSnackbar(context, state.message);
+          }
+        },
+        builder: (context, state) {
+          return CustomLoadingOverlay(
+            isLoading: state is ProfileLoading,
+            child: SafeArea(
+              child: SingleChildScrollView(
+                padding: EdgeInsets.all(12),
+                child: _profileHeader(
+                  context,
+                  cubit: context.read<ProfileCubit>(),
+                ),
               ),
             ),
-          ),
-        );
-      },
+          );
+        },
+      ),
     );
   }
 

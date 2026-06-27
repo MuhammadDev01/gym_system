@@ -5,28 +5,37 @@ import 'package:gym_management_app/core/service/local/local_cache_service.dart';
 import 'package:gym_management_app/features/alerts/data/alert_repo.dart';
 import 'package:gym_management_app/features/members/data/members_repo.dart';
 import 'package:gym_management_app/features/user/general/home/cubit/home_state.dart';
-import 'package:gym_management_app/core/DI/service_locator.dart';
 
 class HomeCubit extends Cubit<HomeState> {
-  HomeCubit() : super(HomeInitial()) {
-    _init();
+  HomeCubit(MemberRepo memberRepo, AlertRepo alertRepo)
+    : _alertRepo = alertRepo,
+      _memberRepo = memberRepo,
+      super(HomeInitial()) {
+    if (data == null) {
+      _init();
+    }
   }
+  final MemberRepo? _memberRepo;
+  final AlertRepo? _alertRepo;
 
   Timer? _timer;
-
+  HomeLoaded? data;
   void _init() async {
     emit(HomeLoading());
     try {
       await _loadData();
+      if (isClosed) return;
       _timer = Timer.periodic(const Duration(minutes: 1), (_) {
         if (state is HomeLoaded) {
-          final loaded = state as HomeLoaded;
-          final days = _calcRemainingDays(loaded.member.subscriptionEnd);
-          emit(HomeLoaded(
-            member: loaded.member,
-            alerts: loaded.alerts,
-            remainingDays: days,
-          ));
+          data = state as HomeLoaded?;
+          final days = _calcRemainingDays(data!.member.subscriptionEnd);
+          emit(
+            HomeLoaded(
+              member: data!.member,
+              alerts: data!.alerts,
+              remainingDays: days,
+            ),
+          );
         }
       });
     } catch (e) {
@@ -42,25 +51,22 @@ class HomeCubit extends Cubit<HomeState> {
       return;
     }
 
-    final memberRepo = getIt<MemberRepo>();
-    final member = await memberRepo.getMemberByPhone(phone);
-
+    final member = await _memberRepo?.getMemberByPhone(phone);
+    if (isClosed) return;
     if (member == null) {
       emit(HomeError('لم يتم العثور على المشترك'));
       return;
     }
 
-    final alertRepo = getIt<AlertRepo>();
-    final allAlerts = await alertRepo.getAllAlerts();
-    final alerts = allAlerts.where((a) => !a.isExpired).toList();
+    final allAlerts = await _alertRepo?.getAllAlerts();
+    if (isClosed) return;
+    final alerts = allAlerts?.where((a) => !a.isExpired).toList();
 
     final remainingDays = _calcRemainingDays(member.subscriptionEnd);
 
-    emit(HomeLoaded(
-      member: member,
-      alerts: alerts,
-      remainingDays: remainingDays,
-    ));
+    emit(
+      HomeLoaded(member: member, alerts: alerts!, remainingDays: remainingDays),
+    );
   }
 
   int _calcRemainingDays(DateTime? subscriptionEnd) {
@@ -73,6 +79,7 @@ class HomeCubit extends Cubit<HomeState> {
     emit(HomeLoading());
     try {
       await _loadData();
+      if (isClosed) return;
     } catch (e) {
       final msg = e.toString();
       emit(HomeError(msg.startsWith('Exception: ') ? msg.substring(11) : msg));
