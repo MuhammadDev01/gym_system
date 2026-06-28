@@ -33,7 +33,7 @@ class SubscriptionView extends StatelessWidget {
                     Gap(18),
                     state is SubscriptionLoading
                         ? SizedBox.shrink()
-                        : state is SubscriptionLoaded && !state.isSubscribed
+                        :                         state is SubscriptionLoaded && state.isSubscribed
                         ? SubscribedSection(member: state.member)
                         : NotSubscribedSection(),
                   ],

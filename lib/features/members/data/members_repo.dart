@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:gym_management_app/core/constants/app_constants.dart';
 import 'package:gym_management_app/features/members/data/member_model.dart';
+import 'package:gym_management_app/features/members/data/attendance_model.dart';
 import 'package:gym_management_app/core/service/network/firebase_exceptions.dart';
 import 'package:gym_management_app/core/service/network/firebase_service.dart';
 
@@ -97,6 +98,110 @@ class MemberRepo {
   Future<void> deleteMember(String docId) async {
     try {
       await _firebaseService.deleteDocument(collection: 'users', docId: docId);
+    } on FirebaseException catch (e) {
+      throw Exception(FirebaseExceptionMessages.getFirestoreMessage(e));
+    }
+  }
+
+  Future<void> recordAttendance({
+    required String userId,
+    required String userName,
+    required String userPhone,
+  }) async {
+    try {
+      final now = DateTime.now();
+      final dateStr = '${now.year}-${now.month.toString().padLeft(2, '0')}-${now.day.toString().padLeft(2, '0')}';
+      await _firebaseService.addDocument(
+        collection: 'attendance',
+        data: {
+          'userId': userId,
+          'userName': userName,
+          'userPhone': userPhone,
+          'timestamp': Timestamp.fromDate(now),
+          'date': dateStr,
+        },
+      );
+      await _firebaseService.updateDocument(
+        collection: 'users',
+        docId: userId,
+        data: {'lastAttendance': Timestamp.fromDate(now)},
+      );
+    } on FirebaseException catch (e) {
+      throw Exception(FirebaseExceptionMessages.getFirestoreMessage(e));
+    }
+  }
+
+  Future<bool> hasAttendedToday(String phone) async {
+    try {
+      final now = DateTime.now();
+      final dateStr = '${now.year}-${now.month.toString().padLeft(2, '0')}-${now.day.toString().padLeft(2, '0')}';
+      final result = await _firebaseService.queryCollection(
+        collection: 'attendance',
+        field: 'date',
+        isEqualTo: dateStr,
+      );
+      return result.docs.any((doc) {
+        final data = doc.data() as Map<String, dynamic>;
+        return data['userPhone'] == phone.trim();
+      });
+    } on FirebaseException catch (e) {
+      throw Exception(FirebaseExceptionMessages.getFirestoreMessage(e));
+    }
+  }
+
+  Future<void> deleteAttendanceRecord(String docId) async {
+    try {
+      await _firebaseService.deleteDocument(
+        collection: 'attendance',
+        docId: docId,
+      );
+    } on FirebaseException catch (e) {
+      throw Exception(FirebaseExceptionMessages.getFirestoreMessage(e));
+    }
+  }
+
+  Future<List<AttendanceRecord>> getAttendanceByPhone(String phone) async {
+    try {
+      final result = await _firebaseService.queryCollection(
+        collection: 'attendance',
+        field: 'userPhone',
+        isEqualTo: phone.trim(),
+      );
+      return result.docs.map((doc) {
+        final data = doc.data() as Map<String, dynamic>;
+        return AttendanceRecord.fromJson(data, doc.id);
+      }).toList();
+    } on FirebaseException catch (e) {
+      throw Exception(FirebaseExceptionMessages.getFirestoreMessage(e));
+    }
+  }
+
+  Future<void> cleanupOldAttendance() async {
+    try {
+      final cutoff = DateTime.now().subtract(const Duration(days: 30));
+      final result = await _firebaseService.queryCollectionLessThan(
+        collection: 'attendance',
+        field: 'timestamp',
+        isLessThan: Timestamp.fromDate(cutoff),
+      );
+      for (final doc in result.docs) {
+        await _firebaseService.deleteDocument(
+          collection: 'attendance',
+          docId: doc.id,
+        );
+      }
+    } on FirebaseException catch (e) {
+      throw Exception(FirebaseExceptionMessages.getFirestoreMessage(e));
+    }
+  }
+
+  Future<void> markAttendance(String docId, DateTime time) async {
+    try {
+      await _firebaseService.updateDocument(
+        collection: 'users',
+        docId: docId,
+        data: {'lastAttendance': Timestamp.fromDate(time)},
+      );
     } on FirebaseException catch (e) {
       throw Exception(FirebaseExceptionMessages.getFirestoreMessage(e));
     }

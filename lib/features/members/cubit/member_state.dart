@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gym_management_app/features/members/data/attendance_model.dart';
 import 'package:gym_management_app/features/members/data/member_model.dart';
 
 @immutable
@@ -28,9 +29,19 @@ final class MemberLoadedState extends MemberState {
 
 final class MemberEditFormState extends MemberState {}
 
+final class MemberFoundState extends MemberState {
+  final MemberModel member;
+  MemberFoundState({required this.member});
+}
+
 final class MemberScannedState extends MemberState {
   final MemberModel member;
   MemberScannedState({required this.member});
 }
 
 final class MemberAttendanceMarked extends MemberState {}
+
+final class AttendanceHistoryLoaded extends MemberState {
+  final List<AttendanceRecord> records;
+  AttendanceHistoryLoaded({required this.records});
+}

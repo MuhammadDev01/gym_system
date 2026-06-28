@@ -11,10 +11,11 @@ class AdminViewHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GlassWidget(
-      padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 32),
+      padding: const EdgeInsets.symmetric(vertical: 16),
       child: Column(
+        mainAxisSize: MainAxisSize.min,
         children: [
-          Image.asset(AppAssets.logo, height: 80),
+          Image.asset(AppAssets.logo),
           const Gap(16),
           CustomText(text: 'لوحة التحكم', fontSize: 24, color: AppColors.gold),
         ],

@@ -11,6 +11,7 @@ import 'package:gym_management_app/core/helper/app_snackbar.dart';
 import 'package:gym_management_app/core/theme/app_colors.dart';
 import 'package:gym_management_app/features/members/cubit/member_cubit.dart';
 import 'package:gym_management_app/features/members/cubit/member_state.dart';
+import 'package:gym_management_app/features/members/data/member_model.dart';
 import 'package:gym_management_app/features/members/views/widgets/edit_member_dialog_content.dart';
 import 'package:gym_management_app/features/members/views/widgets/member_item_builder.dart';
 import 'package:gym_management_app/features/members/views/widgets/member_search_bar.dart';
@@ -23,12 +24,11 @@ class EditMemberView extends StatefulWidget {
 }
 
 class _EditMemberViewState extends State<EditMemberView> {
+  List<MemberModel> _members = [];
   @override
   void initState() {
     super.initState();
-    if (context.read<MemberCubit>().members.isEmpty) {
-      context.read<MemberCubit>().getAllMembers();
-    }
+    context.read<MemberCubit>().getAllMembers();
   }
 
   @override
@@ -50,11 +50,12 @@ class _EditMemberViewState extends State<EditMemberView> {
               appSnackbar(context, 'تم الحذف بنجاح', color: AppColors.success);
             } else if (state is MemberErrorState) {
               appSnackbar(context, state.message);
+            } else if (state is MemberLoadedState) {
+              _members = state.members;
             }
           },
           builder: (_, state) {
             final cubit = context.read<MemberCubit>();
-
             return Column(
               children: [
                 MemberSearchBar(),
@@ -63,24 +64,24 @@ class _EditMemberViewState extends State<EditMemberView> {
                     padding: const EdgeInsets.all(12),
                     child: CustomLoadingOverlay(
                       isLoading: state is MemberLoadingState,
-                      child: cubit.members.isNotEmpty
+                      child: _members.isNotEmpty
                           ? ListView.separated(
-                              itemCount: cubit.members.length,
+                              itemCount: _members.length,
                               separatorBuilder: (_, _) => const Gap(16),
                               itemBuilder: (_, index) {
                                 return GestureDetector(
                                   onTap: () {
-                                    cubit.startEdit(cubit.members[index]);
+                                    cubit.startEdit(_members[index]);
                                     showEditDialog(
                                       context,
-                                      onConfirmDelete: () {
+                                      onConfirmDelete: () async {
                                         context.pop();
                                         context.pop();
-                                        cubit.deleteMember();
+                                        await cubit.deleteMember();
                                       },
-                                      onConfirmUpdate: () {
+                                      onConfirmUpdate: () async {
                                         context.pop();
-                                        cubit.updateMember();
+                                        await cubit.updateMember();
                                       },
                                       deleteTitle:
                                           'هل تود حذف المشترك بشكل نهائي؟',
@@ -92,7 +93,7 @@ class _EditMemberViewState extends State<EditMemberView> {
                                   },
 
                                   child: MemberItemBuilder(
-                                    member: cubit.members[index],
+                                    member: _members[index],
                                   ),
                                 );
                               },

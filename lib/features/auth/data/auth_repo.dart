@@ -63,8 +63,12 @@ class AuthRepo {
     }
   }
 
-  Future<void> logout() async {
+  Future<void> logoutAdmin() async {
     await _firebaseService.signOut();
+    await LocalCacheService.clear();
+  }
+
+  Future<void> logoutMember() async {
     await LocalCacheService.clear();
   }
 }

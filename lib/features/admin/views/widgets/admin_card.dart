@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:gap/gap.dart';
 import 'package:gym_management_app/core/components/custom_text.dart';
 import 'package:gym_management_app/core/components/glass_widget.dart';
 import 'package:gym_management_app/core/theme/app_colors.dart';
@@ -24,11 +25,12 @@ class AdminCard extends StatelessWidget {
     return GestureDetector(
       onTap: onTap,
       child: GlassWidget(
+        borderRaduis: 8,
         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
         child: Row(
           children: [
             FaIcon(icon, color: iconColor ?? AppColors.gold),
-            const SizedBox(width: 16),
+            Gap(16),
             CustomText(text: title, fontSize: 17, color: color),
             const Spacer(),
             Icon(

@@ -8,7 +8,6 @@ import 'package:gym_management_app/features/user/general/home/cubit/home_state.d
 import 'package:gym_management_app/features/user/general/home/views/widgets/announcement_section.dart';
 import 'package:gym_management_app/features/user/general/home/views/widgets/home_banner.dart';
 import 'package:gym_management_app/features/user/general/home/views/widgets/home_member_info.dart';
-import 'package:gym_management_app/features/user/general/home/views/widgets/training_today_section.dart';
 
 class HomeView extends StatelessWidget {
   const HomeView({super.key});
@@ -42,10 +41,7 @@ class HomeView extends StatelessWidget {
                                   member: state.member,
                                   remainingDays: state.remainingDays,
                                 ),
-                                TrainingTodaySection(
-                                  isAttendToday: state.member.attendedToday,
-                                  lastAttendance: state.member.lastAttendance,
-                                ),
+
                                 AlertSection(alerts: state.alerts),
                               ],
                             ),

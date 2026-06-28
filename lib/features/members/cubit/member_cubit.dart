@@ -27,6 +27,13 @@ class MemberCubit extends Cubit<MemberState> {
   int selectedMonths = 1;
   String selectedType = 'gym';
 
+  void init() {
+    nameController.clear();
+    phoneController.clear();
+    setMonths(1);
+    setType('gym');
+  }
+
   void setMonths(int months) {
     selectedMonths = months;
     emit(MemberSelectedState());
@@ -64,7 +71,7 @@ class MemberCubit extends Cubit<MemberState> {
       );
       await getIt<SubscriptionHistoryRepo>().addRecord(record);
       await getIt<SubscriptionHistoryRepo>().deleteOldRecords();
-
+      if (isClosed) return;
       nameController.clear();
       phoneController.clear();
       selectedMonths = 1;
@@ -81,13 +88,20 @@ class MemberCubit extends Cubit<MemberState> {
     }
   }
 
-  List<MemberModel> members = [];
+  List<MemberModel> _members = [];
 
   Future<void> getAllMembers() async {
     emit(MemberLoadingState());
     try {
-      members = await _memberRepo.getAllMembers();
-      emit(MemberLoadedState(members: members));
+      if (_members.isNotEmpty) {
+        emit(MemberLoadedState(members: _members));
+        return;
+      }
+
+      _members = await _memberRepo.getAllMembers();
+      if (isClosed) return;
+
+      emit(MemberLoadedState(members: _members));
     } catch (e) {
       final msg = e.toString();
       emit(
@@ -100,10 +114,10 @@ class MemberCubit extends Cubit<MemberState> {
 
   void searchMembers(String query) {
     if (query.isEmpty) {
-      emit(MemberLoadedState(members: members));
+      emit(MemberLoadedState(members: _members));
       return;
     }
-    final filtered = members.where((m) {
+    final filtered = _members.where((m) {
       return m.name.contains(query) || m.phone.contains(query);
     }).toList();
     emit(MemberLoadedState(members: filtered));
@@ -207,15 +221,80 @@ class MemberCubit extends Cubit<MemberState> {
     }
   }
 
-  Future<void> getMemberByPhone(String phone) async {
+  Future<void> getMemberByPhone() async {
     emit(MemberLoadingState());
     try {
-      final member = await _memberRepo.getMemberByPhone(phone);
+      final member = await _memberRepo.getMemberByPhone(phoneController.text);
       if (member != null) {
-        emit(MemberScannedState(member: member));
+        emit(MemberFoundState(member: member));
       } else {
         emit(MemberErrorState('لم يتم العثور على مشترك بهذا الرقم'));
       }
+    } catch (e) {
+      final msg = e.toString();
+      emit(
+        MemberErrorState(
+          msg.startsWith('Exception: ') ? msg.substring(11) : msg,
+        ),
+      );
+    }
+  }
+
+  Future<void> markAttendanceWithTime() async {
+    final phone = phoneController.text.trim();
+    emit(MemberLoadingState());
+    try {
+      final member = await _memberRepo.getMemberByPhone(phone);
+      if (isClosed) return;
+      if (member == null) {
+        emit(MemberErrorState('لم يتم العثور على مشترك بهذا الرقم'));
+        return;
+      }
+      final alreadyAttended = await _memberRepo.hasAttendedToday(phone);
+      if (isClosed) return;
+      if (alreadyAttended) {
+        emit(MemberErrorState('تم تسجيل حضور هذا المشترك مسبقاً اليوم'));
+        return;
+      }
+      await _memberRepo.recordAttendance(
+        userId: member.id,
+        userName: member.name,
+        userPhone: member.phone,
+      );
+      await _memberRepo.cleanupOldAttendance();
+      phoneController.clear();
+      if (isClosed) return;
+      emit(MemberScannedState(member: member));
+    } catch (e) {
+      final msg = e.toString();
+      emit(
+        MemberErrorState(
+          msg.startsWith('Exception: ') ? msg.substring(11) : msg,
+        ),
+      );
+    }
+  }
+
+  Future<void> getAttendanceHistory(String phone) async {
+    emit(MemberLoadingState());
+    try {
+      final records = await _memberRepo.getAttendanceByPhone(phone);
+      emit(AttendanceHistoryLoaded(records: records));
+    } catch (e) {
+      final msg = e.toString();
+      emit(
+        MemberErrorState(
+          msg.startsWith('Exception: ') ? msg.substring(11) : msg,
+        ),
+      );
+    }
+  }
+
+  Future<void> deleteAttendanceRecord(String docId, String phone) async {
+    try {
+      await _memberRepo.deleteAttendanceRecord(docId);
+      final records = await _memberRepo.getAttendanceByPhone(phone);
+      emit(AttendanceHistoryLoaded(records: records));
     } catch (e) {
       final msg = e.toString();
       emit(
@@ -232,6 +311,11 @@ class MemberCubit extends Cubit<MemberState> {
       final member = await _memberRepo.getMemberByPhone(phone);
       if (member == null) {
         emit(MemberErrorState('لم يتم العثور على مشترك بهذا الرقم'));
+        return;
+      }
+      final alreadyAttended = await _memberRepo.hasAttendedToday(phone);
+      if (alreadyAttended) {
+        emit(MemberErrorState('تم تسجيل حضور هذا المشترك مسبقاً اليوم'));
         return;
       }
       await _memberRepo.toggleAttendance(member.id, attended: true);

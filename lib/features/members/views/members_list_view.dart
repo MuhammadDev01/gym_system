@@ -22,9 +22,7 @@ class _MembersListViewState extends State<MembersListView> {
   @override
   void initState() {
     super.initState();
-    if (context.read<MemberCubit>().members.isEmpty) {
-      context.read<MemberCubit>().getAllMembers();
-    }
+    context.read<MemberCubit>().getAllMembers();
   }
 
   @override
@@ -43,7 +41,6 @@ class _MembersListViewState extends State<MembersListView> {
         ),
         body: BlocBuilder<MemberCubit, MemberState>(
           builder: (_, state) {
-            final cubit = context.read<MemberCubit>();
             return Column(
               children: [
                 MemberSearchBar(),
@@ -52,13 +49,13 @@ class _MembersListViewState extends State<MembersListView> {
                     padding: const EdgeInsets.all(12),
                     child: CustomLoadingOverlay(
                       isLoading: state is MemberLoadingState,
-                      child: cubit.members.isNotEmpty
+                      child: state is MemberLoadedState
                           ? ListView.separated(
-                              itemCount: cubit.members.length,
+                              itemCount: state.members.length,
                               separatorBuilder: (_, _) => const Gap(16),
                               itemBuilder: (_, index) {
                                 return MemberItemBuilder(
-                                  member: cubit.members[index],
+                                  member: state.members[index],
                                 );
                               },
                             )

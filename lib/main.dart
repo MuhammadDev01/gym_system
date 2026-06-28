@@ -15,6 +15,7 @@ import 'package:gym_management_app/features/auth/cubit/auth_cubit.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
   await FirebaseService.init();
   await LocalCacheService.init();
   serviceLocatorSetup();

@@ -25,18 +25,10 @@ class HomeCubit extends Cubit<HomeState> {
     try {
       await _loadData();
       if (isClosed) return;
-      _timer = Timer.periodic(const Duration(minutes: 1), (_) {
-        if (state is HomeLoaded) {
-          data = state as HomeLoaded?;
-          final days = _calcRemainingDays(data!.member.subscriptionEnd);
-          emit(
-            HomeLoaded(
-              member: data!.member,
-              alerts: data!.alerts,
-              remainingDays: days,
-            ),
-          );
-        }
+      _timer = Timer.periodic(const Duration(seconds: 30), (_) async {
+        try {
+          await _loadData();
+        } catch (_) {}
       });
     } catch (e) {
       final msg = e.toString();

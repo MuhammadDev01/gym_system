@@ -14,6 +14,8 @@ class AppRoutes {
   static const String scanMemberView = '/scan-member-view';
   static const String editMemberView = '/edit-member-view';
   static const String membersListView = '/members-list-view';
+  static const String adminAttendanceView = '/admin-attendance-view';
+  static const String adminAttendanceHistoryView = '/admin-attendance-history-view';
   //alerts
   static const String alertsView = '/alerts-view';
   static const String alertsManagementView = '/alerts-management-view';
@@ -35,8 +37,6 @@ class AppRoutes {
   static const String marketItemDetailView = '/market-item-detail-view';
   static const String settingsView = '/settings-view';
   static const String rootView = '/';
-
-  static const String dailyQrView = '/daily-qr-view';
 
   //intenral views
   static const String branchesSubView = '/branches-sub-view';

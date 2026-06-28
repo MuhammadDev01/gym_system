@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:gym_management_app/core/routes/app_routes.dart';
 import 'package:gym_management_app/features/admin/views/admin_view.dart';
-import 'package:gym_management_app/features/admin/views/daily_qr_view.dart';
 import 'package:gym_management_app/features/auth/views/splash_view.dart';
 import 'package:gym_management_app/features/alerts/views/add_alert_view.dart';
 import 'package:gym_management_app/features/alerts/views/alerts_management_view.dart';
@@ -19,6 +18,9 @@ import 'package:gym_management_app/features/members/views/edit_member_view.dart'
 import 'package:gym_management_app/features/members/views/members_list_view.dart';
 import 'package:gym_management_app/features/members/views/members_management_view.dart';
 import 'package:gym_management_app/features/members/views/scan_member_view.dart';
+import 'package:gym_management_app/features/members/views/admin_attendance_view.dart';
+import 'package:gym_management_app/features/members/views/admin_attendance_history_view.dart';
+import 'package:gym_management_app/features/members/cubit/member_cubit.dart';
 import 'package:gym_management_app/features/auth/views/auth_view.dart';
 import 'package:gym_management_app/features/user/general/views/gerenal_view.dart';
 import 'package:gym_management_app/features/user/general/home/views/home_view.dart';
@@ -71,30 +73,62 @@ final goRouter = GoRouter(
     ),
     GoRoute(
       path: AppRoutes.addMemberView,
-      builder: (_, _) => Directionality(
-        textDirection: TextDirection.rtl,
-        child: AddMemberView(),
+      builder: (_, _) => BlocProvider(
+        create: (_) => getIt<MemberCubit>(),
+        child: Directionality(
+          textDirection: TextDirection.rtl,
+          child: AddMemberView(),
+        ),
       ),
     ),
     GoRoute(
       path: AppRoutes.editMemberView,
-      builder: (_, _) => Directionality(
-        textDirection: TextDirection.rtl,
-        child: EditMemberView(),
+      builder: (_, _) => BlocProvider(
+        create: (_) => getIt<MemberCubit>(),
+        child: Directionality(
+          textDirection: TextDirection.rtl,
+          child: EditMemberView(),
+        ),
       ),
     ),
     GoRoute(
       path: AppRoutes.membersListView,
-      builder: (_, _) => Directionality(
-        textDirection: TextDirection.rtl,
-        child: MembersListView(),
+      builder: (_, _) => BlocProvider(
+        create: (_) => getIt<MemberCubit>(),
+        child: Directionality(
+          textDirection: TextDirection.rtl,
+          child: MembersListView(),
+        ),
       ),
     ),
     GoRoute(
       path: AppRoutes.scanMemberView,
-      builder: (_, _) => const Directionality(
-        textDirection: TextDirection.rtl,
-        child: ScanMemberView(),
+      builder: (_, _) => BlocProvider(
+        create: (_) => getIt<MemberCubit>(),
+        child: const Directionality(
+          textDirection: TextDirection.rtl,
+          child: ScanMemberView(),
+        ),
+      ),
+    ),
+    GoRoute(
+      path: AppRoutes.adminAttendanceView,
+      builder: (_, _) => BlocProvider(
+        create: (_) => getIt<MemberCubit>(),
+        child: const Directionality(
+          textDirection: TextDirection.rtl,
+          child: AdminAttendanceView(),
+        ),
+      ),
+    ),
+    GoRoute(
+      path: AppRoutes.adminAttendanceHistoryView,
+      builder: (_, _) => BlocProvider(
+        create: (_) => getIt<MemberCubit>(),
+        child: const Directionality(
+          textDirection: TextDirection.rtl,
+          child: AdminAttendanceHistoryView(),
+        ),
       ),
     ),
     //* Alerts
@@ -163,15 +197,6 @@ final goRouter = GoRouter(
         child: MarketItemsListView(),
       ),
     ),
-
-    GoRoute(
-      path: AppRoutes.dailyQrView,
-      builder: (_, _) => const Directionality(
-        textDirection: TextDirection.rtl,
-        child: DailyQrView(),
-      ),
-    ),
-
     //* User
     GoRoute(
       path: AppRoutes.gerenalView,

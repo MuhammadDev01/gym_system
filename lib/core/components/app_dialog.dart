@@ -94,3 +94,32 @@ List<Widget> _editMemberActions(
     ),
   ];
 }
+
+void onConfirmLogout(BuildContext context, {required VoidCallback onConfirm}) {
+  showDialog(
+    context: context,
+    builder: (_) => AlertDialog(
+      backgroundColor: AppColors.background,
+      title: CustomText(
+        text: 'تسجيل الخروج',
+        fontSize: 18,
+        textAlign: TextAlign.center,
+      ),
+      content: CustomText(
+        text: 'هل أنت متأكد من تسجيل الخروج؟',
+        textAlign: TextAlign.center,
+        color: AppColors.gray.withValues(alpha: 0.5),
+      ),
+      actions: [
+        CustomButton(onPressed: () => context.pop(), text: 'إلغاء'),
+
+        CustomButton(
+          colorButton: AppColors.snackError,
+          colorText: Colors.white,
+          onPressed: onConfirm,
+          text: 'تسجيل الخروج',
+        ),
+      ],
+    ),
+  );
+}

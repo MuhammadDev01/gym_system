@@ -89,7 +89,7 @@ class LogoutButton extends StatelessWidget {
                           Expanded(
                             child: CustomButton(
                               onPressed: () async {
-                                await context.read<AuthCubit>().logout();
+                                await context.read<AuthCubit>().logoutMember();
                               },
                               text: 'تأكيد',
                               colorButton: AppColors.error.withValues(

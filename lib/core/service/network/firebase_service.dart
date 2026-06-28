@@ -56,6 +56,17 @@ class FirebaseService {
     return _firestore.collection(collection).doc(docId).get();
   }
 
+  Future<QuerySnapshot> queryCollectionLessThan({
+    required String collection,
+    required String field,
+    required dynamic isLessThan,
+  }) async {
+    return _firestore
+        .collection(collection)
+        .where(field, isLessThan: isLessThan)
+        .get();
+  }
+
   Future<QuerySnapshot> queryCollection({
     required String collection,
     required String field,

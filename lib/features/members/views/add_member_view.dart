@@ -30,11 +30,7 @@ class _AddMemberViewState extends State<AddMemberView> {
   @override
   void initState() {
     super.initState();
-    final cubit = context.read<MemberCubit>();
-    cubit.nameController.clear();
-    cubit.phoneController.clear();
-    cubit.setMonths(1);
-    cubit.setType('gym');
+    context.read<MemberCubit>().init();
   }
 
   @override
@@ -45,7 +41,7 @@ class _AddMemberViewState extends State<AddMemberView> {
         resizeToAvoidBottomInset: false,
         appBar: GlassAppBar(title: 'إضافة مشترك جديد'),
         body: BlocConsumer<MemberCubit, MemberState>(
-          listener: (_, state) {
+          listener: (context, state) {
             if (state is MemberAddedState) {
               appSnackbar(
                 context,
@@ -57,63 +53,59 @@ class _AddMemberViewState extends State<AddMemberView> {
               appSnackbar(context, state.message);
             }
           },
-          builder: (_, state) {
+          builder: (contextl, state) {
             final cubit = context.read<MemberCubit>();
             return CustomLoadingOverlay(
               isLoading: state is MemberLoadingState,
               child: SingleChildScrollView(
+                padding: const EdgeInsets.all(24),
                 child: Form(
                   key: _formKey,
-                  child: Padding(
-                    padding: const EdgeInsets.all(24),
-                    child: GlassWidget(
-                      borderRaduis: 36,
-                      padding: EdgeInsets.all(16),
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          CustomTextField(
-                            controller: cubit.nameController,
-                            labelText: 'اسم المشترك ثلاثي',
-                            prefixIcon: Icons.person,
-                            validator: (v) => Validators.requiredField(v),
+                  child: GlassWidget(
+                    borderRaduis: 12,
+                    padding: EdgeInsets.all(16),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        CustomTextField(
+                          controller: cubit.nameController,
+                          labelText: 'اسم المشترك ثلاثي',
+                          prefixIcon: Icons.person,
+                          validator: (v) => Validators.requiredField(v),
+                        ),
+                        const Gap(16),
+                        CustomTextField(
+                          controller: cubit.phoneController,
+                          labelText: 'رقم الهاتف',
+                          prefixIcon: Icons.phone,
+                          textInputType: TextInputType.phone,
+                          validator: (v) => Validators.requiredField(v),
+                        ),
+                        const Gap(16),
+                        Row(
+                          children: [
+                            CustomText(text: 'المدة:', fontSize: 14),
+                            const Gap(8),
+                            Expanded(child: MonthsSelector()),
+                          ],
+                        ),
+                        const Gap(16),
+                        TypeSelector(),
+                        const Gap(32),
+                        CustomButton(
+                          text: 'إضافة',
+                          icon: const Icon(
+                            Icons.person_add,
+                            color: Colors.black,
                           ),
-                          const Gap(16),
-                          CustomTextField(
-                            controller: cubit.phoneController,
-                            labelText: 'رقم الهاتف',
-                            prefixIcon: Icons.phone,
-                            textInputType: TextInputType.phone,
-                            validator: (v) => Validators.requiredField(v),
-                          ),
-                          const Gap(16),
-                          Row(
-                            children: [
-                              CustomText(text: 'المدة:', fontSize: 14),
-                              const Gap(8),
-                              Expanded(child: MonthsSelector()),
-                            ],
-                          ),
-                          const Gap(16),
-                          TypeSelector(),
-                          const Gap(32),
-                          CustomButton(
-                            text: 'إضافة',
-                            icon: const Icon(
-                              Icons.person_add,
-                              color: Colors.black,
-                            ),
-                            size: const Size(double.infinity, 50),
-                            fontSize: 16,
-                            onPressed: () {
-                              if (_formKey.currentState!.validate()) {
-                                cubit.addMember();
-                              }
-                            },
-                          ),
-                        ],
-                      ),
+                          onPressed: () {
+                            if (_formKey.currentState!.validate()) {
+                              cubit.addMember();
+                            }
+                          },
+                        ),
+                      ],
                     ),
                   ),
                 ),

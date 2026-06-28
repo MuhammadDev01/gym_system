@@ -1,58 +1,58 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
-import 'package:gym_management_app/core/DI/service_locator.dart';
 import 'package:gym_management_app/core/components/app_background.dart';
 import 'package:gym_management_app/core/components/glass_appbar.dart';
 import 'package:gym_management_app/core/routes/app_routes.dart';
 import 'package:gym_management_app/features/admin/views/widgets/admin_card.dart';
-import 'package:gym_management_app/features/members/cubit/member_cubit.dart';
 
 class MembersManagementView extends StatelessWidget {
   const MembersManagementView({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => getIt<MemberCubit>(),
-      child: AppBackground(
-        child: Scaffold(
-          backgroundColor: Colors.transparent,
-          appBar: GlassAppBar(
-            title: 'ادارة المشتركين',
-            actions: [
-              IconButton(
-                onPressed: () => context.push(AppRoutes.scanMemberView),
-                icon: FaIcon(FontAwesomeIcons.qrcode),
+    return AppBackground(
+      child: Scaffold(
+        appBar: GlassAppBar(
+          title: 'ادارة المشتركين',
+          actions: [
+            IconButton(
+              onPressed: () => context.push(AppRoutes.scanMemberView),
+              icon: FaIcon(FontAwesomeIcons.qrcode),
+            ),
+          ],
+        ),
+        body: Padding(
+          padding: const EdgeInsets.all(24),
+          child: Column(
+            spacing: 24,
+            children: [
+              AdminCard(
+                icon: FontAwesomeIcons.userPlus,
+                title: 'إضافة مشترك جديد',
+                onTap: () => context.push(AppRoutes.addMemberView),
+              ),
+              AdminCard(
+                icon: FontAwesomeIcons.userPen,
+                title: 'تعديل بيانات مشترك',
+                onTap: () => context.push(AppRoutes.editMemberView),
+              ),
+              AdminCard(
+                icon: FontAwesomeIcons.calendarCheck,
+                title: 'تسجيل حضور',
+                onTap: () => context.push(AppRoutes.adminAttendanceView),
+              ),
+              AdminCard(
+                icon: FontAwesomeIcons.clockRotateLeft,
+                title: 'سجل الحضور',
+                onTap: () => context.push(AppRoutes.adminAttendanceHistoryView),
+              ),
+              AdminCard(
+                icon: FontAwesomeIcons.users,
+                title: 'قائمة المشتركين',
+                onTap: () => context.push(AppRoutes.membersListView),
               ),
             ],
-          ),
-          body: Padding(
-            padding: const EdgeInsets.all(24),
-            child: Column(
-              children: [
-                const Gap(24),
-                AdminCard(
-                  icon: FontAwesomeIcons.userPlus,
-                  title: 'إضافة مشترك جديد',
-                  onTap: () => context.push(AppRoutes.addMemberView),
-                ),
-                const Gap(24),
-                AdminCard(
-                  icon: FontAwesomeIcons.userPen,
-                  title: 'تعديل بيانات مشترك',
-                  onTap: () => context.push(AppRoutes.editMemberView),
-                ),
-                const Gap(24),
-                AdminCard(
-                  icon: FontAwesomeIcons.users,
-                  title: 'قائمة المشتركين',
-                  onTap: () => context.push(AppRoutes.membersListView),
-                ),
-              ],
-            ),
           ),
         ),
       ),

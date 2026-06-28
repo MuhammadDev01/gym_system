@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:gym_management_app/core/components/custom_text.dart';
@@ -15,6 +16,27 @@ class EditMemberDialogContent extends StatelessWidget {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
+          if (cubit.editTarget?.image.isNotEmpty == true)
+            Padding(
+              padding: const EdgeInsets.only(bottom: 16),
+              child: Center(
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(16),
+                  child: Image.memory(
+                    base64Decode(cubit.editTarget!.image),
+                    width: 96,
+                    height: 96,
+                    fit: BoxFit.cover,
+                    errorBuilder: (_, _, _) => Container(
+                      width: 96,
+                      height: 96,
+                      color: AppColors.gold.withAlpha(38),
+                      child: Icon(Icons.person, color: AppColors.gold, size: 40),
+                    ),
+                  ),
+                ),
+              ),
+            ),
           CustomTextField(
             controller: cubit.editNameController,
             labelText: 'الاسم ثلاثي',
