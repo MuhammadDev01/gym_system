@@ -13,16 +13,21 @@ class FcmService {
 
   FcmService(this._firebaseService);
 
-  Future<auth.ServiceAccountCredentials> _getCredentials() async {
+  Future<auth.ServiceAccountCredentials?> _getCredentials() async {
     if (_credentials != null) return _credentials!;
-    final jsonStr = await rootBundle.loadString('assets/cloud_messages.json');
-    final json = jsonDecode(jsonStr) as Map<String, dynamic>;
-    _credentials = auth.ServiceAccountCredentials.fromJson(json);
-    return _credentials!;
+    try {
+      final jsonStr = await rootBundle.loadString('assets/cloud_messages.json');
+      final json = jsonDecode(jsonStr) as Map<String, dynamic>;
+      _credentials = auth.ServiceAccountCredentials.fromJson(json);
+      return _credentials!;
+    } catch (_) {
+      return null;
+    }
   }
 
-  Future<String> _getAccessToken() async {
+  Future<String?> _getAccessToken() async {
     final creds = await _getCredentials();
+    if (creds == null) return null;
     final client = http.Client();
     try {
       final credsWithToken = await auth.obtainAccessCredentialsViaServiceAccount(
@@ -76,6 +81,7 @@ class FcmService {
   }) async {
     try {
       final accessToken = await _getAccessToken();
+      if (accessToken == null) return;
       final response = await http.post(
         Uri.parse(
           'https://fcm.googleapis.com/v1/projects/$_projectId/messages:send',
