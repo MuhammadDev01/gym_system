@@ -42,7 +42,9 @@ class _MarketItemsListViewState extends State<MarketItemsListView> {
             return CustomLoadingOverlay(
               isLoading: state is MarketAdminLoading,
               child: cubit.allProducts.isNotEmpty
-                  ? ListView.builder(
+                  ? ListView.separated(
+                      separatorBuilder: (_, _) =>
+                          Divider(color: Colors.transparent),
                       padding: const EdgeInsets.all(16),
                       itemCount: cubit.allProducts.length,
                       itemBuilder: (_, index) {

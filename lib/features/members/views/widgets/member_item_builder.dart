@@ -21,12 +21,12 @@ class MemberItemBuilder extends StatelessWidget {
             decoration: BoxDecoration(
               color: AppColors.gold.withAlpha(38),
               borderRadius: BorderRadius.circular(14),
-                image: member.image.isNotEmpty
-                    ? DecorationImage(
-                        image: MemoryImage(base64Decode(member.image)),
-                        fit: BoxFit.cover,
-                      )
-                    : null,
+              image: member.image.isNotEmpty
+                  ? DecorationImage(
+                      image: MemoryImage(base64Decode(member.image)),
+                      fit: BoxFit.cover,
+                    )
+                  : null,
             ),
             child: member.image.isEmpty
                 ? Icon(Icons.person, color: AppColors.gold, size: 24)
@@ -46,7 +46,7 @@ class MemberItemBuilder extends StatelessWidget {
                     CustomText(
                       text: member.phone,
                       fontSize: 12,
-                      color: Colors.white54,
+                      color: AppColors.gold,
                     ),
                   ],
                 ),

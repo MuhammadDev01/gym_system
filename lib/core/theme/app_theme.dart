@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:gym_management_app/core/constants/app_constants.dart';
 import 'package:gym_management_app/core/theme/app_colors.dart';
 
@@ -24,11 +23,6 @@ class ThemeApp {
 
     //*appbar
     appBarTheme: AppBarTheme(
-      systemOverlayStyle: SystemUiOverlayStyle(
-        statusBarColor: Colors.white,
-        statusBarIconBrightness: Brightness.light,
-        statusBarBrightness: Brightness.light,
-      ),
       backgroundColor: Colors.white,
       iconTheme: IconThemeData(color: Colors.white),
     ),

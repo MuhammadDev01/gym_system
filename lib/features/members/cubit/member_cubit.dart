@@ -275,10 +275,12 @@ class MemberCubit extends Cubit<MemberState> {
     }
   }
 
-  Future<void> getAttendanceHistory(String phone) async {
+  Future<void> getAttendanceHistory() async {
     emit(MemberLoadingState());
     try {
-      final records = await _memberRepo.getAttendanceByPhone(phone);
+      final records = await _memberRepo.getAttendanceByPhone(
+        phoneController.text.trim(),
+      );
       emit(AttendanceHistoryLoaded(records: records));
     } catch (e) {
       final msg = e.toString();
@@ -290,10 +292,12 @@ class MemberCubit extends Cubit<MemberState> {
     }
   }
 
-  Future<void> deleteAttendanceRecord(String docId, String phone) async {
+  Future<void> deleteAttendanceRecord(String docId) async {
     try {
       await _memberRepo.deleteAttendanceRecord(docId);
-      final records = await _memberRepo.getAttendanceByPhone(phone);
+      final records = await _memberRepo.getAttendanceByPhone(
+        phoneController.text.trim(),
+      );
       emit(AttendanceHistoryLoaded(records: records));
     } catch (e) {
       final msg = e.toString();

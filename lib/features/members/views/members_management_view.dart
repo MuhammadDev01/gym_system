@@ -13,15 +13,7 @@ class MembersManagementView extends StatelessWidget {
   Widget build(BuildContext context) {
     return AppBackground(
       child: Scaffold(
-        appBar: GlassAppBar(
-          title: 'ادارة المشتركين',
-          actions: [
-            IconButton(
-              onPressed: () => context.push(AppRoutes.scanMemberView),
-              icon: FaIcon(FontAwesomeIcons.qrcode),
-            ),
-          ],
-        ),
+        appBar: GlassAppBar(title: 'ادارة المشتركين'),
         body: Padding(
           padding: const EdgeInsets.all(24),
           child: Column(

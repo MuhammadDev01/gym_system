@@ -13,6 +13,8 @@ import 'package:gym_management_app/features/market/views/admin/market_items_list
 import 'package:gym_management_app/features/market/views/admin/market_management_view.dart';
 import 'package:gym_management_app/features/market/views/user/market_item_detail_view.dart';
 import 'package:gym_management_app/features/market/data/market_item_model.dart';
+import 'package:gym_management_app/features/market/cubit/admin/market_admin_cubit.dart';
+import 'package:gym_management_app/core/DI/service_locator.dart';
 import 'package:gym_management_app/features/members/views/add_member_view.dart';
 import 'package:gym_management_app/features/members/views/edit_member_view.dart';
 import 'package:gym_management_app/features/members/views/members_list_view.dart';
@@ -29,7 +31,6 @@ import 'package:gym_management_app/features/user/profile/views/profile_view.dart
 import 'package:gym_management_app/features/user/settings/views/branches_view.dart';
 import 'package:gym_management_app/features/user/settings/views/settings_view.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:gym_management_app/core/DI/service_locator.dart';
 import 'package:gym_management_app/features/user/settings/views/subscription_history_view.dart';
 import 'package:gym_management_app/features/user/subscription/cubit/subscription_history_cubit.dart';
 import 'package:gym_management_app/features/user/subscription/views/subscription_view.dart';
@@ -178,23 +179,32 @@ final goRouter = GoRouter(
     ),
     GoRoute(
       path: AppRoutes.addItemOnMarketView,
-      builder: (_, _) => const Directionality(
-        textDirection: TextDirection.rtl,
-        child: AddItemOnMarketView(),
+      builder: (_, _) => BlocProvider<MarketAdminCubit>(
+        create: (_) => getIt<MarketAdminCubit>(),
+        child: const Directionality(
+          textDirection: TextDirection.rtl,
+          child: AddItemOnMarketView(),
+        ),
       ),
     ),
     GoRoute(
       path: AppRoutes.editItemOnMarketView,
-      builder: (_, _) => const Directionality(
-        textDirection: TextDirection.rtl,
-        child: EditItemOnMarketView(),
+      builder: (_, _) => BlocProvider<MarketAdminCubit>(
+        create: (_) => getIt<MarketAdminCubit>(),
+        child: const Directionality(
+          textDirection: TextDirection.rtl,
+          child: EditItemOnMarketView(),
+        ),
       ),
     ),
     GoRoute(
       path: AppRoutes.marketItemsListView,
-      builder: (_, _) => const Directionality(
-        textDirection: TextDirection.rtl,
-        child: MarketItemsListView(),
+      builder: (_, _) => BlocProvider<MarketAdminCubit>(
+        create: (_) => getIt<MarketAdminCubit>(),
+        child: const Directionality(
+          textDirection: TextDirection.rtl,
+          child: MarketItemsListView(),
+        ),
       ),
     ),
     //* User

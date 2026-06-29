@@ -79,10 +79,11 @@ class MarketAdminCubit extends Cubit<MarketAdminState> {
         price: int.tryParse(priceController.text.trim()) ?? 0,
         type: selectedType,
       );
-      emit(MarketAdminAdded());
       resetValues();
-      await getProducts();
+      if (isClosed) return;
+      emit(MarketAdminAdded());
     } catch (e) {
+      if (isClosed) return;
       final msg = e.toString();
       emit(
         MarketAdminError(

@@ -41,7 +41,7 @@ class _AddItemOnMarketViewState extends State<AddItemOnMarketView> {
         backgroundColor: Colors.transparent,
         appBar: GlassAppBar(title: 'إضافة منتج'),
         body: BlocConsumer<MarketAdminCubit, MarketAdminState>(
-          listener: (_, state) {
+          listener: (context, state) {
             if (state is MarketAdminAdded) {
               appSnackbar(
                 context,
@@ -54,7 +54,7 @@ class _AddItemOnMarketViewState extends State<AddItemOnMarketView> {
               appSnackbar(context, state.message);
             }
           },
-          builder: (_, state) {
+          builder: (context, state) {
             final cubit = context.read<MarketAdminCubit>();
             return CustomLoadingOverlay(
               isLoading: state is MarketAdminLoading,

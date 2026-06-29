@@ -1,5 +1,6 @@
 import 'package:device_preview/device_preview.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gym_management_app/core/DI/service_locator.dart';
 import 'package:gym_management_app/core/observer/bloc_observer.dart';
@@ -46,7 +47,18 @@ class GymSystemApp extends StatelessWidget {
         theme: ThemeApp.defualtTheme,
         routerConfig: goRouter,
         locale: DevicePreview.locale(context),
-        builder: DevicePreview.appBuilder,
+        builder: (context, child) {
+          final brightness = MediaQuery.platformBrightnessOf(context);
+          return AnnotatedRegion<SystemUiOverlayStyle>(
+            value: SystemUiOverlayStyle(
+              statusBarColor: Colors.transparent,
+              statusBarIconBrightness: brightness == Brightness.dark
+                  ? Brightness.light
+                  : Brightness.dark,
+            ),
+            child: DevicePreview.appBuilder(context, child),
+          );
+        },
       ),
     );
   }

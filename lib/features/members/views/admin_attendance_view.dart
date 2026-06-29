@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
@@ -28,7 +29,6 @@ class _AdminAttendanceViewState extends State<AdminAttendanceView> {
   Widget build(BuildContext context) {
     return AppBackground(
       child: Scaffold(
-        backgroundColor: Colors.transparent,
         appBar: GlassAppBar(title: 'تسجيل حضور'),
         body: BlocConsumer<MemberCubit, MemberState>(
           listener: (_, state) {
@@ -45,7 +45,6 @@ class _AdminAttendanceViewState extends State<AdminAttendanceView> {
           },
           builder: (_, state) {
             final cubit = context.read<MemberCubit>();
-
             return CustomLoadingOverlay(
               isLoading: state is MemberLoadingState,
               child: SingleChildScrollView(
@@ -85,27 +84,80 @@ class _AdminAttendanceViewState extends State<AdminAttendanceView> {
   }
 
   GlassWidget _attendanceCard(MemberFoundState state, MemberCubit cubit) {
+    final member = state.member;
+    final isExpired =
+        member.subscriptionEnd != null &&
+        DateTime.now().isAfter(member.subscriptionEnd!);
+
     return GlassWidget(
       padding: const EdgeInsets.all(16),
       child: Column(
         children: [
           Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Icon(Icons.person, color: AppColors.gold, size: 32),
-              const Gap(12),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    CustomText(text: state.member.name, fontSize: 16),
-                    const Gap(4),
-                    CustomText(
-                      text: state.member.phone,
-                      fontSize: 13,
-                      color: Colors.white54,
-                    ),
-                  ],
+              Container(
+                width: 64,
+                height: 64,
+                decoration: BoxDecoration(
+                  color: AppColors.gold.withAlpha(38),
+                  borderRadius: BorderRadius.circular(16),
+                  image: member.image.isNotEmpty
+                      ? DecorationImage(
+                          image: MemoryImage(base64Decode(member.image)),
+                          fit: BoxFit.cover,
+                        )
+                      : null,
                 ),
+                child: member.image.isEmpty
+                    ? Icon(Icons.person, color: AppColors.gold, size: 32)
+                    : null,
+              ),
+              const Gap(12),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  CustomText(text: member.name, fontSize: 16),
+                  const Gap(4),
+                  CustomText(
+                    text: member.phone,
+                    fontSize: 13,
+                    color: Colors.white54,
+                  ),
+                ],
+              ),
+            ],
+          ),
+          const Gap(12),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              CustomText(
+                text: 'نوع الاشتراك:',
+                fontSize: 12,
+                color: Colors.white38,
+              ),
+              const Gap(4),
+              CustomText(
+                text: _typeLabel(member.subscriptionType),
+                fontSize: 12,
+                color: AppColors.gray,
+              ),
+              const Gap(16),
+              CustomText(
+                text: 'تاريخ الانتهاء:',
+                fontSize: 12,
+                color: Colors.white38,
+              ),
+              const Gap(4),
+              CustomText(
+                text: member.subscriptionEnd != null
+                    ? (isExpired
+                          ? 'منتهي'
+                          : '${member.subscriptionEnd!.day}/${member.subscriptionEnd!.month}/${member.subscriptionEnd!.year}')
+                    : 'غير محدد',
+                fontSize: 12,
+                color: isExpired ? AppColors.snackError : AppColors.gray,
               ),
             ],
           ),
@@ -113,10 +165,22 @@ class _AdminAttendanceViewState extends State<AdminAttendanceView> {
           CustomButton(
             text: 'تأكيد الحضور',
             onPressed: () => cubit.markAttendanceWithTime(),
-            size: const Size(double.infinity, 48),
           ),
         ],
       ),
     );
+  }
+
+  String _typeLabel(String type) {
+    switch (type) {
+      case 'fitness':
+        return 'فتنس';
+      case 'gym':
+        return 'جيم';
+      case 'private':
+        return 'برايفت';
+      default:
+        return type;
+    }
   }
 }
