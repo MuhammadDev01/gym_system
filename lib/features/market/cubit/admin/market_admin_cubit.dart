@@ -117,9 +117,9 @@ class MarketAdminCubit extends Cubit<MarketAdminState> {
         price: int.parse(priceController.text.trim()),
         type: selectedType,
       );
-      emit(MarketAdminUpdated());
       resetValues();
       await getProducts();
+      emit(MarketAdminUpdated());
     } catch (e) {
       final msg = e.toString();
       emit(

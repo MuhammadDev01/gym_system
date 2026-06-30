@@ -38,6 +38,7 @@ class _AdminAttendanceHistoryViewState
         backgroundColor: Colors.transparent,
         appBar: GlassAppBar(title: 'سجل الحضور'),
         body: BlocConsumer<MemberCubit, MemberState>(
+          listenWhen: (prev, next) => next is MemberErrorState,
           listener: (_, state) {
             if (state is MemberErrorState) {
               appSnackbar(context, state.message);
@@ -46,6 +47,10 @@ class _AdminAttendanceHistoryViewState
               records = state.records;
             }
           },
+          buildWhen: (prev, next) =>
+              next is MemberLoadingState ||
+              next is AttendanceHistoryLoaded ||
+              next is MemberErrorState,
           builder: (_, state) => CustomLoadingOverlay(
             isLoading: state is MemberLoadingState,
             child: Padding(
@@ -74,6 +79,7 @@ class _AdminAttendanceHistoryViewState
                     records.isNotEmpty
                         ? Expanded(
                             child: ListView.separated(
+                              addAutomaticKeepAlives: false,
                               separatorBuilder: (_, _) =>
                                   Divider(color: Colors.transparent),
                               padding: const EdgeInsets.symmetric(

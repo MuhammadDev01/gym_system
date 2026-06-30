@@ -40,6 +40,8 @@ class _MembersListViewState extends State<MembersListView> {
           ],
         ),
         body: BlocBuilder<MemberCubit, MemberState>(
+          buildWhen: (prev, next) =>
+              next is MemberLoadedState || next is MemberLoadingState || next is MemberErrorState,
           builder: (_, state) {
             return Column(
               children: [
@@ -51,6 +53,7 @@ class _MembersListViewState extends State<MembersListView> {
                       isLoading: state is MemberLoadingState,
                       child: state is MemberLoadedState
                           ? ListView.separated(
+                              addAutomaticKeepAlives: false,
                               itemCount: state.members.length,
                               separatorBuilder: (_, _) => const Gap(16),
                               itemBuilder: (_, index) {

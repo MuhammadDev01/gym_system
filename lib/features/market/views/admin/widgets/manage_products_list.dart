@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:gym_management_app/core/helper/image_cache_helper.dart';
 import 'package:gym_management_app/core/theme/app_colors.dart';
 import 'package:gym_management_app/features/market/cubit/admin/market_admin_cubit.dart';
 import 'package:gym_management_app/features/market/cubit/admin/market_admin_state.dart';
@@ -23,7 +24,7 @@ class ManageProductsList extends StatelessWidget {
             delegate: SliverChildBuilderDelegate((context, index) {
               final product = products[index];
               return _ProductCard(product: product);
-            }, childCount: products.length),
+            }, childCount: products.length, addAutomaticKeepAlives: false),
           );
         }
         return const SliverFillRemaining(
@@ -58,8 +59,8 @@ class _ProductCard extends StatelessWidget {
           contentPadding: const EdgeInsets.all(8),
           leading: ClipRRect(
             borderRadius: BorderRadius.circular(8),
-            child: Image.network(
-              product.image,
+            child: Image(
+              image: BaseImageCache.getImage(product.image),
               width: 60,
               height: 60,
               fit: BoxFit.cover,

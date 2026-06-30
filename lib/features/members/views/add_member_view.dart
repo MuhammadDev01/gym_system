@@ -41,6 +41,8 @@ class _AddMemberViewState extends State<AddMemberView> {
         resizeToAvoidBottomInset: false,
         appBar: GlassAppBar(title: 'إضافة مشترك جديد'),
         body: BlocConsumer<MemberCubit, MemberState>(
+          buildWhen: (prev, next) =>
+              next is MemberAddedState || next is MemberLoadingState || next is MemberErrorState,
           listener: (context, state) {
             if (state is MemberAddedState) {
               appSnackbar(

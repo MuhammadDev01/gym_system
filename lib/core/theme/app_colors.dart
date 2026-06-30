@@ -1,14 +1,13 @@
 import 'dart:ui';
 
 class AppColors {
-  static Color gold = const Color(0xFFFDCD03);
-  static Color black = const Color(0xFF010000);
-  static Color gray = const Color(0xFFE3E3E3);
-  static Color success = const Color(0xFF4CAF50);
-  static Color error = const Color(0xFFF44336);
-  static Color snackError = const Color(0xFFF44336);
-  static Color background = const Color(0xFF282A36);
-  static Color surface = const Color(0xFF1E1E2E);
-  static Color textSecondary = const Color(0xFFB0B0B0);
-  static Color get primary => gold;
+  static const Color gold = Color(0xFFFDCD03);
+  static const Color black = Color(0xFF010000);
+  static const Color gray = Color(0xFFE3E3E3);
+  static const Color success = Color(0xFF4CAF50);
+  static const Color error = Color(0xFFF44336);
+  static const Color snackError = Color(0xFFF44336);
+  static const Color background = Color(0xFF282A36);
+  static const Color surface = Color(0xFF1E1E2E);
+  static const Color textSecondary = Color(0xFFB0B0B0);
 }

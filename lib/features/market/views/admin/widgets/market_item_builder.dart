@@ -1,7 +1,7 @@
-import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:gym_management_app/core/components/custom_text.dart';
 import 'package:gym_management_app/core/components/glass_widget.dart';
+import 'package:gym_management_app/core/helper/image_cache_helper.dart';
 import 'package:gym_management_app/core/theme/app_colors.dart';
 import 'package:gym_management_app/features/market/data/market_item_model.dart';
 
@@ -17,8 +17,8 @@ class MarketItemBuilder extends StatelessWidget {
         leading: item.image.isNotEmpty
             ? ClipRRect(
                 borderRadius: BorderRadius.circular(8),
-                child: Image.memory(
-                  base64Decode(item.image),
+                child: Image(
+                  image: BaseImageCache.getImage(item.image),
                   width: 50,
                   height: 50,
                   fit: BoxFit.cover,

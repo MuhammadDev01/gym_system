@@ -11,12 +11,12 @@ import 'package:gym_management_app/core/service/network/firebase_service.dart';
 import 'package:gym_management_app/core/theme/app_theme.dart';
 import 'package:gym_management_app/features/alerts/cubit/admin/alert_admin_cubit.dart';
 import 'package:gym_management_app/features/alerts/cubit/alert_user_cubit.dart';
+import 'package:gym_management_app/features/auth/views/splash_view.dart';
 import 'package:gym_management_app/features/user/general/cubit/gerenal_cubit.dart';
 import 'package:gym_management_app/features/auth/cubit/auth_cubit.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-
   await FirebaseService.init();
   await LocalCacheService.init();
   serviceLocatorSetup();
@@ -31,7 +31,7 @@ void main() async {
 
 class GymSystemApp extends StatelessWidget {
   const GymSystemApp({super.key});
-
+  final bool kDebugSingleScreen = false;
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(
@@ -41,25 +41,27 @@ class GymSystemApp extends StatelessWidget {
         BlocProvider(create: (context) => getIt<AlertUserCubit>()),
         BlocProvider(create: (context) => getIt<AlertAdminCubit>()),
       ],
-      child: MaterialApp.router(
-        debugShowCheckedModeBanner: false,
-        title: 'Gym System App',
-        theme: ThemeApp.defualtTheme,
-        routerConfig: goRouter,
-        locale: DevicePreview.locale(context),
-        builder: (context, child) {
-          final brightness = MediaQuery.platformBrightnessOf(context);
-          return AnnotatedRegion<SystemUiOverlayStyle>(
-            value: SystemUiOverlayStyle(
-              statusBarColor: Colors.transparent,
-              statusBarIconBrightness: brightness == Brightness.dark
-                  ? Brightness.light
-                  : Brightness.dark,
+      child: kDebugSingleScreen
+          ? MaterialApp(theme: ThemeApp.defualtTheme, home: const SplashView())
+          : MaterialApp.router(
+              debugShowCheckedModeBanner: false,
+              title: 'Gym System App',
+              theme: ThemeApp.defualtTheme,
+              routerConfig: goRouter,
+              // locale: DevicePreview.locale(context),
+              builder: (_, child) {
+                final brightness = MediaQuery.platformBrightnessOf(context);
+                return AnnotatedRegion<SystemUiOverlayStyle>(
+                  value: SystemUiOverlayStyle(
+                    statusBarColor: Colors.transparent,
+                    statusBarIconBrightness: brightness == Brightness.dark
+                        ? Brightness.light
+                        : Brightness.dark,
+                  ),
+                  child: child!,
+                );
+              },
             ),
-            child: DevicePreview.appBuilder(context, child),
-          );
-        },
-      ),
     );
   }
 }

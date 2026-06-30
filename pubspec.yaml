@@ -40,8 +40,8 @@ dependencies:
 #Flutter Assets Generator
 flutter_assets:
   assets_path: assets/
-  output_path: lib\core\utils
-  filename: assets.dart
+  output_path: lib\core\constants\
+  filename: app_assets.dart
   ignore_comments: true
   field_prefix: null
 dev_dependencies:

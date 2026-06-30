@@ -36,6 +36,8 @@ class _EditAlertViewState extends State<EditAlertView> {
         backgroundColor: Colors.transparent,
         appBar: GlassAppBar(title: 'تعديل إعلان'),
         body: BlocConsumer<AlertAdminCubit, AlertAdminState>(
+          listenWhen: (prev, next) =>
+              next is AlertUpdatedState || next is AlertDeletedState || next is AlertErrorState,
           listener: (_, state) {
             if (state is AlertUpdatedState) {
               appSnackbar(
@@ -53,12 +55,15 @@ class _EditAlertViewState extends State<EditAlertView> {
               appSnackbar(context, state.message);
             }
           },
+          buildWhen: (prev, next) =>
+              next is AlertLoadingState || next is AlertSuccessState,
           builder: (_, state) {
             final cubit = context.read<AlertAdminCubit>();
             return CustomLoadingOverlay(
               isLoading: state is AlertLoadingState,
               child: cubit.alerts.isNotEmpty
                   ? ListView.builder(
+                      addAutomaticKeepAlives: false,
                       padding: const EdgeInsets.fromLTRB(16, 16, 16, 80),
                       itemCount: cubit.alerts.length,
                       itemBuilder: (_, index) {

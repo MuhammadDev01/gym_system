@@ -39,6 +39,7 @@ class _AddAlertViewState extends State<AddAlertView> {
         backgroundColor: Colors.transparent,
         appBar: GlassAppBar(title: 'إضافة إعلان جديد'),
         body: BlocConsumer<AlertAdminCubit, AlertAdminState>(
+          listenWhen: (prev, next) => next is AlertAddedState || next is AlertErrorState,
           listener: (_, state) {
             if (state is AlertAddedState) {
               appSnackbar(
@@ -51,6 +52,8 @@ class _AddAlertViewState extends State<AddAlertView> {
               appSnackbar(context, state.message);
             }
           },
+          buildWhen: (prev, next) =>
+              next is AlertLoadingState || next is AlertFormChangedState || next is AlertErrorState,
           builder: (_, state) {
             final cubit = context.read<AlertAdminCubit>();
             return CustomLoadingOverlay(

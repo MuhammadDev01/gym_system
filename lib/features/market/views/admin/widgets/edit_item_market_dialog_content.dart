@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
@@ -7,6 +5,7 @@ import 'package:go_router/go_router.dart';
 import 'package:gym_management_app/core/components/custom_button.dart';
 import 'package:gym_management_app/core/components/custom_text.dart';
 import 'package:gym_management_app/core/components/custom_text_field.dart';
+import 'package:gym_management_app/core/helper/image_cache_helper.dart';
 import 'package:gym_management_app/core/helper/validators.dart';
 import 'package:gym_management_app/core/theme/app_colors.dart';
 import 'package:gym_management_app/features/market/cubit/admin/market_admin_cubit.dart';
@@ -51,10 +50,8 @@ class EditItemMarketDialogContent extends StatelessWidget {
                           borderRadius: BorderRadius.circular(12),
                           image: showImage
                               ? DecorationImage(
-                                  image: MemoryImage(
-                                    base64Decode(
-                                      cubit.imageBase64 ?? cubit.itemImage!,
-                                    ),
+                                  image: BaseImageCache.getImage(
+                                    cubit.imageBase64 ?? cubit.itemImage!,
                                   ),
                                   fit: BoxFit.cover,
                                 )

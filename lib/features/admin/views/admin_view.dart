@@ -17,6 +17,8 @@ class AdminView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<AuthCubit, AuthState>(
+      buildWhen: (prev, next) =>
+          next is AuthLogoutedState || next is AuthLoadingState || next is AuthErrorState,
       listener: (_, state) {
         if (state is AuthLogoutedState) {
           context.go(AppRoutes.authView);

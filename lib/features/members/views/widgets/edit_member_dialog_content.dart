@@ -1,8 +1,8 @@
-import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:gym_management_app/core/components/custom_text.dart';
 import 'package:gym_management_app/core/components/custom_text_field.dart';
+import 'package:gym_management_app/core/helper/image_cache_helper.dart';
 import 'package:gym_management_app/core/theme/app_colors.dart';
 import 'package:gym_management_app/features/members/cubit/member_cubit.dart';
 
@@ -22,8 +22,8 @@ class EditMemberDialogContent extends StatelessWidget {
               child: Center(
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(16),
-                  child: Image.memory(
-                    base64Decode(cubit.editTarget!.image),
+                  child: Image(
+                    image: BaseImageCache.getImage(cubit.editTarget!.image),
                     width: 96,
                     height: 96,
                     fit: BoxFit.cover,

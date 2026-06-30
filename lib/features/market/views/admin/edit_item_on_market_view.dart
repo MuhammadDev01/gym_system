@@ -36,6 +36,8 @@ class _EditItemOnMarketViewState extends State<EditItemOnMarketView> {
         backgroundColor: Colors.transparent,
         appBar: GlassAppBar(title: 'تعديل المنتجات'),
         body: BlocConsumer<MarketAdminCubit, MarketAdminState>(
+          listenWhen: (prev, next) =>
+              next is MarketAdminUpdated || next is MarketAdminDeleted || next is MarketAdminError,
           listener: (_, state) {
             if (state is MarketAdminUpdated) {
               appSnackbar(
@@ -49,12 +51,15 @@ class _EditItemOnMarketViewState extends State<EditItemOnMarketView> {
               appSnackbar(context, state.message);
             }
           },
+          buildWhen: (prev, next) =>
+              next is MarketAdminLoading || next is MarketAdminLoaded,
           builder: (_, state) {
             final cubit = context.read<MarketAdminCubit>();
             return CustomLoadingOverlay(
               isLoading: state is MarketAdminLoading,
               child: cubit.allProducts.isNotEmpty
                   ? ListView.builder(
+                      addAutomaticKeepAlives: false,
                       padding: const EdgeInsets.all(16),
                       itemCount: cubit.allProducts.length,
                       itemBuilder: (_, index) {

@@ -34,6 +34,7 @@ class AlertSection extends StatelessWidget {
           )
         else
           ListView.separated(
+            addAutomaticKeepAlives: false,
             shrinkWrap: true,
             physics: const NeverScrollableScrollPhysics(),
             itemCount: alerts.length,

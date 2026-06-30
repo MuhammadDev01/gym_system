@@ -76,8 +76,8 @@ class MemberCubit extends Cubit<MemberState> {
       phoneController.clear();
       selectedMonths = 1;
       selectedType = 'gym';
-      emit(MemberAddedState());
       await getAllMembers();
+      emit(MemberAddedState());
     } catch (e) {
       final msg = e.toString();
       emit(
@@ -209,8 +209,8 @@ class MemberCubit extends Cubit<MemberState> {
     emit(MemberLoadingState());
     try {
       await _memberRepo.deleteMember(editTarget!.id);
-      emit(MemberDeletedState());
       await getAllMembers();
+      emit(MemberDeletedState());
     } catch (e) {
       final msg = e.toString();
       emit(

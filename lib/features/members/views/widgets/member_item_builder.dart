@@ -1,8 +1,8 @@
-import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:gym_management_app/core/components/custom_text.dart';
 import 'package:gym_management_app/core/components/glass_widget.dart';
+import 'package:gym_management_app/core/helper/image_cache_helper.dart';
 import 'package:gym_management_app/core/theme/app_colors.dart';
 import 'package:gym_management_app/features/members/data/member_model.dart';
 
@@ -23,7 +23,7 @@ class MemberItemBuilder extends StatelessWidget {
               borderRadius: BorderRadius.circular(14),
               image: member.image.isNotEmpty
                   ? DecorationImage(
-                      image: MemoryImage(base64Decode(member.image)),
+                      image: BaseImageCache.getImage(member.image),
                       fit: BoxFit.cover,
                     )
                   : null,

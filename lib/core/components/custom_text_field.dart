@@ -54,8 +54,8 @@ class CustomTextField extends StatelessWidget {
         labelText: labelText,
         hintText: hintText,
         hintStyle: TextStyle(color: AppColors.gray),
-        focusColor: AppColors.primary,
-        errorStyle: TextStyle(color: AppColors.primary),
+        focusColor: AppColors.gold,
+        errorStyle: TextStyle(color: AppColors.gold),
         enabledBorder: OutlineInputBorder(
           borderSide: BorderSide(color: AppColors.black),
         ),
@@ -66,7 +66,7 @@ class CustomTextField extends StatelessWidget {
           borderSide: BorderSide(color: AppColors.error),
         ),
         focusedBorder: OutlineInputBorder(
-          borderSide: BorderSide(color: AppColors.primary),
+          borderSide: BorderSide(color: AppColors.gold),
         ),
         labelStyle: TextStyle(color: AppColors.gray, fontSize: 14),
         filled: true,

@@ -39,6 +39,13 @@ class _EditMemberViewState extends State<EditMemberView> {
         resizeToAvoidBottomInset: false,
         appBar: GlassAppBar(title: 'تعديل بيانات مشترك'),
         body: BlocConsumer<MemberCubit, MemberState>(
+          buildWhen: (prev, next) =>
+              next is MemberEditFormState ||
+              next is MemberLoadingState ||
+              next is MemberLoadedState ||
+              next is MemberUpdatedState ||
+              next is MemberDeletedState ||
+              next is MemberErrorState,
           listener: (_, state) {
             if (state is MemberUpdatedState) {
               appSnackbar(
@@ -66,6 +73,7 @@ class _EditMemberViewState extends State<EditMemberView> {
                       isLoading: state is MemberLoadingState,
                       child: _members.isNotEmpty
                           ? ListView.separated(
+                              addAutomaticKeepAlives: false,
                               itemCount: _members.length,
                               separatorBuilder: (_, _) => const Gap(16),
                               itemBuilder: (_, index) {

@@ -24,8 +24,8 @@ class AlertAdminCubit extends Cubit<AlertAdminState> {
       );
       alertController.clear();
       alertDays = 7;
-      emit(AlertAddedState());
       await getAlerts();
+      emit(AlertAddedState());
     } catch (e) {
       final msg = e.toString();
       emit(
@@ -82,8 +82,8 @@ class AlertAdminCubit extends Cubit<AlertAdminState> {
     emit(AlertLoadingState());
     try {
       await _alertRepo.deleteAlert(alertId);
-      emit(AlertDeletedState());
       await getAlerts();
+      emit(AlertDeletedState());
     } catch (e) {
       final msg = e.toString();
       emit(
@@ -105,8 +105,8 @@ class AlertAdminCubit extends Cubit<AlertAdminState> {
       alertId = '';
       editMessageController.clear();
       editExtendDays = 0;
-      emit(AlertUpdatedState());
       await getAlerts();
+      emit(AlertUpdatedState());
     } catch (e) {
       final msg = e.toString();
       emit(

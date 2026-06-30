@@ -17,6 +17,10 @@ class SubscriptionView extends StatelessWidget {
     return BlocProvider(
       create: (context) => getIt<SubscriptionCubit>(),
       child: BlocBuilder<SubscriptionCubit, SubscriptionState>(
+        buildWhen: (prev, next) =>
+            next is SubscriptionLoading ||
+            next is SubscriptionLoaded ||
+            next is SubscriptionError,
         builder: (_, state) {
           return CustomLoadingOverlay(
             isLoading: state is SubscriptionLoading,

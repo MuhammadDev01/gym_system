@@ -32,6 +32,8 @@ class _MarketItemsListViewState extends State<MarketItemsListView> {
         backgroundColor: Colors.transparent,
         appBar: GlassAppBar(title: 'قائمة المنتجات'),
         body: BlocConsumer<MarketAdminCubit, MarketAdminState>(
+          buildWhen: (prev, next) =>
+              next is MarketAdminLoaded || next is MarketAdminLoading || next is MarketAdminError,
           listener: (context, state) {
             if (state is MarketAdminError) {
               appSnackbar(context, state.message);
@@ -43,6 +45,7 @@ class _MarketItemsListViewState extends State<MarketItemsListView> {
               isLoading: state is MarketAdminLoading,
               child: cubit.allProducts.isNotEmpty
                   ? ListView.separated(
+                      addAutomaticKeepAlives: false,
                       separatorBuilder: (_, _) =>
                           Divider(color: Colors.transparent),
                       padding: const EdgeInsets.all(16),

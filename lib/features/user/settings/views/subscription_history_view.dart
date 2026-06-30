@@ -48,6 +48,7 @@ class _SubscriptionHistoryViewState extends State<SubscriptionHistoryView> {
                       ? state.records.isEmpty
                             ? const CustomEmptyList(text: 'اشتراكات سابقة')
                             : ListView.separated(
+                                addAutomaticKeepAlives: false,
                                 itemCount: state.records.length,
                                 separatorBuilder: (_, _) => const Gap(16),
                                 itemBuilder: (_, index) {

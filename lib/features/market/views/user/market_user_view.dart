@@ -43,6 +43,7 @@ class MarketUserView extends StatelessWidget {
                             child: cubit.filteredItems.isEmpty
                                 ? const CustomEmptyList(text: 'منتجات')
                                 : GridView.builder(
+                                    addAutomaticKeepAlives: false,
                                     itemBuilder: (context, index) =>
                                         MarketItemGridBuilder(
                                           item: cubit.filteredItems[index],

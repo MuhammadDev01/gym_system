@@ -43,6 +43,8 @@ class _AlertsListViewState extends State<AlertsListView> {
           ),
 
           body: BlocConsumer<AlertAdminCubit, AlertAdminState>(
+            buildWhen: (prev, next) =>
+                next is AlertLoadingState || next is AlertSuccessState || next is AlertErrorState,
             listener: (_, state) {
               if (state is AlertErrorState) {
                 appSnackbar(context, state.message);
@@ -54,6 +56,7 @@ class _AlertsListViewState extends State<AlertsListView> {
                 isLoading: state is AlertLoadingState,
                 child: cubit.alerts.isNotEmpty
                     ? ListView.builder(
+                        addAutomaticKeepAlives: false,
                         padding: const EdgeInsets.fromLTRB(16, 16, 16, 80),
                         itemCount: cubit.alerts.length,
                         itemBuilder: (_, index) {

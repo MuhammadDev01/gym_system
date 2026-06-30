@@ -1,4 +1,6 @@
+import 'dart:math';
 import 'package:flutter/material.dart';
+import 'package:gap/gap.dart';
 import 'package:gym_management_app/core/components/app_background.dart';
 import 'package:gym_management_app/core/constants/app_assets.dart';
 import 'package:gym_management_app/core/constants/app_constants.dart';
@@ -22,6 +24,7 @@ class _SplashViewState extends State<SplashView>
   @override
   void initState() {
     super.initState();
+
     _controller = AnimationController(
       vsync: this,
       duration: const Duration(milliseconds: 1200),
@@ -30,18 +33,24 @@ class _SplashViewState extends State<SplashView>
   }
 
   Future<void> _checkAuth() async {
-    await Future.delayed(const Duration(milliseconds: 1800));
-    if (!mounted) return;
+    await Future.delayed(const Duration(seconds: 2));
     final token = LocalCacheService.getString(AppConstants.token);
     if (token == null) {
-      context.go(AppRoutes.authView);
+      WidgetsBinding.instance.addPostFrameCallback(
+        (_) => context.go(AppRoutes.authView),
+      );
+
       return;
     }
     final role = LocalCacheService.getString(AppConstants.role);
     if (role == AppConstants.admin) {
-      context.go(AppRoutes.adminView);
+      WidgetsBinding.instance.addPostFrameCallback(
+        (_) => context.go(AppRoutes.adminView),
+      );
     } else {
-      context.go(AppRoutes.gerenalView);
+      WidgetsBinding.instance.addPostFrameCallback(
+        (_) => context.go(AppRoutes.gerenalView),
+      );
     }
   }
 
@@ -53,36 +62,41 @@ class _SplashViewState extends State<SplashView>
 
   @override
   Widget build(BuildContext context) {
+    final dpr = MediaQuery.devicePixelRatioOf(context);
+    final size = MediaQuery.sizeOf(context);
     return AppBackground(
       child: Scaffold(
         backgroundColor: Colors.transparent.withValues(alpha: 0.6),
-        body: Center(
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Image.asset(AppAssets.logo),
-              const SizedBox(height: 48),
-              AnimatedBuilder(
-                animation: _controller,
-                builder: (_, child) => Transform.rotate(
-                  angle: _controller.value * 6.28,
-                  child: child,
+        body: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Image.asset(
+              AppAssets.logo,
+              fit: BoxFit.cover,
+              cacheWidth: (size.width * dpr).round(),
+              cacheHeight: (300 * dpr).round(),
+            ),
+            const Gap(48),
+            AnimatedBuilder(
+              animation: _controller,
+              builder: (_, child) => Transform.rotate(
+                angle: _controller.value * pi * 2,
+                child: child,
+              ),
+              child: DecoratedIcon(
+                icon: const Icon(
+                  Icons.fitness_center,
+                  color: AppColors.gold,
+                  size: 50,
                 ),
-                child: DecoratedIcon(
-                  icon: Icon(
-                    Icons.fitness_center,
-                    color: AppColors.gold,
-                    size: 50,
-                  ),
-                  decoration: IconDecoration(
-                    border: IconBorder(
-                      color: AppColors.black, // لون إطار الأيقونة
-                    ),
+                decoration: IconDecoration(
+                  border: IconBorder(
+                    color: AppColors.black, // لون إطار الأيقونة
                   ),
                 ),
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );

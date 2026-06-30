@@ -22,6 +22,11 @@ class AuthView extends StatelessWidget {
   Widget build(BuildContext context) {
     return AppBackground(
       child: BlocConsumer<AuthCubit, AuthState>(
+        buildWhen: (prev, next) =>
+            next is AuthAdminToggleState ||
+            next is AuthSccessState ||
+            next is AuthErrorState ||
+            next is AuthLoadingState,
         listener: (_, state) {
           if (state is AuthSccessState) {
             final role = LocalCacheService.getString(AppConstants.role);

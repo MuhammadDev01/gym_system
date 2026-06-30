@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
@@ -12,6 +10,7 @@ import 'package:gym_management_app/core/components/glass_appbar.dart';
 import 'package:gym_management_app/core/components/glass_widget.dart';
 import 'package:gym_management_app/core/extentions/navigator_extention.dart';
 import 'package:gym_management_app/core/helper/app_snackbar.dart';
+import 'package:gym_management_app/core/helper/image_cache_helper.dart';
 import 'package:gym_management_app/core/helper/validators.dart';
 import 'package:gym_management_app/core/theme/app_colors.dart';
 import 'package:gym_management_app/features/market/cubit/admin/market_admin_cubit.dart';
@@ -41,6 +40,7 @@ class _AddItemOnMarketViewState extends State<AddItemOnMarketView> {
         backgroundColor: Colors.transparent,
         appBar: GlassAppBar(title: 'إضافة منتج'),
         body: BlocConsumer<MarketAdminCubit, MarketAdminState>(
+          listenWhen: (prev, next) => next is MarketAdminAdded || next is MarketAdminError,
           listener: (context, state) {
             if (state is MarketAdminAdded) {
               appSnackbar(
@@ -54,6 +54,11 @@ class _AddItemOnMarketViewState extends State<AddItemOnMarketView> {
               appSnackbar(context, state.message);
             }
           },
+          buildWhen: (prev, next) =>
+              next is MarketAdminLoading ||
+              next is MarketAdminImagePicked ||
+              next is MarketAdmintypeChange ||
+              next is MarketAdminError,
           builder: (context, state) {
             final cubit = context.read<MarketAdminCubit>();
             return CustomLoadingOverlay(
@@ -79,8 +84,8 @@ class _AddItemOnMarketViewState extends State<AddItemOnMarketView> {
                               borderRadius: BorderRadius.circular(16),
                               image: cubit.imageBase64 != null
                                   ? DecorationImage(
-                                      image: MemoryImage(
-                                        base64Decode(cubit.imageBase64!),
+                                      image: BaseImageCache.getImage(
+                                        cubit.imageBase64!,
                                       ),
                                       fit: BoxFit.cover,
                                     )

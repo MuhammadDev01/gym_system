@@ -1,4 +1,3 @@
-import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
@@ -10,6 +9,7 @@ import 'package:gym_management_app/core/components/custom_text_field.dart';
 import 'package:gym_management_app/core/components/glass_appbar.dart';
 import 'package:gym_management_app/core/components/glass_widget.dart';
 import 'package:gym_management_app/core/helper/app_snackbar.dart';
+import 'package:gym_management_app/core/helper/image_cache_helper.dart';
 import 'package:gym_management_app/core/helper/validators.dart';
 import 'package:gym_management_app/core/theme/app_colors.dart';
 import 'package:gym_management_app/features/members/cubit/member_cubit.dart';
@@ -31,6 +31,11 @@ class _AdminAttendanceViewState extends State<AdminAttendanceView> {
       child: Scaffold(
         appBar: GlassAppBar(title: 'تسجيل حضور'),
         body: BlocConsumer<MemberCubit, MemberState>(
+          buildWhen: (prev, next) =>
+              next is MemberLoadingState ||
+              next is MemberFoundState ||
+              next is MemberScannedState ||
+              next is MemberErrorState,
           listener: (_, state) {
             if (state is MemberScannedState) {
               appSnackbar(
@@ -104,7 +109,7 @@ class _AdminAttendanceViewState extends State<AdminAttendanceView> {
                   borderRadius: BorderRadius.circular(16),
                   image: member.image.isNotEmpty
                       ? DecorationImage(
-                          image: MemoryImage(base64Decode(member.image)),
+                          image: BaseImageCache.getImage(member.image),
                           fit: BoxFit.cover,
                         )
                       : null,
