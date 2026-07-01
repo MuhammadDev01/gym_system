@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gym_management_app/features/alerts/data/alert_model.dart';
 import 'package:gym_management_app/features/members/data/member_model.dart';
@@ -15,14 +17,15 @@ class HomeCubit extends Cubit<HomeState> {
   void getHomeData() async {
     emit(HomeLoading());
     if (member != null && alerts != null && remainingDays != null) {
+      log("message");
       emit(HomeDataLoaded());
-
       return;
     }
     try {
       member = await _homeRepo.getMemberDetails();
       alerts = await _homeRepo.getAlerts();
       remainingDays = _calcRemainingDays(member?.subscriptionEnd);
+      log("message2");
 
       if (isClosed) return;
       emit(HomeDataLoaded());

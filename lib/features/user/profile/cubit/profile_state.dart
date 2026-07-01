@@ -7,12 +7,12 @@ final class ProfileInitial extends ProfileState {}
 
 final class ProfileLoading extends ProfileState {}
 
-final class ProfileLoaded extends ProfileState {
-  final MemberModel member;
-  ProfileLoaded({required this.member});
-}
+final class ProfileLoaded extends ProfileState {}
 
-final class ProfileUpdated extends ProfileState {}
+final class ProfileUpdated extends ProfileState {
+  final String? imageBase64;
+  ProfileUpdated({this.imageBase64});
+}
 
 final class ProfileError extends ProfileState {
   final String message;

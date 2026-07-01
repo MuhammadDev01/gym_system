@@ -1,17 +1,26 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:gym_management_app/core/DI/service_locator.dart';
 import 'package:gym_management_app/core/constants/app_assets.dart';
 import 'package:gym_management_app/features/user/general/cubit/gerenal_cubit.dart';
+import 'package:gym_management_app/features/user/general/home/cubit/home_cubit.dart';
 import 'package:gym_management_app/features/user/general/views/widgets/custom_nav_bar.dart';
+import 'package:gym_management_app/features/user/profile/cubit/profile_cubit.dart';
 
 class GerenalView extends StatelessWidget {
   const GerenalView({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => GerenalCubit(),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider<GerenalCubit>(create: (context) => getIt<GerenalCubit>()),
+        BlocProvider<HomeCubit>(
+          create: (context) => getIt<HomeCubit>()..getHomeData(),
+        ),
+        BlocProvider(create: (context) => getIt<ProfileCubit>()),
+      ],
       child: BlocBuilder<GerenalCubit, GerenalState>(
         builder: (context, _) {
           final cubit = context.read<GerenalCubit>();

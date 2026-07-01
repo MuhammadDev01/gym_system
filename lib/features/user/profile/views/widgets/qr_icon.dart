@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
 import 'package:gym_management_app/core/components/custom_text.dart';
 import 'package:gym_management_app/core/theme/app_colors.dart';
-import 'package:gym_management_app/features/user/profile/cubit/profile_cubit.dart';
+import 'package:gym_management_app/features/user/general/home/cubit/home_cubit.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 
 class QrIcon extends StatelessWidget {
@@ -41,7 +41,7 @@ class QrIcon extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             children: [
               QrImageView(
-                data: context.read<ProfileCubit>().phoneController.text,
+                data: context.read<HomeCubit>().member!.phone,
                 version: QrVersions.auto,
                 size: 250,
                 eyeStyle: const QrEyeStyle(

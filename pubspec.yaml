@@ -44,6 +44,8 @@ flutter_assets:
   filename: app_assets.dart
   ignore_comments: true
   field_prefix: null
+  classname: AppAssets
+
 dev_dependencies:
   flutter_launcher_icons: ^0.14.3
   flutter_lints: ^6.0.0

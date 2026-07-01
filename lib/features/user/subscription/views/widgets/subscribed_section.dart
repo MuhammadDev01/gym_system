@@ -72,6 +72,22 @@ class _SubscriptionInfoCard extends StatelessWidget {
     }
   }
 
+  List<InfoRowModel> get _infoRows => [
+    InfoRowModel(
+      title: 'نوع الاشتراك',
+      value: _typeLabel(member.subscriptionType),
+    ),
+    InfoRowModel(title: 'المدة', value: '${member.subscriptionMonths} شهر'),
+    InfoRowModel(
+      title: 'تاريخ البداية',
+      value: formatDate(member.subscriptionStart),
+    ),
+    InfoRowModel(
+      title: 'تاريخ الانتهاء',
+      value: formatDate(member.subscriptionEnd),
+    ),
+  ];
+
   @override
   Widget build(BuildContext context) {
     final diff = member.subscriptionEnd?.difference(DateTime.now());
@@ -80,45 +96,45 @@ class _SubscriptionInfoCard extends StatelessWidget {
     return GlassWidget(
       padding: EdgeInsets.all(16),
       child: Column(
+        spacing: 12,
         children: [
-          _InfoRow(
-            title: 'نوع الاشتراك',
-            value: _typeLabel(member.subscriptionType),
+          ..._infoRows.map((e) => _InfoRow(model: e)),
+          const Divider(),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              CustomText(text: 'عدد الأيام المتبقية : '),
+              CustomText(text: '$remainingDays  يوم', color: AppColors.gold),
+            ],
           ),
-          const Divider(height: 24),
-          _InfoRow(title: 'المدة', value: '${member.subscriptionMonths} شهر'),
-          const Divider(height: 24),
-          _InfoRow(
-            title: 'تاريخ البداية',
-            value: formatDate(member.subscriptionStart),
-          ),
-          const Divider(height: 24),
-          _InfoRow(
-            title: 'تاريخ الانتهاء',
-            value: formatDate(member.subscriptionEnd),
-          ),
-          const Divider(height: 24),
-          _InfoRow(title: 'الأيام المتبقية', value: '$remainingDays يوم'),
         ],
       ),
     );
   }
 }
 
-class _InfoRow extends StatelessWidget {
-  const _InfoRow({required this.title, required this.value});
-
+class InfoRowModel {
   final String title;
   final String value;
+  InfoRowModel({required this.title, required this.value});
+}
+
+class _InfoRow extends StatelessWidget {
+  const _InfoRow({required this.model});
+  final InfoRowModel model;
 
   @override
   Widget build(BuildContext context) {
     return Row(
       children: [
         Expanded(
-          child: CustomText(text: title, color: Colors.white70, fontSize: 12),
+          child: CustomText(
+            text: model.title,
+            color: AppColors.textSecondary,
+            fontSize: 12,
+          ),
         ),
-        CustomText(text: value, fontSize: 14),
+        CustomText(text: model.value, fontSize: 14),
       ],
     );
   }

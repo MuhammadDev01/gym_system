@@ -13,6 +13,7 @@ class NotSubscribedSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(
+      spacing: 16,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         CustomGlassAlert(
@@ -20,24 +21,20 @@ class NotSubscribedSection extends StatelessWidget {
           color: AppColors.error,
           icon: Icon(Icons.cancel_outlined, color: AppColors.error),
         ),
-        const Gap(24),
         CustomText(
           text: "الباقات المتاحة",
           style: Theme.of(context).textTheme.headlineMedium,
         ),
-        const Gap(16),
         const _PackageCard(
           picCard: AppAssets.cardsGymCard,
           price: 300,
           color: Color(0xff9EB1BC),
         ),
-        const Gap(16),
         _PackageCard(
           picCard: AppAssets.cardsFitnessCard,
           price: 400,
           color: Colors.grey,
         ),
-        const Gap(16),
         _PackageCard(
           picCard: AppAssets.cardsPrivateCard,
           price: 500,
