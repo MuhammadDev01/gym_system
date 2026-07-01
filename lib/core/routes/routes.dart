@@ -13,8 +13,6 @@ import 'package:gym_management_app/features/market/views/admin/market_items_list
 import 'package:gym_management_app/features/market/views/admin/market_management_view.dart';
 import 'package:gym_management_app/features/market/views/user/market_item_detail_view.dart';
 import 'package:gym_management_app/features/market/data/market_item_model.dart';
-import 'package:gym_management_app/features/market/cubit/admin/market_admin_cubit.dart';
-import 'package:gym_management_app/core/DI/service_locator.dart';
 import 'package:gym_management_app/features/members/views/add_member_view.dart';
 import 'package:gym_management_app/features/members/views/edit_member_view.dart';
 import 'package:gym_management_app/features/members/views/members_list_view.dart';
@@ -22,7 +20,6 @@ import 'package:gym_management_app/features/members/views/members_management_vie
 import 'package:gym_management_app/features/members/views/scan_member_view.dart';
 import 'package:gym_management_app/features/members/views/admin_attendance_view.dart';
 import 'package:gym_management_app/features/members/views/admin_attendance_history_view.dart';
-import 'package:gym_management_app/features/members/cubit/member_cubit.dart';
 import 'package:gym_management_app/features/auth/views/auth_view.dart';
 import 'package:gym_management_app/features/user/general/views/gerenal_view.dart';
 import 'package:gym_management_app/features/user/general/home/views/home_view.dart';
@@ -30,9 +27,7 @@ import 'package:gym_management_app/features/market/views/user/market_user_view.d
 import 'package:gym_management_app/features/user/profile/views/profile_view.dart';
 import 'package:gym_management_app/features/user/settings/views/branches_view.dart';
 import 'package:gym_management_app/features/user/settings/views/settings_view.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gym_management_app/features/user/settings/views/subscription_history_view.dart';
-import 'package:gym_management_app/features/user/subscription/cubit/subscription_history_cubit.dart';
 import 'package:gym_management_app/features/user/subscription/views/subscription_view.dart';
 
 final goRouter = GoRouter(
@@ -74,62 +69,44 @@ final goRouter = GoRouter(
     ),
     GoRoute(
       path: AppRoutes.addMemberView,
-      builder: (_, _) => BlocProvider(
-        create: (_) => getIt<MemberCubit>(),
-        child: Directionality(
-          textDirection: TextDirection.rtl,
-          child: AddMemberView(),
-        ),
+      builder: (_, _) => Directionality(
+        textDirection: TextDirection.rtl,
+        child: AddMemberView(),
       ),
     ),
     GoRoute(
       path: AppRoutes.editMemberView,
-      builder: (_, _) => BlocProvider(
-        create: (_) => getIt<MemberCubit>(),
-        child: Directionality(
-          textDirection: TextDirection.rtl,
-          child: EditMemberView(),
-        ),
+      builder: (_, _) => Directionality(
+        textDirection: TextDirection.rtl,
+        child: EditMemberView(),
       ),
     ),
     GoRoute(
       path: AppRoutes.membersListView,
-      builder: (_, _) => BlocProvider(
-        create: (_) => getIt<MemberCubit>(),
-        child: Directionality(
-          textDirection: TextDirection.rtl,
-          child: MembersListView(),
-        ),
+      builder: (_, _) => Directionality(
+        textDirection: TextDirection.rtl,
+        child: MembersListView(),
       ),
     ),
     GoRoute(
       path: AppRoutes.scanMemberView,
-      builder: (_, _) => BlocProvider(
-        create: (_) => getIt<MemberCubit>(),
-        child: const Directionality(
-          textDirection: TextDirection.rtl,
-          child: ScanMemberView(),
-        ),
+      builder: (_, _) => const Directionality(
+        textDirection: TextDirection.rtl,
+        child: ScanMemberView(),
       ),
     ),
     GoRoute(
       path: AppRoutes.adminAttendanceView,
-      builder: (_, _) => BlocProvider(
-        create: (_) => getIt<MemberCubit>(),
-        child: const Directionality(
-          textDirection: TextDirection.rtl,
-          child: AdminAttendanceView(),
-        ),
+      builder: (_, _) => const Directionality(
+        textDirection: TextDirection.rtl,
+        child: AdminAttendanceView(),
       ),
     ),
     GoRoute(
       path: AppRoutes.adminAttendanceHistoryView,
-      builder: (_, _) => BlocProvider(
-        create: (_) => getIt<MemberCubit>(),
-        child: const Directionality(
-          textDirection: TextDirection.rtl,
-          child: AdminAttendanceHistoryView(),
-        ),
+      builder: (_, _) => const Directionality(
+        textDirection: TextDirection.rtl,
+        child: AdminAttendanceHistoryView(),
       ),
     ),
     //* Alerts
@@ -179,32 +156,23 @@ final goRouter = GoRouter(
     ),
     GoRoute(
       path: AppRoutes.addItemOnMarketView,
-      builder: (_, _) => BlocProvider<MarketAdminCubit>(
-        create: (_) => getIt<MarketAdminCubit>(),
-        child: const Directionality(
-          textDirection: TextDirection.rtl,
-          child: AddItemOnMarketView(),
-        ),
+      builder: (_, _) => const Directionality(
+        textDirection: TextDirection.rtl,
+        child: AddItemOnMarketView(),
       ),
     ),
     GoRoute(
       path: AppRoutes.editItemOnMarketView,
-      builder: (_, _) => BlocProvider<MarketAdminCubit>(
-        create: (_) => getIt<MarketAdminCubit>(),
-        child: const Directionality(
-          textDirection: TextDirection.rtl,
-          child: EditItemOnMarketView(),
-        ),
+      builder: (_, _) => const Directionality(
+        textDirection: TextDirection.rtl,
+        child: EditItemOnMarketView(),
       ),
     ),
     GoRoute(
       path: AppRoutes.marketItemsListView,
-      builder: (_, _) => BlocProvider<MarketAdminCubit>(
-        create: (_) => getIt<MarketAdminCubit>(),
-        child: const Directionality(
-          textDirection: TextDirection.rtl,
-          child: MarketItemsListView(),
-        ),
+      builder: (_, _) => const Directionality(
+        textDirection: TextDirection.rtl,
+        child: MarketItemsListView(),
       ),
     ),
     //* User
@@ -277,12 +245,9 @@ final goRouter = GoRouter(
     ),
     GoRoute(
       path: AppRoutes.subscriptionHistorySubView,
-      builder: (_, _) => BlocProvider(
-        create: (_) => getIt<SubscriptionHistoryCubit>(),
-        child: const Directionality(
-          textDirection: TextDirection.rtl,
-          child: SubscriptionHistoryView(),
-        ),
+      builder: (_, _) => const Directionality(
+        textDirection: TextDirection.rtl,
+        child: SubscriptionHistoryView(),
       ),
     ),
   ],

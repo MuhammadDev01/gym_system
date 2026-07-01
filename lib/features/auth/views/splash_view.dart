@@ -1,6 +1,8 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
+import 'package:gym_management_app/core/DI/service_locator.dart';
 import 'package:gym_management_app/core/components/app_background.dart';
 import 'package:gym_management_app/core/constants/app_assets.dart';
 import 'package:gym_management_app/core/constants/app_constants.dart';
@@ -8,6 +10,7 @@ import 'package:gym_management_app/core/routes/app_routes.dart';
 import 'package:gym_management_app/core/service/local/local_cache_service.dart';
 import 'package:gym_management_app/core/theme/app_colors.dart';
 import 'package:go_router/go_router.dart';
+import 'package:gym_management_app/features/auth/cubit/auth_cubit.dart';
 import 'package:icon_decoration/icon_decoration.dart';
 
 class SplashView extends StatefulWidget {
@@ -64,39 +67,45 @@ class _SplashViewState extends State<SplashView>
   Widget build(BuildContext context) {
     final dpr = MediaQuery.devicePixelRatioOf(context);
     final size = MediaQuery.sizeOf(context);
-    return AppBackground(
-      child: Scaffold(
-        backgroundColor: Colors.transparent.withValues(alpha: 0.6),
-        body: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Image.asset(
-              AppAssets.logo,
-              fit: BoxFit.cover,
-              cacheWidth: (size.width * dpr).round(),
-              cacheHeight: (300 * dpr).round(),
-            ),
-            const Gap(48),
-            AnimatedBuilder(
-              animation: _controller,
-              builder: (_, child) => Transform.rotate(
-                angle: _controller.value * pi * 2,
-                child: child,
-              ),
-              child: DecoratedIcon(
-                icon: const Icon(
-                  Icons.fitness_center,
-                  color: AppColors.gold,
-                  size: 50,
+    return BlocProvider(
+      create: (context) => getIt<AuthCubit>(),
+      child: AppBackground(
+        child: Scaffold(
+          backgroundColor: Colors.transparent.withValues(alpha: 0.6),
+          body: Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Image.asset(
+                  AppAssets.logo,
+                  fit: BoxFit.cover,
+                  cacheWidth: (size.width * dpr).round(),
+                  cacheHeight: (300 * dpr).round(),
                 ),
-                decoration: IconDecoration(
-                  border: IconBorder(
-                    color: AppColors.black, // لون إطار الأيقونة
+                const Gap(48),
+                AnimatedBuilder(
+                  animation: _controller,
+                  builder: (_, child) => Transform.rotate(
+                    angle: _controller.value * pi * 2,
+                    child: child,
+                  ),
+                  child: DecoratedIcon(
+                    icon: const Icon(
+                      Icons.fitness_center,
+                      color: AppColors.gold,
+                      size: 50,
+                    ),
+                    decoration: IconDecoration(
+                      border: IconBorder(
+                        color: AppColors.black, // لون إطار الأيقونة
+                      ),
+                    ),
                   ),
                 ),
-              ),
+              ],
             ),
-          ],
+          ),
         ),
       ),
     );

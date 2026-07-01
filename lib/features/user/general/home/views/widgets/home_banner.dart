@@ -9,7 +9,7 @@ class HomeBanner extends StatelessWidget {
     return Container(
       height: MediaQuery.of(context).size.width > 650 ? 300 : 180,
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(24),
+        borderRadius: BorderRadius.circular(8),
         image: DecorationImage(
           image: const AssetImage(AppAssets.banner),
           fit: MediaQuery.of(context).size.width > 650
