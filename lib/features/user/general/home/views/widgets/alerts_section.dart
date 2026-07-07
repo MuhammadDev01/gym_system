@@ -24,7 +24,7 @@ class AlertSection extends StatelessWidget {
                       ),
                     )
                   : ListView.separated(
-                      // addAutomaticKeepAlives: false,
+                      addAutomaticKeepAlives: false,
                       shrinkWrap: true,
                       physics: const NeverScrollableScrollPhysics(),
                       itemCount: cubit.alerts!.length,

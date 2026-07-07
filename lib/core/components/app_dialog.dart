@@ -12,14 +12,23 @@ void showDeleteConfirm(
 }) {
   showDialog(
     context: context,
-    builder: (_) => Directionality(
+    builder: (dialogContext) => Directionality(
       textDirection: TextDirection.rtl,
       child: AlertDialog(
         backgroundColor: AppColors.background,
-        title: const CustomText(text: 'تأكيد الحذف'),
-        content: CustomText(text: title),
+        title: const CustomText(
+          text: 'تأكيد الحذف',
+          textAlign: TextAlign.center,
+          fontSize: 18,
+        ),
+
+        content: CustomText(
+          text: title,
+          textAlign: TextAlign.center,
+          color: AppColors.textSecondary,
+        ),
         actions: [
-          CustomButton(text: 'إلغاء', onPressed: () => context.pop()),
+          CustomButton(text: 'إلغاء', onPressed: () => dialogContext.pop()),
           CustomButton(
             text: 'حذف',
             colorButton: AppColors.snackError,
@@ -43,56 +52,44 @@ void showEditDialog(
 }) {
   showDialog(
     context: context,
-    builder: (_) => Directionality(
+    builder: (dialogContext) => Directionality(
       textDirection: TextDirection.rtl,
 
       child: AlertDialog(
         actionsPadding: EdgeInsets.all(12),
-        actions: _editMemberActions(
-          onconfirmDelete: onConfirmDelete,
-          onconfirmUpdate: onConfirmUpdate,
-          title: deleteTitle,
-          context,
-        ),
-        backgroundColor: AppColors.background.withValues(alpha: 0.8),
+        actionsAlignment: MainAxisAlignment.spaceBetween,
+        actions: [
+          CustomButton(
+            text: 'حذف',
+            colorButton: AppColors.snackError,
+            colorText: Colors.white,
+            onPressed: () => showDeleteConfirm(
+              dialogContext,
+              title: deleteTitle,
+              onConfirm: () {
+                dialogContext.pop();
+                dialogContext.pop();
+                onConfirmDelete();
+              },
+            ),
+          ),
+          CustomButton(text: 'إلغاء', onPressed: () => dialogContext.pop()),
+          CustomButton(
+            text: 'حفظ',
+            colorText: Colors.white,
+            colorButton: AppColors.success,
+            onPressed: () {
+              dialogContext.pop();
+              onConfirmUpdate();
+            },
+          ),
+        ],
+        backgroundColor: AppColors.background,
         title: CustomText(text: editTitle),
         content: content,
       ),
     ),
   );
-}
-
-List<Widget> _editMemberActions(
-  BuildContext context, {
-  required VoidCallback onconfirmDelete,
-  required VoidCallback onconfirmUpdate,
-  required String title,
-}) {
-  return [
-    Expanded(
-      child: CustomButton(
-        text: 'حذف',
-        colorButton: AppColors.snackError,
-        colorText: Colors.white,
-        onPressed: () => showDeleteConfirm(
-          onConfirm: onconfirmDelete,
-          context,
-          title: title,
-        ),
-      ),
-    ),
-    Expanded(
-      child: CustomButton(text: 'إلغاء', onPressed: () => context.pop()),
-    ),
-    Expanded(
-      child: CustomButton(
-        text: 'حفظ',
-        colorText: Colors.white,
-        colorButton: AppColors.success,
-        onPressed: onconfirmUpdate,
-      ),
-    ),
-  ];
 }
 
 void onConfirmLogout(BuildContext context, {required VoidCallback onConfirm}) {
@@ -108,7 +105,7 @@ void onConfirmLogout(BuildContext context, {required VoidCallback onConfirm}) {
       content: CustomText(
         text: 'هل أنت متأكد من تسجيل الخروج؟',
         textAlign: TextAlign.center,
-        color: AppColors.gray.withValues(alpha: 0.5),
+        color: AppColors.textSecondary,
       ),
       actions: [
         CustomButton(onPressed: () => context.pop(), text: 'إلغاء'),

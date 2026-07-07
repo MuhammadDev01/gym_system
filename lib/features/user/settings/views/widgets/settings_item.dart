@@ -8,11 +8,13 @@ class NavCard extends StatelessWidget {
   final String title;
   final IconData icon;
   final VoidCallback onTap;
+  final Color? iconColor;
   const NavCard({
     super.key,
     required this.title,
     required this.icon,
     required this.onTap,
+    this.iconColor,
   });
 
   @override
@@ -29,10 +31,12 @@ class NavCard extends StatelessWidget {
                 width: 48,
                 height: 48,
                 decoration: BoxDecoration(
-                  color: AppColors.gold.withValues(alpha: .15),
+                  color:
+                      iconColor?.withValues(alpha: .15) ??
+                      AppColors.gold.withValues(alpha: .15),
                   borderRadius: BorderRadius.circular(14),
                 ),
-                child: Icon(icon, color: AppColors.gold, size: 22),
+                child: Icon(icon, color: iconColor ?? AppColors.gold, size: 22),
               ),
               const Gap(14),
               Expanded(child: CustomText(text: title)),

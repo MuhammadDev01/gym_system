@@ -1,6 +1,6 @@
 import "package:firebase_auth/firebase_auth.dart";
 import "package:gym_management_app/core/constants/app_constants.dart";
-import "package:gym_management_app/features/members/data/member_model.dart";
+import "package:gym_management_app/features/admin/members/data/member_model.dart";
 import "package:gym_management_app/core/service/local/local_cache_service.dart";
 import "package:gym_management_app/core/service/network/firebase_exceptions.dart";
 import "package:gym_management_app/core/service/network/firebase_service.dart";

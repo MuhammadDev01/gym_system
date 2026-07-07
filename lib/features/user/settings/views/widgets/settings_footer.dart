@@ -19,13 +19,13 @@ class SettingsFooter extends StatelessWidget {
             children: [
               Icon(Icons.admin_panel_settings, color: AppColors.gold, size: 20),
               const Gap(8),
-              CustomText(text: 'إدارة كابتن محمد خالد', color: AppColors.gold),
+              CustomText(text: 'إدارة كابتن أشرف بكار', color: AppColors.gold),
             ],
           ),
         ),
         const Gap(12),
         const CustomText(
-          text: 'جميع الحقوق محفوظة © KongiGym 2026',
+          text: 'جميع الحقوق محفوظة © 2026  3A GYM',
           fontSize: 12,
           color: Colors.white38,
         ),

@@ -1,16 +1,18 @@
 import 'package:get_it/get_it.dart';
 import 'package:gym_management_app/core/service/network/fcm_service.dart';
 import 'package:gym_management_app/core/service/network/firebase_service.dart';
-import 'package:gym_management_app/features/alerts/cubit/admin/alert_admin_cubit.dart';
-import 'package:gym_management_app/features/alerts/data/alert_repo.dart';
-import 'package:gym_management_app/features/market/cubit/admin/market_admin_cubit.dart';
-import 'package:gym_management_app/features/market/cubit/user/market_user_cubit.dart';
-import 'package:gym_management_app/features/market/data/market_repo.dart';
-import 'package:gym_management_app/features/members/cubit/member_cubit.dart';
-import 'package:gym_management_app/features/members/data/members_repo.dart';
+
+import 'package:gym_management_app/features/admin/alerts/cubit/alert_admin_cubit.dart';
+import 'package:gym_management_app/features/admin/alerts/data/alert_repo.dart';
+import 'package:gym_management_app/features/admin/market/cubit/market_admin_cubit.dart';
+import 'package:gym_management_app/features/user/market/cubit/market_user_cubit.dart';
+import 'package:gym_management_app/features/data/market_repo.dart';
+import 'package:gym_management_app/features/admin/members/cubit/member_cubit.dart';
+import 'package:gym_management_app/features/admin/members/data/members_repo.dart';
 import 'package:gym_management_app/features/user/general/cubit/gerenal_cubit.dart';
 import 'package:gym_management_app/features/user/general/home/data/home_repo.dart';
 import 'package:gym_management_app/features/user/profile/cubit/profile_cubit.dart';
+import 'package:gym_management_app/features/user/settings/cubit/settings_cubit.dart';
 import 'package:gym_management_app/features/user/subscription/cubit/subscription_cubit.dart';
 import 'package:gym_management_app/features/user/subscription/cubit/subscription_history_cubit.dart';
 import 'package:gym_management_app/features/user/subscription/data/subscription_history_repo.dart';
@@ -75,4 +77,6 @@ void serviceLocatorSetup() {
     () => SubscriptionCubit(getIt<MemberRepo>()),
   );
   getIt.registerFactory<ProfileCubit>(() => ProfileCubit());
+
+  getIt.registerFactory<SettingsCubit>(() => SettingsCubit(getIt<AuthRepo>()));
 }

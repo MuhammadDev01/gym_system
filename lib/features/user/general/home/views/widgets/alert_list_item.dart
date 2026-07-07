@@ -4,7 +4,7 @@ import 'package:gym_management_app/core/components/custom_status_icon.dart';
 import 'package:gym_management_app/core/components/custom_text.dart';
 import 'package:gym_management_app/core/components/glass_widget.dart';
 import 'package:gym_management_app/core/theme/app_colors.dart';
-import 'package:gym_management_app/features/alerts/data/alert_model.dart';
+import 'package:gym_management_app/features/admin/alerts/data/alert_model.dart';
 
 class AlertListItem extends StatelessWidget {
   const AlertListItem({super.key, required this.alert});
@@ -13,11 +13,14 @@ class AlertListItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final elapsedDays = DateTime.now().difference(alert.createdAt).inDays;
+    final remainingDays = alert.expiresAt.difference(DateTime.now()).inDays;
+    final remainingText = remainingDays > 0
+        ? 'متبقي $remainingDays يوم'
+        : 'آخر يوم';
     return GlassWidget(
       padding: const EdgeInsets.all(16),
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.end,
         children: [
           Row(
             children: [
@@ -30,28 +33,17 @@ class AlertListItem extends StatelessWidget {
             ],
           ),
           const Gap(8),
-          Row(
-            children: [
-              CustomText(
-                text: 'منذ $elapsedDays يوم',
-                fontSize: 12,
-                color: AppColors.textSecondary,
-              ),
-              const Spacer(),
-              Container(
-                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
-                decoration: BoxDecoration(
-                  color: AppColors.gold.withValues(alpha: 0.1),
-                  borderRadius: BorderRadius.circular(8),
-                ),
-                child: CustomText(
-                  text:
-                      'متبقي ${alert.expiresAt.difference(DateTime.now()).inDays} يوم',
-                  fontSize: 11,
-                  color: AppColors.gold,
-                ),
-              ),
-            ],
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
+            decoration: BoxDecoration(
+              color: AppColors.gold.withValues(alpha: 0.1),
+              borderRadius: BorderRadius.circular(6),
+            ),
+            child: CustomText(
+              text: remainingText,
+              fontSize: 10,
+              color: AppColors.gold,
+            ),
           ),
         ],
       ),

@@ -4,8 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:gym_management_app/core/DI/service_locator.dart';
-import 'package:gym_management_app/features/members/data/member_model.dart';
-import 'package:gym_management_app/features/members/data/members_repo.dart';
+import 'package:gym_management_app/features/admin/members/data/member_model.dart';
+import 'package:gym_management_app/features/admin/members/data/members_repo.dart';
 part 'profile_state.dart';
 
 class ProfileCubit extends Cubit<ProfileState> {
@@ -37,11 +37,8 @@ class ProfileCubit extends Cubit<ProfileState> {
       );
       if (isClosed) return;
       emit(ProfileUpdated(imageBase64: imageBase64));
-    } catch (e) {
-      final msg = e.toString();
-      emit(
-        ProfileError(msg.startsWith('Exception: ') ? msg.substring(11) : msg),
-      );
+    } catch (_) {
+      emit(ProfileError('حدث خطأ أثناء تحديث الصورة'));
     }
   }
 }

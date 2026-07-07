@@ -6,14 +6,18 @@ class ImagePickerService {
   static Future<XFile?> pickImageFromGallery() async {
     return await _picker.pickImage(
       source: ImageSource.gallery,
-      imageQuality: 80,
+      imageQuality: 30,
+      maxWidth: 600,
+      maxHeight: 600,
     );
   }
 
   static Future<XFile?> pickImageFromCamera() async {
     return await _picker.pickImage(
       source: ImageSource.camera,
-      imageQuality: 80,
+      imageQuality: 30,
+      maxWidth: 600,
+      maxHeight: 600,
     );
   }
 }

@@ -1,8 +1,8 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gym_management_app/core/constants/app_constants.dart';
 import 'package:gym_management_app/core/service/local/local_cache_service.dart';
-import 'package:gym_management_app/features/members/data/member_model.dart';
-import 'package:gym_management_app/features/members/data/members_repo.dart';
+import 'package:gym_management_app/features/admin/members/data/member_model.dart';
+import 'package:gym_management_app/features/admin/members/data/members_repo.dart';
 import 'package:gym_management_app/features/user/subscription/cubit/subscription_state.dart';
 
 class SubscriptionCubit extends Cubit<SubscriptionState> {

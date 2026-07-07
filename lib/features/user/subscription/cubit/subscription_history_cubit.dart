@@ -2,7 +2,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gym_management_app/core/DI/service_locator.dart';
 import 'package:gym_management_app/core/constants/app_constants.dart';
 import 'package:gym_management_app/core/service/local/local_cache_service.dart';
-import 'package:gym_management_app/features/members/data/members_repo.dart';
+import 'package:gym_management_app/features/admin/members/data/members_repo.dart';
 import 'package:gym_management_app/features/user/subscription/cubit/subscription_history_state.dart';
 import 'package:gym_management_app/features/user/subscription/data/subscription_history_repo.dart';
 import 'package:gym_management_app/features/user/subscription/data/subscription_history_model.dart';

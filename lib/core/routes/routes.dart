@@ -1,29 +1,30 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:gym_management_app/core/routes/app_routes.dart';
-import 'package:gym_management_app/features/admin/views/admin_view.dart';
+import 'package:gym_management_app/features/admin/dashboard/views/widgets/admin_shell.dart';
+import 'package:gym_management_app/features/admin/dashboard/views/admin_view.dart';
 import 'package:gym_management_app/features/auth/views/splash_view.dart';
-import 'package:gym_management_app/features/alerts/views/add_alert_view.dart';
-import 'package:gym_management_app/features/alerts/views/alerts_management_view.dart';
-import 'package:gym_management_app/features/alerts/views/alerts_view.dart';
-import 'package:gym_management_app/features/alerts/views/edit_alert_view.dart';
-import 'package:gym_management_app/features/market/views/admin/add_item_on_market_view.dart';
-import 'package:gym_management_app/features/market/views/admin/edit_item_on_market_view.dart';
-import 'package:gym_management_app/features/market/views/admin/market_items_list_view.dart';
-import 'package:gym_management_app/features/market/views/admin/market_management_view.dart';
-import 'package:gym_management_app/features/market/views/user/market_item_detail_view.dart';
-import 'package:gym_management_app/features/market/data/market_item_model.dart';
-import 'package:gym_management_app/features/members/views/add_member_view.dart';
-import 'package:gym_management_app/features/members/views/edit_member_view.dart';
-import 'package:gym_management_app/features/members/views/members_list_view.dart';
-import 'package:gym_management_app/features/members/views/members_management_view.dart';
-import 'package:gym_management_app/features/members/views/scan_member_view.dart';
-import 'package:gym_management_app/features/members/views/admin_attendance_view.dart';
-import 'package:gym_management_app/features/members/views/admin_attendance_history_view.dart';
+import 'package:gym_management_app/features/admin/alerts/views/add_alert_view.dart';
+import 'package:gym_management_app/features/admin/alerts/views/alerts_management_view.dart';
+import 'package:gym_management_app/features/admin/alerts/views/alerts_view.dart';
+import 'package:gym_management_app/features/admin/alerts/views/edit_alert_view.dart';
+import 'package:gym_management_app/features/admin/market/views/add_item_on_market_view.dart';
+import 'package:gym_management_app/features/admin/market/views/edit_item_on_market_view.dart';
+import 'package:gym_management_app/features/admin/market/views/market_items_list_view.dart';
+import 'package:gym_management_app/features/admin/market/views/market_management_view.dart';
+import 'package:gym_management_app/features/user/market/views/market_item_detail_view.dart';
+import 'package:gym_management_app/features/data/market_item_model.dart';
+import 'package:gym_management_app/features/admin/members/views/add_member_view.dart';
+import 'package:gym_management_app/features/admin/members/views/edit_member_view.dart';
+import 'package:gym_management_app/features/admin/members/views/members_list_view.dart';
+import 'package:gym_management_app/features/admin/members/views/members_management_view.dart';
+import 'package:gym_management_app/features/admin/members/views/scan_member_view.dart';
+import 'package:gym_management_app/features/admin/members/views/admin_attendance_view.dart';
+import 'package:gym_management_app/features/admin/members/views/admin_attendance_history_view.dart';
 import 'package:gym_management_app/features/auth/views/auth_view.dart';
 import 'package:gym_management_app/features/user/general/views/gerenal_view.dart';
 import 'package:gym_management_app/features/user/general/home/views/home_view.dart';
-import 'package:gym_management_app/features/market/views/user/market_user_view.dart';
+import 'package:gym_management_app/features/user/market/views/market_user_view.dart';
 import 'package:gym_management_app/features/user/profile/views/profile_view.dart';
 import 'package:gym_management_app/features/user/settings/views/branches_view.dart';
 import 'package:gym_management_app/features/user/settings/views/settings_view.dart';
@@ -42,7 +43,7 @@ final goRouter = GoRouter(
         child: SplashView(),
       ),
     ),
-    //*main
+    //* Auth
     GoRoute(
       path: AppRoutes.authView,
       builder: (_, _) => const Directionality(
@@ -50,130 +51,133 @@ final goRouter = GoRouter(
         child: AuthView(),
       ),
     ),
-    //*Main
-    GoRoute(
-      path: AppRoutes.adminView,
-      builder: (_, _) => const Directionality(
-        textDirection: TextDirection.rtl,
-        child: AdminView(),
-      ),
-    ),
-
-    //*Members
-    GoRoute(
-      path: AppRoutes.membersManagementView,
-      builder: (_, _) => Directionality(
-        textDirection: TextDirection.rtl,
-        child: MembersManagementView(),
-      ),
-    ),
-    GoRoute(
-      path: AppRoutes.addMemberView,
-      builder: (_, _) => Directionality(
-        textDirection: TextDirection.rtl,
-        child: AddMemberView(),
-      ),
-    ),
-    GoRoute(
-      path: AppRoutes.editMemberView,
-      builder: (_, _) => Directionality(
-        textDirection: TextDirection.rtl,
-        child: EditMemberView(),
-      ),
-    ),
-    GoRoute(
-      path: AppRoutes.membersListView,
-      builder: (_, _) => Directionality(
-        textDirection: TextDirection.rtl,
-        child: MembersListView(),
-      ),
-    ),
-    GoRoute(
-      path: AppRoutes.scanMemberView,
-      builder: (_, _) => const Directionality(
-        textDirection: TextDirection.rtl,
-        child: ScanMemberView(),
-      ),
-    ),
-    GoRoute(
-      path: AppRoutes.adminAttendanceView,
-      builder: (_, _) => const Directionality(
-        textDirection: TextDirection.rtl,
-        child: AdminAttendanceView(),
-      ),
-    ),
-    GoRoute(
-      path: AppRoutes.adminAttendanceHistoryView,
-      builder: (_, _) => const Directionality(
-        textDirection: TextDirection.rtl,
-        child: AdminAttendanceHistoryView(),
-      ),
-    ),
-    //* Alerts
-    GoRoute(
-      path: AppRoutes.alertsManagementView,
-      builder: (_, _) => const Directionality(
-        textDirection: TextDirection.rtl,
-        child: AlertsManagementView(),
-      ),
-    ),
-    GoRoute(
-      path: AppRoutes.addAlertView,
-      builder: (_, _) => const Directionality(
-        textDirection: TextDirection.rtl,
-        child: AddAlertView(),
-      ),
-    ),
-    GoRoute(
-      path: AppRoutes.editAlertView,
-      builder: (_, _) => const Directionality(
-        textDirection: TextDirection.rtl,
-        child: EditAlertView(),
-      ),
-    ),
-    GoRoute(
-      path: AppRoutes.alertsListView,
-      builder: (_, _) => const Directionality(
-        textDirection: TextDirection.rtl,
-        child: AlertsListView(),
-      ),
-    ),
-    GoRoute(
-      path: AppRoutes.alertsView,
-      builder: (_, _) => const Directionality(
-        textDirection: TextDirection.rtl,
-        child: AlertsManagementView(),
-      ),
-    ),
-
-    //* Market
-    GoRoute(
-      path: AppRoutes.marketManagementView,
-      builder: (_, _) => const Directionality(
-        textDirection: TextDirection.rtl,
-        child: MarketManagementView(),
-      ),
-    ),
-    GoRoute(
-      path: AppRoutes.addItemOnMarketView,
-      builder: (_, _) => const Directionality(
-        textDirection: TextDirection.rtl,
-        child: AddItemOnMarketView(),
-      ),
-    ),
-    GoRoute(
-      path: AppRoutes.editItemOnMarketView,
-      builder: (_, _) => const Directionality(
-        textDirection: TextDirection.rtl,
-        child: EditItemOnMarketView(),
-      ),
-    ),
-    GoRoute(
-      path: AppRoutes.marketItemsListView,
-      builder: (_, _) => const Directionality(
-        textDirection: TextDirection.rtl,
-        child: MarketItemsListView(),
-      ),
+    //* Admin shell — provides AdminShell (MemberCubit, AlertAdminCubit, MarketAdminCubit)
+    ShellRoute(
+      builder: (_, _, child) => AdminShell(child: child),
+      routes: [
+        GoRoute(
+          path: AppRoutes.adminView,
+          builder: (_, _) => const Directionality(
+            textDirection: TextDirection.rtl,
+            child: AdminView(),
+          ),
+        ),
+        //* Members
+        GoRoute(
+          path: AppRoutes.membersManagementView,
+          builder: (_, _) => Directionality(
+            textDirection: TextDirection.rtl,
+            child: MembersManagementView(),
+          ),
+        ),
+        GoRoute(
+          path: AppRoutes.addMemberView,
+          builder: (_, _) => Directionality(
+            textDirection: TextDirection.rtl,
+            child: AddMemberView(),
+          ),
+        ),
+        GoRoute(
+          path: AppRoutes.editMemberView,
+          builder: (_, _) => Directionality(
+            textDirection: TextDirection.rtl,
+            child: EditMemberView(),
+          ),
+        ),
+        GoRoute(
+          path: AppRoutes.membersListView,
+          builder: (_, _) => Directionality(
+            textDirection: TextDirection.rtl,
+            child: MembersListView(),
+          ),
+        ),
+        GoRoute(
+          path: AppRoutes.scanMemberView,
+          builder: (_, _) => const Directionality(
+            textDirection: TextDirection.rtl,
+            child: ScanMemberView(),
+          ),
+        ),
+        GoRoute(
+          path: AppRoutes.adminAttendanceView,
+          builder: (_, _) => const Directionality(
+            textDirection: TextDirection.rtl,
+            child: AdminAttendanceView(),
+          ),
+        ),
+        GoRoute(
+          path: AppRoutes.adminAttendanceHistoryView,
+          builder: (_, _) => const Directionality(
+            textDirection: TextDirection.rtl,
+            child: AdminAttendanceHistoryView(),
+          ),
+        ),
+        //* Alerts
+        GoRoute(
+          path: AppRoutes.alertsManagementView,
+          builder: (_, _) => const Directionality(
+            textDirection: TextDirection.rtl,
+            child: AlertsManagementView(),
+          ),
+        ),
+        GoRoute(
+          path: AppRoutes.addAlertView,
+          builder: (_, _) => const Directionality(
+            textDirection: TextDirection.rtl,
+            child: AddAlertView(),
+          ),
+        ),
+        GoRoute(
+          path: AppRoutes.editAlertView,
+          builder: (_, _) => const Directionality(
+            textDirection: TextDirection.rtl,
+            child: EditAlertView(),
+          ),
+        ),
+        GoRoute(
+          path: AppRoutes.alertsListView,
+          builder: (_, _) => const Directionality(
+            textDirection: TextDirection.rtl,
+            child: AlertsListView(),
+          ),
+        ),
+        GoRoute(
+          path: AppRoutes.alertsView,
+          builder: (_, _) => const Directionality(
+            textDirection: TextDirection.rtl,
+            child: AlertsManagementView(),
+          ),
+        ),
+        //* Market
+        GoRoute(
+          path: AppRoutes.marketManagementView,
+          builder: (_, _) => const Directionality(
+            textDirection: TextDirection.rtl,
+            child: MarketManagementView(),
+          ),
+        ),
+        GoRoute(
+          path: AppRoutes.addItemOnMarketView,
+          builder: (_, _) => const Directionality(
+            textDirection: TextDirection.rtl,
+            child: AddItemOnMarketView(),
+          ),
+        ),
+        GoRoute(
+          path: AppRoutes.editItemOnMarketView,
+          builder: (_, _) => const Directionality(
+            textDirection: TextDirection.rtl,
+            child: EditItemOnMarketView(),
+          ),
+        ),
+        GoRoute(
+          path: AppRoutes.marketItemsListView,
+          builder: (_, _) => const Directionality(
+            textDirection: TextDirection.rtl,
+            child: MarketItemsListView(),
+          ),
+        ),
+      ],
     ),
     //* User
     GoRoute(

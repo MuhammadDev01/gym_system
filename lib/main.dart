@@ -8,8 +8,7 @@ import 'package:gym_management_app/core/service/local/local_cache_service.dart';
 import 'package:gym_management_app/core/service/network/fcm_service.dart';
 import 'package:gym_management_app/core/service/network/firebase_service.dart';
 import 'package:gym_management_app/core/theme/app_theme.dart';
-import 'package:gym_management_app/features/alerts/cubit/admin/alert_admin_cubit.dart';
-import 'package:gym_management_app/features/auth/views/splash_view.dart';
+import 'package:gym_management_app/features/auth/cubit/auth_cubit.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -28,29 +27,26 @@ class GymSystemApp extends StatelessWidget {
   final bool kDebugSingleScreen = false;
   @override
   Widget build(BuildContext context) {
-    return MultiBlocProvider(
-      providers: [BlocProvider(create: (context) => getIt<AlertAdminCubit>())],
-      child: kDebugSingleScreen
-          ? MaterialApp(theme: ThemeApp.defualtTheme, home: const SplashView())
-          : MaterialApp.router(
-              debugShowCheckedModeBanner: false,
-              title: 'Gym System App',
-              theme: ThemeApp.defualtTheme,
-              routerConfig: goRouter,
-              // locale: DevicePreview.locale(context),
-              builder: (_, child) {
-                final brightness = MediaQuery.platformBrightnessOf(context);
-                return AnnotatedRegion<SystemUiOverlayStyle>(
-                  value: SystemUiOverlayStyle(
-                    statusBarColor: Colors.transparent,
-                    statusBarIconBrightness: brightness == Brightness.dark
-                        ? Brightness.light
-                        : Brightness.dark,
-                  ),
-                  child: child!,
-                );
-              },
+    return BlocProvider(
+      create: (context) => getIt<AuthCubit>(),
+      child: MaterialApp.router(
+        debugShowCheckedModeBanner: false,
+        title: 'Gym System App',
+        theme: ThemeApp.defualtTheme,
+        routerConfig: goRouter,
+        builder: (_, child) {
+          final brightness = MediaQuery.platformBrightnessOf(context);
+          return AnnotatedRegion<SystemUiOverlayStyle>(
+            value: SystemUiOverlayStyle(
+              statusBarColor: Colors.transparent,
+              statusBarIconBrightness: brightness == Brightness.dark
+                  ? Brightness.light
+                  : Brightness.dark,
             ),
+            child: child!,
+          );
+        },
+      ),
     );
   }
 }

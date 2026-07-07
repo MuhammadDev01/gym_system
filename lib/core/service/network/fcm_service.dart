@@ -79,37 +79,33 @@ class FcmService {
     required String title,
     required String body,
   }) async {
-    try {
-      final accessToken = await _getAccessToken();
-      if (accessToken == null) return;
-      final response = await http.post(
-        Uri.parse(
-          'https://fcm.googleapis.com/v1/projects/$_projectId/messages:send',
-        ),
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': 'Bearer $accessToken',
-        },
-        body: jsonEncode({
-          'message': {
-            'topic': 'allMembers',
-            'notification': {
-              'title': title,
-              'body': body,
-            },
-            'data': {
-              'type': 'alert',
-            },
+    final accessToken = await _getAccessToken();
+    if (accessToken == null) {
+      throw Exception('فشل الحصول على رمز الوصول للإشعارات');
+    }
+    final response = await http.post(
+      Uri.parse(
+        'https://fcm.googleapis.com/v1/projects/$_projectId/messages:send',
+      ),
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer $accessToken',
+      },
+      body: jsonEncode({
+        'message': {
+          'topic': 'allMembers',
+          'notification': {
+            'title': title,
+            'body': body,
           },
-        }),
-      );
-      if (response.statusCode != 200) {
-        // ignore: avoid_print
-        print('FCM Error ${response.statusCode}: ${response.body}');
-      }
-    } catch (e) {
-      // ignore: avoid_print
-      print('FCM Exception: $e');
+          'data': {
+            'type': 'alert',
+          },
+        },
+      }),
+    );
+    if (response.statusCode != 200) {
+      throw Exception('فشل إرسال الإشعار: ${response.statusCode}');
     }
   }
 }

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:gym_management_app/features/market/views/user/market_user_view.dart';
+import 'package:gym_management_app/features/user/market/views/market_user_view.dart';
 import 'package:gym_management_app/features/user/general/home/views/home_view.dart';
 import 'package:gym_management_app/features/user/profile/views/profile_view.dart';
 import 'package:gym_management_app/features/user/settings/views/settings_view.dart';

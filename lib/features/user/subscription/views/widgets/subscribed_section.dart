@@ -4,7 +4,7 @@ import 'package:gym_management_app/core/components/custom_text.dart';
 import 'package:gym_management_app/core/components/glass_widget.dart';
 import 'package:gym_management_app/core/constants/app_assets.dart';
 import 'package:gym_management_app/core/theme/app_colors.dart';
-import 'package:gym_management_app/features/members/data/member_model.dart';
+import 'package:gym_management_app/features/admin/members/data/member_model.dart';
 import 'package:gym_management_app/features/user/subscription/views/widgets/member_ship_card.dart';
 
 class SubscribedSection extends StatelessWidget {

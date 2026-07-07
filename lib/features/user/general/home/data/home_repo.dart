@@ -1,10 +1,10 @@
 import 'package:gym_management_app/core/DI/service_locator.dart';
 import 'package:gym_management_app/core/constants/app_constants.dart';
 import 'package:gym_management_app/core/service/local/local_cache_service.dart';
-import 'package:gym_management_app/features/alerts/data/alert_model.dart';
-import 'package:gym_management_app/features/alerts/data/alert_repo.dart';
-import 'package:gym_management_app/features/members/data/member_model.dart';
-import 'package:gym_management_app/features/members/data/members_repo.dart';
+import 'package:gym_management_app/features/admin/alerts/data/alert_model.dart';
+import 'package:gym_management_app/features/admin/alerts/data/alert_repo.dart';
+import 'package:gym_management_app/features/admin/members/data/member_model.dart';
+import 'package:gym_management_app/features/admin/members/data/members_repo.dart';
 
 class HomeRepo {
   Future<MemberModel?> getMemberDetails() async {

@@ -6,15 +6,22 @@ final class BaseImageCache {
   BaseImageCache._();
 
   static final _decoded = <String, Uint8List>{};
-  static final _providers = <String, MemoryImage>{};
+  static final _providers = <String, ImageProvider>{};
 
-  static MemoryImage getImage(String base64) {
-    final provider = _providers[base64];
+  static ImageProvider getImage(String source) {
+    if (source.startsWith('http')) {
+      return NetworkImage(source);
+    }
+    final provider = _providers[source];
     if (provider != null) return provider;
 
-    final bytes = _decoded.putIfAbsent(base64, () => base64Decode(base64));
+    String clean = source;
+    if (clean.startsWith('data:')) {
+      clean = clean.split(',').last;
+    }
+    final bytes = _decoded.putIfAbsent(source, () => base64Decode(clean));
     final image = MemoryImage(bytes);
-    _providers[base64] = image;
+    _providers[source] = image;
     return image;
   }
 }

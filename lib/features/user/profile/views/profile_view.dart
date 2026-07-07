@@ -106,16 +106,22 @@ class ProfileView extends StatelessWidget {
                   ),
 
                   const Gap(20),
-                  if (cubit.imageBase64 !=
-                      context.read<HomeCubit>().member?.image)
-                    CustomButton(
-                      onPressed: () => cubit.updateProfileImage(
+                  CustomButton(
+                    onPressed: () {
+                      final hasChanged = cubit.imageBase64 !=
+                          context.read<HomeCubit>().member?.image;
+                      if (!hasChanged) {
+                        appSnackbar(context, 'لم تقم بعمل تغييرات');
+                        return;
+                      }
+                      cubit.updateProfileImage(
                         context.read<HomeCubit>().member!,
-                      ),
-                      text: 'حفظ التغييرات',
-                      icon: const Icon(Icons.save_outlined),
-                      size: const Size(double.infinity, 48),
-                    ),
+                      );
+                    },
+                    text: 'حفظ التغييرات',
+                    icon: const Icon(Icons.save_outlined),
+                    size: const Size(double.infinity, 48),
+                  ),
                 ],
               ),
             ),
