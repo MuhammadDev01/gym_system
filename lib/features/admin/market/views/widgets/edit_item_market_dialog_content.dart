@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:gap/gap.dart';
 import 'package:gym_management_app/core/components/custom_button.dart';
 import 'package:gym_management_app/core/components/custom_text.dart';
 import 'package:gym_management_app/core/components/custom_text_field.dart';
@@ -37,10 +36,10 @@ class EditItemMarketDialogContent extends StatelessWidget {
                     cubit.imageBase64 != null ||
                     (cubit.itemImage != null && cubit.itemImage!.isNotEmpty);
                 return Column(
+                  spacing: 16,
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     CustomText(text: 'تعديل المنتج', fontSize: 18),
-                    const Gap(16),
                     GestureDetector(
                       onTap: () => cubit.pickImage(),
                       child: Container(
@@ -54,7 +53,7 @@ class EditItemMarketDialogContent extends StatelessWidget {
                                   image: BaseImageCache.getImage(
                                     cubit.imageBase64 ?? cubit.itemImage!,
                                   ),
-                                  fit: BoxFit.cover,
+                                  fit: BoxFit.fill,
                                 )
                               : null,
                         ),
@@ -63,18 +62,16 @@ class EditItemMarketDialogContent extends StatelessWidget {
                             : const Icon(
                                 Icons.add_photo_alternate,
                                 size: 32,
-                                color: Colors.white54,
+                                color: Colors.white,
                               ),
                       ),
                     ),
-                    const Gap(12),
                     CustomTextField(
                       controller: cubit.nameController,
                       labelText: 'اسم المنتج',
                       prefixIcon: Icons.shopping_bag,
                       validator: (v) => Validators.requiredField(v),
                     ),
-                    const Gap(12),
                     CustomTextField(
                       controller: cubit.descController,
                       labelText: 'الوصف',
@@ -82,7 +79,6 @@ class EditItemMarketDialogContent extends StatelessWidget {
                       maxLines: 3,
                       validator: (v) => Validators.requiredField(v),
                     ),
-                    const Gap(12),
                     CustomTextField(
                       controller: cubit.priceController,
                       labelText: 'السعر',
@@ -93,21 +89,20 @@ class EditItemMarketDialogContent extends StatelessWidget {
                         message: 'هذا الحقل مطلوب',
                       ),
                     ),
-                    const Gap(16),
                     DropdownButtonFormField<String>(
                       initialValue: cubit.selectedType,
-                      dropdownColor: AppColors.surface,
+                      dropdownColor: AppColors.background,
                       decoration: InputDecoration(
                         labelText: 'النوع',
-                        labelStyle: TextStyle(color: AppColors.textSecondary),
-                        focusedBorder: UnderlineInputBorder(
+                        labelStyle: TextStyle(color: AppColors.gold),
+                        focusedBorder: OutlineInputBorder(
                           borderSide: BorderSide(color: AppColors.gold),
                         ),
                       ),
                       items: [
                         const DropdownMenuItem(
                           value: 'supplement',
-                          child: CustomText(text: 'أغذية'),
+                          child: CustomText(text: 'مكملات'),
                         ),
                         const DropdownMenuItem(
                           value: 'tool',
@@ -116,20 +111,19 @@ class EditItemMarketDialogContent extends StatelessWidget {
                       ],
                       onChanged: (v) => cubit.setType(v),
                     ),
-                    const Gap(16),
                     Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         CustomText(text: 'متوفر'),
-                        const Spacer(),
                         Switch(
                           value: cubit.isInStock,
                           onChanged: (_) => cubit.toggleStock(),
-                          activeThumbColor: AppColors.gold,
+                          activeThumbColor: AppColors.success,
                         ),
                       ],
                     ),
-                    const Gap(16),
                     Row(
+                      spacing: 12,
                       children: [
                         Expanded(
                           child: CustomButton(
@@ -138,7 +132,6 @@ class EditItemMarketDialogContent extends StatelessWidget {
                             onPressed: () => context.pop(),
                           ),
                         ),
-                        const Gap(12),
                         Expanded(
                           child: CustomButton(
                             text: 'حفظ',

@@ -24,7 +24,7 @@ class AlertRepo {
   Future<void> updateAlert({
     required String docId,
     required String message,
-    required int extendDays,
+    required Duration extendDuration,
   }) async {
     try {
       final doc = await _firebaseService.getDocument(
@@ -33,11 +33,7 @@ class AlertRepo {
       );
       final data = doc.data() as Map<String, dynamic>;
       final currentExpiry = (data['expiresAt'] as Timestamp).toDate();
-      final newExpiry = DateTime(
-        currentExpiry.year,
-        currentExpiry.month,
-        currentExpiry.day + extendDays,
-      );
+      final newExpiry = currentExpiry.add(extendDuration);
 
       await _firebaseService.updateDocument(
         collection: 'Alerts',
@@ -75,11 +71,11 @@ class AlertRepo {
 
   Future<void> addAlert({
     required String message,
-    required int durationDays,
+    required Duration duration,
   }) async {
     try {
       final now = DateTime.now();
-      final expiresAt = DateTime(now.year, now.month, now.day + durationDays);
+      final expiresAt = now.add(duration);
       await _firebaseService.addDocument(
         collection: 'Alerts',
         data: {

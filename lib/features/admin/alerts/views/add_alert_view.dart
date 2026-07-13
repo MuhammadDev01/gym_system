@@ -27,7 +27,7 @@ class _AddAlertViewState extends State<AddAlertView> {
   void initState() {
     super.initState();
     context.read<AlertAdminCubit>().alertController.clear();
-    context.read<AlertAdminCubit>().setAlertDays(7);
+    context.read<AlertAdminCubit>().setAlertDuration(const Duration(days: 1));
   }
 
   final GlobalKey<FormState> _formKey = GlobalKey();
@@ -36,7 +36,6 @@ class _AddAlertViewState extends State<AddAlertView> {
   Widget build(BuildContext context) {
     return AppBackground(
       child: Scaffold(
-        backgroundColor: Colors.transparent,
         resizeToAvoidBottomInset: false,
         appBar: GlassAppBar(title: 'إضافة إعلان جديد'),
         body: BlocConsumer<AlertAdminCubit, AlertAdminState>(
@@ -59,7 +58,7 @@ class _AddAlertViewState extends State<AddAlertView> {
               child: SingleChildScrollView(
                 padding: const EdgeInsets.all(24),
                 child: GlassWidget(
-                  borderRaduis: 36,
+                  borderRaduis: 24,
                   padding: const EdgeInsets.all(16),
                   child: Form(
                     key: _formKey,
@@ -73,37 +72,43 @@ class _AddAlertViewState extends State<AddAlertView> {
                           validator: (p0) => Validators.requiredField(p0),
                         ),
                         const Gap(16),
-                        DropdownButtonFormField<int>(
-                          initialValue: cubit.alertDays,
+                        DropdownButtonFormField<Duration>(
+                          initialValue: cubit.alertDuration,
                           dropdownColor: AppColors.surface,
                           decoration: InputDecoration(
                             labelText: 'المدة',
-                            labelStyle: TextStyle(
-                              color: AppColors.textSecondary,
-                            ),
-                            focusedBorder: UnderlineInputBorder(
-                              borderSide: BorderSide(color: AppColors.gold),
+                            labelStyle: TextStyle(color: AppColors.gold),
+                            focusedBorder: const OutlineInputBorder(
+                              borderSide: BorderSide(color: Colors.white),
                             ),
                           ),
-                          items: [1, 3, 7, 14, 30].map((d) {
-                            return DropdownMenuItem(
-                              value: d,
-                              child: CustomText(text: '$d يوم'),
-                            );
-                          }).toList(),
+                          items:
+                              const [
+                                MapEntry(Duration(hours: 2), 'ساعتان'),
+                                MapEntry(Duration(hours: 4), 'اربع ساعات'),
+                                MapEntry(Duration(hours: 12), 'نص يوم'),
+                                MapEntry(Duration(days: 1), 'يوم'),
+                                MapEntry(Duration(days: 2), 'يومان'),
+                                MapEntry(Duration(days: 3), 'ثلاثة أيام'),
+                                MapEntry(Duration(days: 7), 'اسبوع'),
+                              ].map((e) {
+                                return DropdownMenuItem(
+                                  value: e.key,
+                                  child: CustomText(text: e.value),
+                                );
+                              }).toList(),
                           onChanged: (v) {
-                            if (v != null) cubit.setAlertDays(v);
+                            if (v != null) cubit.setAlertDuration(v);
                           },
                         ),
                         const Gap(32),
                         CustomButton(
                           text: 'إضافة',
                           icon: const Icon(Icons.add, color: Colors.black),
-                          size: const Size(double.infinity, 50),
-                          fontSize: 16,
-                          onPressed: () {
+                          fontSize: 18,
+                          onPressed: () async {
                             if (_formKey.currentState!.validate()) {
-                              cubit.addAlert();
+                              await cubit.addAlert();
                             }
                           },
                         ),

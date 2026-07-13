@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:gap/gap.dart';
 import 'package:gym_management_app/core/components/app_background.dart';
 import 'package:gym_management_app/core/components/custom_button.dart';
 import 'package:gym_management_app/core/components/custom_loading_overlay.dart';
@@ -35,10 +34,9 @@ class _AddItemOnMarketViewState extends State<AddItemOnMarketView> {
   Widget build(BuildContext context) {
     return AppBackground(
       child: Scaffold(
-        backgroundColor: Colors.transparent,
         appBar: GlassAppBar(title: 'إضافة منتج'),
         body: BlocConsumer<MarketAdminCubit, MarketAdminState>(
-          listenWhen: (prev, next) =>
+          listenWhen: (_, next) =>
               next is MarketAdminAdded || next is MarketAdminError,
           listener: (context, state) {
             if (state is MarketAdminAdded) {
@@ -68,26 +66,26 @@ class _AddItemOnMarketViewState extends State<AddItemOnMarketView> {
                 child: Form(
                   key: _formKey,
                   child: GlassWidget(
-                    borderRaduis: 36,
+                    borderRaduis: 12,
                     padding: const EdgeInsets.all(16),
                     child: Column(
+                      spacing: 16,
                       mainAxisSize: MainAxisSize.min,
                       children: [
                         GestureDetector(
                           onTap: () => cubit.pickImage(),
-
                           child: Container(
                             width: 120,
                             height: 120,
                             decoration: BoxDecoration(
                               color: Colors.white12,
-                              borderRadius: BorderRadius.circular(16),
+                              borderRadius: BorderRadius.circular(12),
                               image: cubit.imageBase64 != null
                                   ? DecorationImage(
                                       image: BaseImageCache.getImage(
                                         cubit.imageBase64!,
                                       ),
-                                      fit: BoxFit.cover,
+                                      fit: BoxFit.fill,
                                     )
                                   : null,
                             ),
@@ -95,19 +93,17 @@ class _AddItemOnMarketViewState extends State<AddItemOnMarketView> {
                                 ? const Icon(
                                     Icons.add_photo_alternate,
                                     size: 40,
-                                    color: Colors.white54,
+                                    color: AppColors.gray,
                                   )
                                 : null,
                           ),
                         ),
-                        const Gap(16),
                         CustomTextField(
                           controller: cubit.nameController,
                           labelText: 'اسم المنتج',
                           prefixIcon: Icons.shopping_bag,
                           validator: (v) => Validators.requiredField(v),
                         ),
-                        const Gap(12),
                         CustomTextField(
                           controller: cubit.descController,
                           labelText: 'الوصف',
@@ -115,7 +111,6 @@ class _AddItemOnMarketViewState extends State<AddItemOnMarketView> {
                           maxLines: 3,
                           validator: (v) => Validators.requiredField(v),
                         ),
-                        const Gap(12),
                         CustomTextField(
                           controller: cubit.priceController,
                           labelText: 'السعر',
@@ -123,55 +118,54 @@ class _AddItemOnMarketViewState extends State<AddItemOnMarketView> {
                           textInputType: TextInputType.number,
                           validator: (v) => Validators.requiredField(v),
                         ),
-                        const Gap(16),
                         DropdownButtonFormField<String>(
                           initialValue: cubit.selectedType,
+                          isDense: false,
                           dropdownColor: AppColors.surface,
                           decoration: InputDecoration(
                             labelText: 'النوع',
                             labelStyle: TextStyle(
-                              color: AppColors.textSecondary,
+                              color: AppColors.gold,
+                              fontSize: 18,
                             ),
-                            focusedBorder: UnderlineInputBorder(
+                            focusedBorder: const OutlineInputBorder(
                               borderSide: BorderSide(color: AppColors.gold),
                             ),
                           ),
                           items: const [
                             DropdownMenuItem(
                               value: 'supplement',
-                              child: CustomText(text: 'أغذية'),
+                              child: CustomText(text: 'مكملات', fontSize: 16),
                             ),
                             DropdownMenuItem(
                               value: 'tool',
-                              child: CustomText(text: 'أدوات'),
+                              child: CustomText(text: 'أدوات', fontSize: 16),
                             ),
                           ],
                           onChanged: (v) => cubit.setType(v),
                         ),
-                        const Gap(16),
                         Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             CustomText(text: 'متوفر'),
-                            const Spacer(),
                             Switch(
                               value: cubit.isInStock,
                               onChanged: (_) => cubit.toggleStock(),
-                              activeThumbColor: AppColors.gold,
+                              activeThumbColor: AppColors.success,
                             ),
                           ],
                         ),
-                        const Gap(16),
                         CustomButton(
                           text: 'إضافة',
                           icon: const Icon(Icons.add, color: Colors.black),
                           size: const Size(double.infinity, 50),
-                          fontSize: 16,
-                          onPressed: () {
+                          fontSize: 18,
+                          onPressed: () async {
                             if (_formKey.currentState!.validate()) {
                               if (cubit.imageBase64 == null) {
                                 appSnackbar(context, 'يجب وضع صورة للمنتج');
                               } else {
-                                cubit.addProduct();
+                                await cubit.addProduct();
                               }
                             }
                           },

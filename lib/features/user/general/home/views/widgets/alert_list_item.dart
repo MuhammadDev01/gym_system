@@ -13,10 +13,12 @@ class AlertListItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final remainingDays = alert.expiresAt.difference(DateTime.now()).inDays;
-    final remainingText = remainingDays > 0
-        ? 'متبقي $remainingDays يوم'
-        : 'آخر يوم';
+    final remaining = alert.expiresAt.difference(DateTime.now());
+    final remainingText = remaining.inDays > 0
+        ? 'متبقي ${remaining.inDays} يوم'
+        : remaining.inHours > 0
+            ? 'متبقي ${remaining.inHours} ساعة'
+            : 'آخر يوم';
     return GlassWidget(
       padding: const EdgeInsets.all(16),
       child: Column(

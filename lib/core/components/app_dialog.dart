@@ -87,7 +87,7 @@ void showEditDialog(
           ),
         ],
         backgroundColor: AppColors.background,
-        title: CustomText(text: editTitle),
+        title: CustomText(text: editTitle, color: AppColors.gold),
         content: content,
       ),
     ),

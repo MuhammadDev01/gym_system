@@ -29,7 +29,6 @@ class _AlertsListViewState extends State<AlertsListView> {
     return AppBackground(
       child: SafeArea(
         child: Scaffold(
-          backgroundColor: Colors.transparent,
           appBar: GlassAppBar(
             title: 'الإعلانات',
             actions: [
@@ -42,10 +41,8 @@ class _AlertsListViewState extends State<AlertsListView> {
           ),
 
           body: BlocConsumer<AlertAdminCubit, AlertAdminState>(
-            buildWhen: (prev, next) =>
-                next is AlertLoadingState ||
-                next is AlertsLoaded ||
-                next is AlertErrorState,
+            buildWhen: (_, next) =>
+                next is AlertLoadingState || next is AlertsLoaded,
             listener: (_, state) {
               if (state is AlertErrorState) {
                 appSnackbar(context, state.message);
@@ -54,18 +51,16 @@ class _AlertsListViewState extends State<AlertsListView> {
             builder: (_, state) {
               return CustomLoadingOverlay(
                 isLoading: state is AlertLoadingState,
-                child: state is AlertsLoaded
-                    ? (state.alerts.isNotEmpty
-                          ? ListView.builder(
-                              addAutomaticKeepAlives: false,
-                              padding: const EdgeInsets.fromLTRB(16, 16, 16, 80),
-                              itemCount: state.alerts.length,
-                              itemBuilder: (_, index) {
-                                return AlertItemBuilder(
-                                    alert: state.alerts[index]);
-                              },
-                            )
-                          : CustomEmptyList(text: 'إعلاانات'))
+                child: state is AlertsLoaded && state.alerts.isNotEmpty
+                    ? ListView.separated(
+                        separatorBuilder: (_, _) => const SizedBox(height: 14),
+                        addAutomaticKeepAlives: false,
+                        padding: const EdgeInsets.fromLTRB(16, 16, 16, 80),
+                        itemCount: state.alerts.length,
+                        itemBuilder: (_, index) {
+                          return AlertItemBuilder(alert: state.alerts[index]);
+                        },
+                      )
                     : CustomEmptyList(text: 'إعلاانات'),
               );
             },

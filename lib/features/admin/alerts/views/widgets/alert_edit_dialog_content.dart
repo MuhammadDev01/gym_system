@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:gap/gap.dart';
 import 'package:gym_management_app/core/components/custom_text.dart';
 import 'package:gym_management_app/core/components/custom_text_field.dart';
 import 'package:gym_management_app/core/theme/app_colors.dart';
@@ -11,6 +10,7 @@ class AlertEditDialogContent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(
+      spacing: 16,
       mainAxisSize: MainAxisSize.min,
       children: [
         CustomTextField(
@@ -18,30 +18,39 @@ class AlertEditDialogContent extends StatelessWidget {
           hintText: 'نص الإعلان',
           maxLines: 3,
         ),
-        const Gap(12),
         CustomText(
+          color: AppColors.textSecondary,
           text:
-              'ينتهي في: ${cubit.alertEndDate!.day}/${cubit.alertEndDate!.month}/${cubit.alertEndDate!.year}',
+              'ينتهي في: ${cubit.alertEndDate!.year}/${cubit.alertEndDate!.month}/${cubit.alertEndDate!.day} ',
         ),
-        const Gap(12),
-        DropdownButtonFormField<int>(
-          initialValue: cubit.editExtendDays,
+        DropdownButtonFormField<Duration>(
+          initialValue: cubit.editExtendDuration,
           dropdownColor: AppColors.surface,
           decoration: InputDecoration(
-            labelText: 'تمديد (أيام إضافية)',
+            labelText: 'تمديد مدة الإعلان',
             labelStyle: TextStyle(color: AppColors.gold),
-            focusedBorder: UnderlineInputBorder(
+            focusedBorder: OutlineInputBorder(
               borderSide: BorderSide(color: AppColors.gold),
             ),
           ),
-          items: [0, 1, 2, 3, 5, 7, 15, 30].map((d) {
-            return DropdownMenuItem(
-              value: d,
-              child: CustomText(text: d == 0 ? 'لا تمديد' : '$d يوم'),
-            );
-          }).toList(),
+          items:
+              const [
+                MapEntry(Duration.zero, 'لا تمديد'),
+                MapEntry(Duration(hours: 2), 'ساعتين'),
+                MapEntry(Duration(hours: 4), 'اربع ساعات'),
+                MapEntry(Duration(hours: 12), 'نص يوم'),
+                MapEntry(Duration(days: 1), 'يوم'),
+                MapEntry(Duration(days: 2), 'يومين'),
+                MapEntry(Duration(days: 3), 'تلات ايام'),
+                MapEntry(Duration(days: 7), 'اسبوع'),
+              ].map((e) {
+                return DropdownMenuItem(
+                  value: e.key,
+                  child: CustomText(text: e.value),
+                );
+              }).toList(),
           onChanged: (v) {
-            if (v != null) cubit.setEditExtendDays(v);
+            if (v != null) cubit.setEditExtendDuration(v);
           },
         ),
       ],

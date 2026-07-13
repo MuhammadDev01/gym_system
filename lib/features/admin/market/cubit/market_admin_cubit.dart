@@ -54,18 +54,18 @@ class MarketAdminCubit extends Cubit<MarketAdminState> {
 
   void setType(String? v) {
     if (v != null) selectedType = v;
-    //   emit(MarketAdmintypeChange());
+    emit(MarketAdmintypeChange());
   }
 
   List<MarketItemModel> _allProducts = [];
   //*GET
   Future<void> getProducts({bool refresh = false}) async {
     try {
+      emit(MarketAdminLoading());
       if (_allProducts.isNotEmpty && !refresh) {
         emit(MarketAdminLoaded(products: _allProducts));
         return;
       }
-      emit(MarketAdminLoading());
       _allProducts = await _marketRepo.getAllProducts();
       if (isClosed) return;
       emit(MarketAdminLoaded(products: _allProducts));

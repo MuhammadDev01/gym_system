@@ -20,10 +20,10 @@ class AlertAdminCubit extends Cubit<AlertAdminState> {
     try {
       await _alertRepo.addAlert(
         message: alertController.text.trim(),
-        durationDays: alertDays,
+        duration: alertDuration,
       );
       alertController.clear();
-      alertDays = 7;
+      alertDuration = const Duration(days: 1);
       await getAlerts();
       emit(AlertAddedState());
     } catch (e) {
@@ -36,17 +36,17 @@ class AlertAdminCubit extends Cubit<AlertAdminState> {
     }
   }
 
-  int alertDays = 7;
+  Duration alertDuration = const Duration(days: 1);
   final alertController = TextEditingController();
 
-  void setAlertDays(int days) {
-    alertDays = days;
+  void setAlertDuration(Duration duration) {
+    alertDuration = duration;
     emit(AlertFormChangedState());
   }
 
   String alertId = '';
   final editMessageController = TextEditingController();
-  int editExtendDays = 0;
+  Duration editExtendDuration = Duration.zero;
   DateTime? alertStartDate;
   DateTime? alertEndDate;
 
@@ -54,11 +54,11 @@ class AlertAdminCubit extends Cubit<AlertAdminState> {
   List<AlertModel> _alerts = [];
   Future<void> getAlerts({bool refresh = false}) async {
     try {
+      emit(AlertLoadingState());
       if (!refresh && _alerts.isNotEmpty) {
         emit(AlertsLoaded(alerts: _alerts));
         return;
       }
-      emit(AlertLoadingState());
       _alerts = await _alertRepo.getAllAlerts();
       if (isClosed) return;
       emit(AlertsLoaded(alerts: _alerts));
@@ -79,8 +79,8 @@ class AlertAdminCubit extends Cubit<AlertAdminState> {
     alertEndDate = alert.expiresAt;
   }
 
-  void setEditExtendDays(int days) {
-    editExtendDays = days;
+  void setEditExtendDuration(Duration duration) {
+    editExtendDuration = duration;
     emit(AlertFormChangedState());
   }
 
@@ -109,12 +109,12 @@ class AlertAdminCubit extends Cubit<AlertAdminState> {
       await _alertRepo.updateAlert(
         docId: alertId,
         message: editMessageController.text.trim(),
-        extendDays: editExtendDays,
+        extendDuration: editExtendDuration,
       );
       if (isClosed) return;
       alertId = '';
       editMessageController.clear();
-      editExtendDays = 0;
+      editExtendDuration = Duration.zero;
       emit(AlertUpdatedState());
       await getAlerts(refresh: true);
     } catch (e) {

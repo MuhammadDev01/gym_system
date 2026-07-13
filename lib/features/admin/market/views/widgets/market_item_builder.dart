@@ -16,17 +16,21 @@ class MarketItemBuilder extends StatelessWidget {
       child: ListTile(
         leading: item.image.isNotEmpty
             ? ClipRRect(
-                borderRadius: BorderRadius.circular(8),
+                borderRadius: BorderRadius.circular(12),
                 child: Image(
                   image: BaseImageCache.getImage(item.image),
                   width: 50,
                   height: 50,
-                  fit: BoxFit.cover,
+                  fit: BoxFit.contain,
                 ),
               )
-            : Icon(Icons.shopping_bag, color: AppColors.gold),
+            : const Icon(Icons.shopping_bag, color: AppColors.gold),
         title: CustomText(text: item.name),
-        subtitle: CustomText(text: '${item.price} ج.م', fontSize: 13),
+        subtitle: CustomText(
+          text: '${item.price} ج.م',
+          fontSize: 13,
+          color: AppColors.gold,
+        ),
         trailing: trailing,
       ),
     );

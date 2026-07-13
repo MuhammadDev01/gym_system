@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gym_management_app/core/components/app_background.dart';
 import 'package:gym_management_app/core/components/app_dialog.dart';
 import 'package:gym_management_app/core/components/custom_empty_list.dart';
-import 'package:gym_management_app/core/components/custom_loading_overlay.dart';
 import 'package:gym_management_app/core/components/glass_appbar.dart';
 import 'package:gym_management_app/core/helper/app_snackbar.dart';
 import 'package:gym_management_app/core/theme/app_colors.dart';
@@ -23,7 +22,6 @@ class _EditAlertViewState extends State<EditAlertView> {
   @override
   void initState() {
     context.read<AlertAdminCubit>().getAlerts();
-
     super.initState();
   }
 
@@ -31,7 +29,6 @@ class _EditAlertViewState extends State<EditAlertView> {
   Widget build(BuildContext context) {
     return AppBackground(
       child: Scaffold(
-        backgroundColor: Colors.transparent,
         appBar: GlassAppBar(title: 'تعديل إعلان'),
         body: BlocConsumer<AlertAdminCubit, AlertAdminState>(
           listener: (_, state) {
@@ -50,41 +47,42 @@ class _EditAlertViewState extends State<EditAlertView> {
               appSnackbar(context, state.message);
             }
           },
+          buildWhen: (_, next) =>
+              next is AlertLoadingState || next is AlertsLoaded,
           builder: (_, state) {
             final cubit = context.read<AlertAdminCubit>();
-            return CustomLoadingOverlay(
-              isLoading: state is AlertLoadingState,
-              child: state is AlertsLoaded
-                  ? state.alerts.isNotEmpty
-                        ? ListView.builder(
-                            addAutomaticKeepAlives: false,
-                            padding: const EdgeInsets.fromLTRB(16, 16, 16, 80),
-                            itemCount: state.alerts.length,
-                            itemBuilder: (_, index) {
-                              return GestureDetector(
-                                onTap: () {
-                                  cubit.startEdit(state.alerts[index]);
-                                  showEditDialog(
-                                    context,
-                                    onConfirmDelete: () => cubit.deleteAlert(),
-                                    onConfirmUpdate: () => cubit.updateAlert(),
-                                    deleteTitle:
-                                        'هل تود حذف الاعلان بشكل نهائي',
-                                    editTitle: 'تعديل إعلان',
-                                    content: AlertEditDialogContent(
-                                      cubit: cubit,
-                                    ),
-                                  );
-                                },
-                                child: AlertItemBuilder(
-                                  alert: state.alerts[index],
-                                ),
-                              );
-                            },
-                          )
-                        : CustomEmptyList(text: 'اعلانات')
-                  : CustomEmptyList(text: 'اعلانات'),
-            );
+            if (state is AlertLoadingState) {
+              return Center(
+                child: CircularProgressIndicator(color: AppColors.gold),
+              );
+            }
+            if (state is AlertsLoaded && state.alerts.isNotEmpty) {
+              return ListView.separated(
+                separatorBuilder: (_, _) => const SizedBox(height: 14),
+                addAutomaticKeepAlives: false,
+                padding: const EdgeInsets.fromLTRB(16, 16, 16, 80),
+                itemCount: state.alerts.length,
+                itemBuilder: (_, index) {
+                  return GestureDetector(
+                    onTap: () {
+                      cubit.startEdit(state.alerts[index]);
+                      showEditDialog(
+                        context,
+                        onConfirmDelete: () => cubit.deleteAlert(),
+                        onConfirmUpdate: () => cubit.updateAlert(),
+                        deleteTitle: 'هل تود حذف الاعلان بشكل نهائي',
+                        editTitle: 'تعديل إعلان',
+
+                        content: AlertEditDialogContent(cubit: cubit),
+                      );
+                    },
+                    child: AlertItemBuilder(alert: state.alerts[index]),
+                  );
+                },
+              );
+            }
+
+            return CustomEmptyList(text: 'اعلانات');
           },
         ),
       ),
