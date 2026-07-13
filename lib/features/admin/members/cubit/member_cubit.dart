@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gym_management_app/core/DI/service_locator.dart';
+import 'package:gym_management_app/core/constants/app_constants.dart';
 import 'package:gym_management_app/features/admin/members/data/member_model.dart';
 import 'package:gym_management_app/features/admin/members/cubit/member_state.dart';
 import 'package:gym_management_app/features/admin/members/data/members_repo.dart';
@@ -12,26 +13,41 @@ class MemberCubit extends Cubit<MemberState> {
   final MemberRepo _memberRepo;
   final nameController = TextEditingController();
   final phoneController = TextEditingController();
+  final editNameController = TextEditingController();
+  final editPhoneController = TextEditingController();
+  int selectedMonths = 1;
+  String selectedType = AppConstants.gym;
+  MemberModel? selectedMember;
+  final formKeyEdit = GlobalKey<FormState>();
+  //int editMonths = 1;
+  DateTime? editStartDate;
+  DateTime? editEndDate;
+
+  @override
+  Future<void> close() {
+    nameController.dispose();
+    phoneController.dispose();
+    editNameController.dispose();
+    editPhoneController.dispose();
+    return super.close();
+  }
 
   static int _pricePerMonth(String type) {
     switch (type) {
-      case 'fitness':
+      case AppConstants.fitness:
         return 400;
-      case 'private':
+      case AppConstants.private:
         return 500;
       default:
         return 300;
     }
   }
 
-  int selectedMonths = 1;
-  String selectedType = 'gym';
-
   void init() {
     nameController.clear();
     phoneController.clear();
     setMonths(1);
-    setType('gym');
+    setType(AppConstants.gym);
   }
 
   void setMonths(int months) {
@@ -92,11 +108,11 @@ class MemberCubit extends Cubit<MemberState> {
 
   Future<void> getAllMembers({bool forceRefresh = false}) async {
     try {
+      emit(MemberLoadingState());
       if (!forceRefresh && _members.isNotEmpty) {
         emit(MemberLoadedState(members: _members));
         return;
       }
-      emit(MemberLoadingState());
 
       _members = await _memberRepo.getAllMembers();
       if (isClosed) return;
@@ -123,22 +139,11 @@ class MemberCubit extends Cubit<MemberState> {
     emit(MemberLoadedState(members: filtered));
   }
 
-  MemberModel? editTarget;
-  final editNameController = TextEditingController();
-  final editPhoneController = TextEditingController();
-  int editMonths = 1;
-  String editType = 'gym';
-  DateTime? editStartDate;
-  DateTime? editEndDate;
-
   void startEdit(MemberModel member) {
-    editTarget = member;
+    selectedMember = member;
+    selectedType = member.subscriptionType;
     editNameController.text = member.name;
     editPhoneController.text = member.phone;
-    editMonths = member.subscriptionMonths < 1 ? 1 : member.subscriptionMonths;
-    editType = ['fitness', 'gym', 'private'].contains(member.subscriptionType)
-        ? member.subscriptionType
-        : 'gym';
     editStartDate = member.subscriptionStart;
     editEndDate = member.subscriptionEnd;
   }
@@ -153,26 +158,15 @@ class MemberCubit extends Cubit<MemberState> {
     emit(MemberEditFormState());
   }
 
-  void setEditMonths(int months) {
-    editMonths = months;
-    // emit(MemberEditFormState());
-  }
-
-  void setEditType(String type) {
-    editType = type;
-    // emit(MemberEditFormState());
-  }
-
   //* UPDATE
   Future<void> updateMember() async {
     emit(MemberLoadingState());
     try {
       await _memberRepo.updateMember(
-        docId: editTarget!.id,
+        docId: selectedMember!.id,
         name: editNameController.text.trim(),
         phone: editPhoneController.text.trim(),
-        subscriptionMonths: editMonths,
-        subscriptionType: editType,
+        subscriptionType: selectedType,
         subscriptionStart: editStartDate,
         subscriptionEnd: editEndDate,
       );
@@ -180,12 +174,13 @@ class MemberCubit extends Cubit<MemberState> {
       final now = DateTime.now();
       final record = SubscriptionHistoryModel(
         id: '',
-        userId: editTarget!.id,
+        userId: selectedMember!.id,
         userName: editNameController.text.trim(),
         userPhone: editPhoneController.text.trim(),
-        months: editMonths,
-        type: editType,
-        price: _pricePerMonth(editType) * editMonths,
+        months: 1,
+        type: selectedType,
+        price: 300,
+        //price: _pricePerMonth(selectedType) * editMonths,
         startDate: editStartDate ?? now,
         endDate: editEndDate ?? now,
         createdAt: now,
@@ -208,7 +203,9 @@ class MemberCubit extends Cubit<MemberState> {
   Future<void> deleteMember() async {
     emit(MemberLoadingState());
     try {
-      await _memberRepo.deleteMember(editTarget!.id);
+      await _memberRepo.deleteMember(selectedMember!.id);
+      if (isClosed) return;
+      emit(MemberDeletedState());
       await getAllMembers(forceRefresh: true);
     } catch (e) {
       final msg = e.toString();
@@ -221,13 +218,15 @@ class MemberCubit extends Cubit<MemberState> {
   }
 
   Future<void> getMemberByPhone() async {
-    emit(MemberLoadingState());
     try {
+      emit(MemberLoadingState());
       final member = await _memberRepo.getMemberByPhone(phoneController.text);
       if (member != null) {
         emit(MemberFoundState(member: member));
       } else {
-        emit(MemberErrorState('لم يتم العثور على مشترك بهذا الرقم'));
+        emit(
+          MemberNotFoundState(message: "لم يتم العثور على مشترك بهذا الرقم"),
+        );
       }
     } catch (e) {
       final msg = e.toString();
@@ -239,22 +238,16 @@ class MemberCubit extends Cubit<MemberState> {
     }
   }
 
-  Future<void> markAttendanceWithTime() async {
-    final phone = phoneController.text.trim();
+  //* ATTENDANCE
+  Future<void> markAttendanceWithTime(MemberModel member) async {
     emit(MemberLoadingState());
     try {
-      final member = await _memberRepo.getMemberByPhone(phone);
-      if (isClosed) return;
-      if (member == null) {
-        emit(MemberErrorState('لم يتم العثور على مشترك بهذا الرقم'));
-        return;
-      }
       if (member.subscriptionEnd != null &&
           DateTime.now().isAfter(member.subscriptionEnd!)) {
         emit(MemberErrorState('تم انتهاء اشتراك المشترك'));
         return;
       }
-      final alreadyAttended = await _memberRepo.hasAttendedToday(phone);
+      final alreadyAttended = await _memberRepo.hasAttendedToday(member.phone);
       if (isClosed) return;
       if (alreadyAttended) {
         emit(MemberErrorState('تم تسجيل حضور هذا المشترك مسبقاً اليوم'));
@@ -266,9 +259,9 @@ class MemberCubit extends Cubit<MemberState> {
         userPhone: member.phone,
       );
       await _memberRepo.cleanupOldAttendance();
-      phoneController.clear();
       if (isClosed) return;
       emit(MemberScannedState(member: member));
+      phoneController.clear();
     } catch (e) {
       final msg = e.toString();
       emit(
@@ -298,10 +291,12 @@ class MemberCubit extends Cubit<MemberState> {
 
   Future<void> deleteAttendanceRecord(String docId) async {
     try {
+      emit(MemberLoadingState());
       await _memberRepo.deleteAttendanceRecord(docId);
       final records = await _memberRepo.getAttendanceByPhone(
         phoneController.text.trim(),
       );
+      if (isClosed) return;
       emit(AttendanceHistoryLoaded(records: records));
     } catch (e) {
       final msg = e.toString();
@@ -358,14 +353,5 @@ class MemberCubit extends Cubit<MemberState> {
         ),
       );
     }
-  }
-
-  @override
-  Future<void> close() {
-    nameController.dispose();
-    phoneController.dispose();
-    editNameController.dispose();
-    editPhoneController.dispose();
-    return super.close();
   }
 }

@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:gap/gap.dart';
 import 'package:gym_management_app/core/components/custom_text.dart';
 import 'package:gym_management_app/core/components/glass_widget.dart';
-import 'package:gym_management_app/core/helper/image_cache_helper.dart';
+import 'package:gym_management_app/core/constants/app_constants.dart';
 import 'package:gym_management_app/core/theme/app_colors.dart';
 import 'package:gym_management_app/features/admin/members/data/member_model.dart';
 
@@ -14,6 +13,7 @@ class MemberItemBuilder extends StatelessWidget {
     return GlassWidget(
       padding: const EdgeInsets.all(16),
       child: Row(
+        spacing: 12,
         children: [
           Container(
             width: 48,
@@ -21,28 +21,23 @@ class MemberItemBuilder extends StatelessWidget {
             decoration: BoxDecoration(
               color: AppColors.gold.withAlpha(38),
               borderRadius: BorderRadius.circular(14),
-              image: member.image.isNotEmpty
-                  ? DecorationImage(
-                      image: BaseImageCache.getImage(member.image),
-                      fit: BoxFit.cover,
-                    )
-                  : null,
             ),
-            child: member.image.isEmpty
-                ? Icon(Icons.person, color: AppColors.gold, size: 24)
-                : null,
+            child: const Icon(Icons.person, color: AppColors.gold, size: 24),
           ),
-          const Gap(12),
           Expanded(
             child: Column(
+              spacing: 4,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                CustomText(text: member.name, fontSize: 15),
-                const Gap(2),
+                CustomText(text: member.name),
                 Row(
+                  spacing: 4,
                   children: [
-                    Icon(Icons.phone, size: 12, color: Colors.white54),
-                    const Gap(4),
+                    const Icon(
+                      Icons.phone,
+                      size: 12,
+                      color: AppColors.textSecondary,
+                    ),
                     CustomText(
                       text: member.phone,
                       fontSize: 12,
@@ -50,31 +45,28 @@ class MemberItemBuilder extends StatelessWidget {
                     ),
                   ],
                 ),
-                const Gap(2),
                 Row(
+                  spacing: 6,
                   children: [
-                    CustomText(
+                    const CustomText(
                       text: 'نوع الاشتراك:',
-                      fontSize: 11,
-                      color: Colors.white38,
+                      fontSize: 12,
+                      color: AppColors.textSecondary,
                     ),
-                    const Gap(4),
                     CustomText(
                       text: _typeLabel(member.subscriptionType),
-                      fontSize: 11,
-                      color: AppColors.gray,
+                      fontSize: 12,
                     ),
-                    CustomText(
-                      text: ' | تاريخ الانتهاء',
-                      fontSize: 11,
-                      color: Colors.white38,
+                    const CustomText(text: "|", color: AppColors.gold),
+                    const CustomText(
+                      text: 'تاريخ الانتهاء',
+                      fontSize: 12,
+                      color: AppColors.textSecondary,
                     ),
-                    const Gap(4),
                     CustomText(
                       text:
-                          '${member.subscriptionEnd!.day}/${member.subscriptionEnd!.month}/${member.subscriptionEnd!.year}',
-                      fontSize: 11,
-                      color: AppColors.gray,
+                          '${member.subscriptionEnd!.year}/${member.subscriptionEnd!.month}/${member.subscriptionEnd!.day}',
+                      fontSize: 12,
                     ),
                   ],
                 ),
@@ -88,11 +80,11 @@ class MemberItemBuilder extends StatelessWidget {
 
   String _typeLabel(String type) {
     switch (type) {
-      case 'fitness':
+      case AppConstants.fitness:
         return 'فتنس';
-      case 'gym':
+      case AppConstants.gym:
         return 'جيم';
-      case 'private':
+      case AppConstants.private:
         return 'برايفت';
       default:
         return type;

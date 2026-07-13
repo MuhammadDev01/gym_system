@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:gap/gap.dart';
 import 'package:gym_management_app/core/components/custom_text.dart';
 import 'package:gym_management_app/core/components/glass_widget.dart';
+import 'package:gym_management_app/core/constants/app_constants.dart';
 import 'package:gym_management_app/core/theme/app_colors.dart';
 import 'package:gym_management_app/features/admin/members/cubit/member_cubit.dart';
 import 'package:gym_management_app/features/admin/members/cubit/member_state.dart';
@@ -12,37 +12,40 @@ class TypeSelector extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final cubit = context.read<MemberCubit>();
     return BlocBuilder<MemberCubit, MemberState>(
-      builder: (context, state) {
+      builder: (context, _) {
+        final cubit = context.read<MemberCubit>();
         return GlassWidget(
           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
           child: Column(
+            spacing: 12,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const CustomText(text: 'نوع الاشتراك', fontSize: 14),
-              const Gap(8),
+              const CustomText(
+                text: 'نوع الاشتراك',
+                fontSize: 14,
+                color: AppColors.gold,
+              ),
               Row(
+                spacing: 8,
                 children: [
                   _TypeChip(
                     label: 'فتنس',
-                    value: 'fitness',
-                    selected: cubit.selectedType == 'fitness',
-                    onSelected: () => cubit.setType('fitness'),
+                    value: AppConstants.fitness,
+                    selected: cubit.selectedType == AppConstants.fitness,
+                    onSelected: () => cubit.setType(AppConstants.fitness),
                   ),
-                  const Gap(8),
                   _TypeChip(
                     label: 'جيم',
-                    value: 'gym',
-                    selected: cubit.selectedType == 'gym',
-                    onSelected: () => cubit.setType('gym'),
+                    value: AppConstants.gym,
+                    selected: cubit.selectedType == AppConstants.gym,
+                    onSelected: () => cubit.setType(AppConstants.gym),
                   ),
-                  const Gap(8),
                   _TypeChip(
                     label: 'برايفت',
-                    value: 'private',
-                    selected: cubit.selectedType == 'private',
-                    onSelected: () => cubit.setType('private'),
+                    value: AppConstants.private,
+                    selected: cubit.selectedType == AppConstants.private,
+                    onSelected: () => cubit.setType(AppConstants.private),
                   ),
                 ],
               ),
@@ -89,7 +92,7 @@ class _TypeChip extends StatelessWidget {
             child: CustomText(
               text: label,
               fontSize: 13,
-              color: selected ? AppColors.black : Colors.white70,
+              color: selected ? AppColors.black : Colors.white,
             ),
           ),
         ),

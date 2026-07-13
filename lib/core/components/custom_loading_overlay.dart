@@ -52,7 +52,7 @@ class _CustomLoadingOverlayState extends State<CustomLoadingOverlay>
                 angle: _controller.value * 6.28,
                 child: child,
               ),
-              child: DecoratedIcon(
+              child: const DecoratedIcon(
                 icon: FaIcon(
                   FontAwesomeIcons.dumbbell,
                   color: AppColors.gold,

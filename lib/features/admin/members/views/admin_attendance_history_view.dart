@@ -10,7 +10,6 @@ import 'package:gym_management_app/core/components/custom_text.dart';
 import 'package:gym_management_app/core/components/custom_text_field.dart';
 import 'package:gym_management_app/core/components/glass_appbar.dart';
 import 'package:gym_management_app/core/components/glass_widget.dart';
-import 'package:gym_management_app/core/extentions/navigator_extention.dart';
 import 'package:gym_management_app/core/helper/app_snackbar.dart';
 import 'package:gym_management_app/core/helper/validators.dart';
 import 'package:gym_management_app/core/theme/app_colors.dart';
@@ -31,10 +30,15 @@ class _AdminAttendanceHistoryViewState
   final _formKey = GlobalKey<FormState>();
 
   @override
+  void initState() {
+    context.read<MemberCubit>().phoneController.clear();
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return AppBackground(
       child: Scaffold(
-        backgroundColor: Colors.transparent,
         appBar: GlassAppBar(title: 'سجل الحضور'),
         body: BlocConsumer<MemberCubit, MemberState>(
           listener: (_, state) {
@@ -42,7 +46,6 @@ class _AdminAttendanceHistoryViewState
               appSnackbar(context, state.message);
             }
           },
-
           builder: (_, state) => CustomLoadingOverlay(
             isLoading: state is MemberLoadingState,
             child: Padding(
@@ -57,8 +60,6 @@ class _AdminAttendanceHistoryViewState
                       hintText: 'رقم الهاتف',
                       prefixIcon: Icons.search,
                       validator: (p0) => Validators.requiredField(p0),
-                      onChanged: (v) =>
-                          context.read<MemberCubit>().searchMembers(v),
                     ),
                     CustomButton(
                       onPressed: () {
@@ -82,18 +83,6 @@ class _AdminAttendanceHistoryViewState
                                     itemBuilder: (_, index) {
                                       return _AttendanceCard(
                                         record: state.records[index],
-                                        onDelete: () => showDeleteConfirm(
-                                          context,
-                                          title: "title",
-                                          onConfirm: () {
-                                            context.pop();
-                                            context
-                                                .read<MemberCubit>()
-                                                .deleteAttendanceRecord(
-                                                  state.records[index].id,
-                                                );
-                                          },
-                                        ),
                                       );
                                     },
                                   ),
@@ -112,9 +101,8 @@ class _AdminAttendanceHistoryViewState
 }
 
 class _AttendanceCard extends StatelessWidget {
-  const _AttendanceCard({required this.record, required this.onDelete});
+  const _AttendanceCard({required this.record});
   final AttendanceRecord record;
-  final VoidCallback onDelete;
 
   String _formatTime(DateTime dt) {
     final h = dt.hour > 12 ? dt.hour - 12 : (dt.hour == 0 ? 12 : dt.hour);
@@ -128,9 +116,10 @@ class _AttendanceCard extends StatelessWidget {
     final formatted = _formatTime(record.timestamp);
     return GlassWidget(
       padding: const EdgeInsets.all(12),
+      borderRaduis: 8,
       child: Row(
         children: [
-          Icon(Icons.check_circle, color: AppColors.success, size: 28),
+          const Icon(Icons.check_circle, color: AppColors.success, size: 28),
           const Gap(12),
           Expanded(
             child: Column(
@@ -140,20 +129,32 @@ class _AttendanceCard extends StatelessWidget {
                 const Gap(2),
                 CustomText(
                   text: record.userPhone,
-                  fontSize: 12,
-                  color: Colors.white54,
+                  fontSize: 14,
+                  color: AppColors.gold,
                 ),
               ],
             ),
           ),
-          CustomText(text: formatted, fontSize: 11, color: AppColors.gray),
+          CustomText(
+            text: formatted,
+            fontSize: 13,
+            color: AppColors.textSecondary,
+          ),
           const Gap(8),
           InkWell(
-            onTap: onDelete,
-            child: Icon(
+            onTap: () => showDeleteConfirm(
+              context,
+              title: "هل انت متأكد من حذف السجل المحدد",
+              onConfirm: () async {
+                await context.read<MemberCubit>().deleteAttendanceRecord(
+                  record.id,
+                );
+              },
+            ),
+            child: const Icon(
               Icons.delete_outline,
               color: AppColors.snackError,
-              size: 22,
+              size: 28,
             ),
           ),
         ],

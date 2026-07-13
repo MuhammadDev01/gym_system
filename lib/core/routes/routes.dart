@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:gym_management_app/core/routes/app_routes.dart';
 import 'package:gym_management_app/features/admin/dashboard/views/widgets/admin_shell.dart';
-import 'package:gym_management_app/features/admin/dashboard/views/admin_view.dart';
+import 'package:gym_management_app/features/admin/dashboard/views/admin_dashboard_view.dart';
 import 'package:gym_management_app/features/auth/views/splash_view.dart';
 import 'package:gym_management_app/features/admin/alerts/views/add_alert_view.dart';
 import 'package:gym_management_app/features/admin/alerts/views/alerts_management_view.dart';
@@ -59,7 +59,7 @@ final goRouter = GoRouter(
           path: AppRoutes.adminView,
           builder: (_, _) => const Directionality(
             textDirection: TextDirection.rtl,
-            child: AdminView(),
+            child: AdminDashboardView(),
           ),
         ),
         //* Members

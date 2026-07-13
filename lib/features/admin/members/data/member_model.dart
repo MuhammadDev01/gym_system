@@ -5,7 +5,6 @@ class MemberModel {
   final String id;
   final String name;
   final String phone;
-  final String image;
   final String role;
   final int subscriptionMonths;
   final String subscriptionType;
@@ -18,7 +17,6 @@ class MemberModel {
     required this.id,
     required this.name,
     required this.phone,
-    this.image = '',
     this.role = AppConstants.member,
     this.subscriptionMonths = 0,
     this.subscriptionType = '',
@@ -41,7 +39,6 @@ class MemberModel {
       id: docId,
       name: json[AppConstants.name] as String? ?? '',
       phone: json[AppConstants.phone] as String? ?? '',
-      image: json[AppConstants.image] as String? ?? '',
       role: json[AppConstants.role] as String? ?? AppConstants.member,
       subscriptionMonths: json[AppConstants.subscriptionMonths] as int? ?? 0,
       subscriptionType: json[AppConstants.subscriptionType] as String? ?? '',
@@ -58,7 +55,6 @@ class MemberModel {
     return {
       AppConstants.name: name,
       AppConstants.phone: phone,
-      AppConstants.image: image,
       AppConstants.role: role,
       AppConstants.subscriptionMonths: subscriptionMonths,
       AppConstants.subscriptionType: subscriptionType,
@@ -77,7 +73,6 @@ class MemberModel {
   MemberModel copyWith({
     String? name,
     String? phone,
-    String? image,
     int? subscriptionMonths,
     String? subscriptionType,
     DateTime? subscriptionStart,
@@ -88,7 +83,6 @@ class MemberModel {
       id: id,
       name: name ?? this.name,
       phone: phone ?? this.phone,
-      image: image ?? this.image,
       role: role,
       subscriptionMonths: subscriptionMonths ?? this.subscriptionMonths,
       subscriptionType: subscriptionType ?? this.subscriptionType,

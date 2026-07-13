@@ -26,9 +26,9 @@ class AppConstants {
   static const String subscriptionType = 'subscriptionType';
   static const String subscriptionStart = 'subscriptionStart';
   static const String subscriptionEnd = 'subscriptionEnd';
-  static const String typeFitness = 'fitness';
-  static const String typeGym = 'gym';
-  static const String typePrivate = 'private';
+  static const String fitness = 'fitness';
+  static const String gym = 'gym';
+  static const String private = 'private';
 
   //*FCM
   static const String fcmServerKey = '';

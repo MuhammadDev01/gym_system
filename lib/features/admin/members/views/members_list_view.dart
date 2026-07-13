@@ -35,7 +35,8 @@ class _MembersListViewState extends State<MembersListView> {
           actions: [
             IconButton(
               icon: Icon(Icons.refresh, color: AppColors.gold),
-              onPressed: () => context.read<MemberCubit>().getAllMembers(forceRefresh: true),
+              onPressed: () =>
+                  context.read<MemberCubit>().getAllMembers(forceRefresh: true),
             ),
           ],
         ),

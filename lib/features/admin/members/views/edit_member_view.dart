@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
-import 'package:go_router/go_router.dart';
 import 'package:gym_management_app/core/components/app_background.dart';
 import 'package:gym_management_app/core/components/app_dialog.dart';
 import 'package:gym_management_app/core/components/custom_empty_list.dart';
@@ -25,19 +24,18 @@ class EditMemberView extends StatefulWidget {
 class _EditMemberViewState extends State<EditMemberView> {
   @override
   void initState() {
-    super.initState();
     context.read<MemberCubit>().getAllMembers();
+    super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
     return AppBackground(
       child: Scaffold(
-        backgroundColor: Colors.transparent,
         resizeToAvoidBottomInset: false,
         appBar: GlassAppBar(title: 'تعديل بيانات مشترك'),
         body: BlocConsumer<MemberCubit, MemberState>(
-          listener: (_, state) {
+          listener: (context, state) {
             if (state is MemberUpdatedState) {
               appSnackbar(
                 context,
@@ -50,55 +48,66 @@ class _EditMemberViewState extends State<EditMemberView> {
               appSnackbar(context, state.message);
             }
           },
-          builder: (_, state) {
-            final cubit = context.read<MemberCubit>();
-            return CustomLoadingOverlay(
-              isLoading: state is MemberLoadingState,
-              child: Column(
-                children: [
-                  MemberSearchBar(),
-                  state is MemberLoadedState
-                      ? Expanded(
-                          child: ListView.separated(
-                            padding: const EdgeInsets.all(12),
-                            addAutomaticKeepAlives: false,
-                            itemCount: state.members.length,
-                            separatorBuilder: (_, _) => const Gap(16),
-                            itemBuilder: (_, index) {
-                              return GestureDetector(
-                                onTap: () {
-                                  cubit.startEdit(state.members[index]);
-                                  showEditDialog(
-                                    context,
-                                    onConfirmDelete: () async {
-                                      context.pop();
-                                      await cubit.deleteMember();
-                                    },
-                                    onConfirmUpdate: () async =>
-                                        await cubit.updateMember(),
-                                    deleteTitle:
-                                        'هل تود حذف المشترك بشكل نهائي؟',
-                                    editTitle: 'تعديل المشترك',
-                                    content: BlocProvider.value(
-                                      value: cubit,
-                                      child: EditMemberDialogContent(
-                                        cubit: cubit,
-                                      ),
-                                    ),
-                                  );
+          buildWhen: (_, next) =>
+              next is MemberLoadingState || next is MemberLoadedState,
+          builder: (context, state) {
+            if (state is MemberLoadingState) {
+              return CustomLoadingOverlay(
+                isLoading: true,
+                child: SizedBox.shrink(),
+              );
+            }
+            if (state is MemberLoadedState) {
+              if (state.members.isEmpty) {
+                return CustomEmptyList(text: "أعضاء");
+              } else {
+                final cubit = context.read<MemberCubit>();
+                return Column(
+                  children: [
+                    MemberSearchBar(),
+                    Expanded(
+                      child: ListView.separated(
+                        padding: const EdgeInsets.all(12),
+                        addAutomaticKeepAlives: false,
+                        itemCount: state.members.length,
+                        separatorBuilder: (_, _) => const Gap(16),
+                        itemBuilder: (context, index) {
+                          return GestureDetector(
+                            onTap: () {
+                              cubit.startEdit(state.members[index]);
+                              showEditDialog(
+                                context,
+                                onConfirmDelete: () async {
+                                  await cubit.deleteMember();
                                 },
-
-                                child: MemberItemBuilder(
-                                  member: state.members[index],
+                                onConfirmUpdate: () async {
+                                  if (cubit.formKeyEdit.currentState!
+                                      .validate()) {
+                                    await cubit.updateMember();
+                                  }
+                                },
+                                deleteTitle: 'هل تود حذف المشترك بشكل نهائي؟',
+                                editTitle: 'تعديل المشترك',
+                                content: BlocProvider.value(
+                                  value: cubit,
+                                  child: EditMemberDialogContent(cubit: cubit),
                                 ),
                               );
                             },
-                          ),
-                        )
-                      : CustomEmptyList(text: 'أعضاء'),
-                ],
-              ),
-            );
+
+                            child: MemberItemBuilder(
+                              member: state.members[index],
+                            ),
+                          );
+                        },
+                      ),
+                    ),
+                  ],
+                );
+              }
+            }
+
+            return CustomEmptyList(text: "أعضاء");
           },
         ),
       ),

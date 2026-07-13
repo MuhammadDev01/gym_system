@@ -4,18 +4,18 @@ import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:gym_management_app/core/components/app_background.dart';
 import 'package:gym_management_app/core/components/custom_button.dart';
-import 'package:gym_management_app/core/components/custom_loading_overlay.dart';
 import 'package:gym_management_app/core/components/custom_text.dart';
 import 'package:gym_management_app/core/components/custom_text_field.dart';
 import 'package:gym_management_app/core/components/glass_appbar.dart';
 import 'package:gym_management_app/core/components/glass_widget.dart';
+import 'package:gym_management_app/core/constants/app_constants.dart';
 import 'package:gym_management_app/core/helper/app_snackbar.dart';
-import 'package:gym_management_app/core/helper/image_cache_helper.dart';
 import 'package:gym_management_app/core/helper/validators.dart';
 import 'package:gym_management_app/core/routes/app_routes.dart';
 import 'package:gym_management_app/core/theme/app_colors.dart';
 import 'package:gym_management_app/features/admin/members/cubit/member_cubit.dart';
 import 'package:gym_management_app/features/admin/members/cubit/member_state.dart';
+import 'package:gym_management_app/features/admin/members/data/member_model.dart';
 
 class AdminAttendanceView extends StatefulWidget {
   const AdminAttendanceView({super.key});
@@ -26,6 +26,11 @@ class AdminAttendanceView extends StatefulWidget {
 
 class _AdminAttendanceViewState extends State<AdminAttendanceView> {
   final _formKey = GlobalKey<FormState>();
+  @override
+  void initState() {
+    context.read<MemberCubit>().phoneController.clear();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -36,7 +41,6 @@ class _AdminAttendanceViewState extends State<AdminAttendanceView> {
           actions: [
             IconButton(
               onPressed: () => context.push(AppRoutes.scanMemberView),
-
               icon: const Icon(Icons.qr_code_scanner, color: AppColors.gold),
             ),
           ],
@@ -54,37 +58,52 @@ class _AdminAttendanceViewState extends State<AdminAttendanceView> {
               appSnackbar(context, state.message);
             }
           },
+          buildWhen: (_, next) =>
+              next is MemberFoundState ||
+              next is MemberNotFoundState ||
+              next is MemberScannedState,
           builder: (_, state) {
             final cubit = context.read<MemberCubit>();
-            return CustomLoadingOverlay(
-              isLoading: state is MemberLoadingState,
-              child: SingleChildScrollView(
-                padding: const EdgeInsets.all(16),
-                child: Form(
-                  key: _formKey,
-                  child: Column(
-                    children: [
-                      CustomTextField(
-                        hintText: 'رقم الهاتف',
-                        controller: cubit.phoneController,
-                        textInputType: TextInputType.phone,
-                        prefixIcon: Icons.search,
-                        validator: (p0) => Validators.requiredField(p0),
+            return Padding(
+              padding: const EdgeInsets.all(16),
+              child: Form(
+                key: _formKey,
+                child: Column(
+                  children: [
+                    CustomTextField(
+                      hintText: 'رقم الهاتف',
+                      controller: cubit.phoneController,
+                      textInputType: TextInputType.phone,
+                      prefixIcon: Icons.search,
+                      validator: (p0) => Validators.requiredField(p0),
+                    ),
+                    const Gap(12),
+                    CustomButton(
+                      text: 'بحث',
+                      onPressed: () {
+                        if (_formKey.currentState!.validate()) {
+                          cubit.getMemberByPhone();
+                        }
+                      },
+                    ),
+                    Gap(12),
+                    if (state is MemberLoadingState)
+                      const Expanded(
+                        child: Center(
+                          child: CircularProgressIndicator(
+                            color: AppColors.gold,
+                          ),
+                        ),
                       ),
-                      const Gap(12),
-                      CustomButton(
-                        text: 'بحث',
-                        onPressed: () {
-                          if (_formKey.currentState!.validate()) {
-                            cubit.getMemberByPhone();
-                          }
-                        },
+
+                    if (state is MemberFoundState)
+                      _AttendanceCard(cubit: cubit, member: state.member),
+
+                    if (state is MemberNotFoundState)
+                      Expanded(
+                        child: Center(child: CustomText(text: state.message)),
                       ),
-                      const Gap(24),
-                      if (state is MemberFoundState)
-                        _attendanceCard(state, cubit),
-                    ],
-                  ),
+                  ],
                 ),
               ),
             );
@@ -93,105 +112,78 @@ class _AdminAttendanceViewState extends State<AdminAttendanceView> {
       ),
     );
   }
+}
 
-  GlassWidget _attendanceCard(MemberFoundState state, MemberCubit cubit) {
-    final member = state.member;
+class _AttendanceCard extends StatelessWidget {
+  final MemberModel member;
+  final MemberCubit cubit;
+
+  const _AttendanceCard({required this.member, required this.cubit});
+
+  @override
+  Widget build(BuildContext context) {
     final isExpired =
         member.subscriptionEnd != null &&
         DateTime.now().isAfter(member.subscriptionEnd!);
-
     return GlassWidget(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 36),
       child: Column(
+        spacing: 8,
+        mainAxisSize: MainAxisSize.min,
         children: [
+          CustomText(text: member.name, fontSize: 20),
+          CustomText(text: member.phone, fontSize: 18, color: AppColors.gold),
           Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Container(
-                width: 64,
-                height: 64,
-                decoration: BoxDecoration(
-                  color: AppColors.gold.withAlpha(38),
-                  borderRadius: BorderRadius.circular(16),
-                  image: member.image.isNotEmpty
-                      ? DecorationImage(
-                          image: BaseImageCache.getImage(member.image),
-                          fit: BoxFit.cover,
-                        )
-                      : null,
-                ),
-                child: member.image.isEmpty
-                    ? Icon(Icons.person, color: AppColors.gold, size: 32)
-                    : null,
-              ),
-              const Gap(12),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  CustomText(text: member.name, fontSize: 16),
-                  const Gap(4),
-                  CustomText(
-                    text: member.phone,
-                    fontSize: 13,
-                    color: Colors.white54,
-                  ),
-                ],
-              ),
-            ],
-          ),
-          const Gap(12),
-          Row(
+            spacing: 8,
+            mainAxisSize: MainAxisSize.min,
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              CustomText(
+              const CustomText(
                 text: 'نوع الاشتراك:',
-                fontSize: 12,
-                color: Colors.white38,
+                fontSize: 14,
+                color: AppColors.textSecondary,
               ),
-              const Gap(4),
               CustomText(
                 text: _typeLabel(member.subscriptionType),
-                fontSize: 12,
-                color: AppColors.gray,
+                fontSize: 14,
               ),
-              const Gap(16),
-              CustomText(
+              const CustomText(text: "|", color: AppColors.gold),
+              const CustomText(
                 text: 'تاريخ الانتهاء:',
-                fontSize: 12,
-                color: Colors.white38,
+                fontSize: 14,
+                color: AppColors.textSecondary,
               ),
-              const Gap(4),
               CustomText(
                 text: member.subscriptionEnd != null
                     ? (isExpired
                           ? 'منتهي'
-                          : '${member.subscriptionEnd!.day}/${member.subscriptionEnd!.month}/${member.subscriptionEnd!.year}')
+                          : '${member.subscriptionEnd!.year}/${member.subscriptionEnd!.month}/${member.subscriptionEnd!.day}')
                     : 'غير محدد',
-                fontSize: 12,
-                color: isExpired ? AppColors.snackError : AppColors.gray,
+                fontSize: 14,
+                color: isExpired ? AppColors.snackError : Colors.white,
               ),
             ],
           ),
-          const Gap(16),
+          const Gap(8),
           CustomButton(
             text: 'تأكيد الحضور',
-            onPressed: () => cubit.markAttendanceWithTime(),
+            onPressed: () => cubit.markAttendanceWithTime(member),
           ),
         ],
       ),
     );
   }
+}
 
-  String _typeLabel(String type) {
-    switch (type) {
-      case 'fitness':
-        return 'فتنس';
-      case 'gym':
-        return 'جيم';
-      case 'private':
-        return 'برايفت';
-      default:
-        return type;
-    }
+String _typeLabel(String type) {
+  switch (type) {
+    case AppConstants.fitness:
+      return 'فتنس';
+    case AppConstants.gym:
+      return 'جيم';
+    case AppConstants.private:
+      return 'برايفت';
+    default:
+      return type;
   }
 }

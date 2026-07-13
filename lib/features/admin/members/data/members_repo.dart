@@ -44,7 +44,6 @@ class MemberRepo {
     required String docId,
     required String name,
     required String phone,
-    required int subscriptionMonths,
     required String subscriptionType,
     DateTime? subscriptionStart,
     DateTime? subscriptionEnd,
@@ -53,7 +52,6 @@ class MemberRepo {
       final data = <String, dynamic>{
         AppConstants.name: name.trim(),
         AppConstants.phone: phone.trim(),
-        AppConstants.subscriptionMonths: subscriptionMonths,
         AppConstants.subscriptionType: subscriptionType,
       };
       if (subscriptionStart != null) {
@@ -65,25 +63,6 @@ class MemberRepo {
         data[AppConstants.subscriptionEnd] = Timestamp.fromDate(
           subscriptionEnd,
         );
-      }
-      await _firebaseService.updateDocument(
-        collection: 'users',
-        docId: docId,
-        data: data,
-      );
-    } on FirebaseException catch (e) {
-      throw Exception(FirebaseExceptionMessages.getFirestoreMessage(e));
-    }
-  }
-
-  Future<void> updateMemberProfile({
-    required String docId,
-    String? image,
-  }) async {
-    try {
-      final data = <String, dynamic>{};
-      if (image != null) {
-        data[AppConstants.image] = image;
       }
       await _firebaseService.updateDocument(
         collection: 'users',
@@ -180,7 +159,7 @@ class MemberRepo {
 
   Future<void> cleanupOldAttendance() async {
     try {
-      final cutoff = DateTime.now().subtract(const Duration(days: 30));
+      final cutoff = DateTime.now().subtract(const Duration(days: 60));
       final result = await _firebaseService.queryCollectionLessThan(
         collection: 'attendance',
         field: 'timestamp',
@@ -251,7 +230,6 @@ class MemberRepo {
           AppConstants.name: username.trim(),
           AppConstants.phone: userPhone.trim(),
           AppConstants.role: AppConstants.member,
-          AppConstants.image: '',
           AppConstants.subscriptionMonths: subscriptionMonths,
           AppConstants.subscriptionType: subscriptionType,
           AppConstants.subscriptionStart: Timestamp.fromDate(now),

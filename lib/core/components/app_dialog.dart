@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:gym_management_app/core/components/custom_button.dart';
 import 'package:gym_management_app/core/components/custom_text.dart';
-import 'package:gym_management_app/core/extentions/navigator_extention.dart';
 import 'package:gym_management_app/core/theme/app_colors.dart';
 
 //Delete
@@ -15,13 +15,13 @@ void showDeleteConfirm(
     builder: (dialogContext) => Directionality(
       textDirection: TextDirection.rtl,
       child: AlertDialog(
-        backgroundColor: AppColors.background,
+        backgroundColor: AppColors.background.withValues(alpha: 0.8),
         title: const CustomText(
           text: 'تأكيد الحذف',
           textAlign: TextAlign.center,
           fontSize: 18,
         ),
-
+        actionsAlignment: MainAxisAlignment.center,
         content: CustomText(
           text: title,
           textAlign: TextAlign.center,
@@ -33,7 +33,10 @@ void showDeleteConfirm(
             text: 'حذف',
             colorButton: AppColors.snackError,
             colorText: Colors.white,
-            onPressed: onConfirm,
+            onPressed: () {
+              dialogContext.pop();
+              onConfirm();
+            },
           ),
         ],
       ),
@@ -68,7 +71,6 @@ void showEditDialog(
               title: deleteTitle,
               onConfirm: () {
                 dialogContext.pop();
-                dialogContext.pop();
                 onConfirmDelete();
               },
             ),
@@ -95,7 +97,7 @@ void showEditDialog(
 void onConfirmLogout(BuildContext context, {required VoidCallback onConfirm}) {
   showDialog(
     context: context,
-    builder: (_) => AlertDialog(
+    builder: (context) => AlertDialog(
       backgroundColor: AppColors.background,
       title: CustomText(
         text: 'تسجيل الخروج',
@@ -109,11 +111,13 @@ void onConfirmLogout(BuildContext context, {required VoidCallback onConfirm}) {
       ),
       actions: [
         CustomButton(onPressed: () => context.pop(), text: 'إلغاء'),
-
         CustomButton(
           colorButton: AppColors.snackError,
           colorText: Colors.white,
-          onPressed: onConfirm,
+          onPressed: () {
+            context.pop();
+            onConfirm();
+          },
           text: 'تسجيل الخروج',
         ),
       ],

@@ -22,11 +22,10 @@ class MonthsSelector extends StatelessWidget {
   ];
   @override
   Widget build(BuildContext context) {
-    final cubit = context.read<MemberCubit>();
     return GlassWidget(
       padding: const EdgeInsets.symmetric(horizontal: 8),
       child: DropdownButtonFormField<int>(
-        initialValue: cubit.selectedMonths - 1,
+        initialValue: context.read<MemberCubit>().selectedMonths - 1,
         dropdownColor: const Color(0xFF282A36),
         style: const TextStyle(color: Colors.white),
         decoration: const InputDecoration(
@@ -44,7 +43,7 @@ class MonthsSelector extends StatelessWidget {
           );
         }).toList(),
         onChanged: (v) {
-          if (v != null) cubit.setMonths(v + 1);
+          if (v != null) context.read<MemberCubit>().setMonths(v + 1);
         },
       ),
     );

@@ -9,7 +9,7 @@ class CustomBackButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () => context.pop(),
-      child: Icon(Icons.arrow_back_ios, color: AppColors.gold),
+      child: const Icon(Icons.arrow_back_ios, color: AppColors.gold),
     );
   }
 }

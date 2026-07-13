@@ -11,7 +11,6 @@ import 'package:gym_management_app/features/admin/members/cubit/member_cubit.dar
 import 'package:gym_management_app/features/admin/members/data/members_repo.dart';
 import 'package:gym_management_app/features/user/general/cubit/gerenal_cubit.dart';
 import 'package:gym_management_app/features/user/general/home/data/home_repo.dart';
-import 'package:gym_management_app/features/user/profile/cubit/profile_cubit.dart';
 import 'package:gym_management_app/features/user/settings/cubit/settings_cubit.dart';
 import 'package:gym_management_app/features/user/subscription/cubit/subscription_cubit.dart';
 import 'package:gym_management_app/features/user/subscription/cubit/subscription_history_cubit.dart';
@@ -76,7 +75,5 @@ void serviceLocatorSetup() {
   getIt.registerFactory<SubscriptionCubit>(
     () => SubscriptionCubit(getIt<MemberRepo>()),
   );
-  getIt.registerFactory<ProfileCubit>(() => ProfileCubit());
-
   getIt.registerFactory<SettingsCubit>(() => SettingsCubit(getIt<AuthRepo>()));
 }

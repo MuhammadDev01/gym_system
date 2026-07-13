@@ -1,12 +1,10 @@
-import 'dart:io';
 import 'dart:ui' as ui;
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
-import 'package:path_provider/path_provider.dart';
+import 'package:gal/gal.dart';
 import 'package:qr_flutter/qr_flutter.dart';
-import 'package:share_plus/share_plus.dart';
 import 'package:gym_management_app/core/components/custom_button.dart';
 import 'package:gym_management_app/core/components/custom_text.dart';
 import 'package:gym_management_app/core/helper/app_snackbar.dart';
@@ -85,22 +83,20 @@ class QrIcon extends StatelessWidget {
                         await image.toByteData(format: ui.ImageByteFormat.png);
                     if (byteData == null) return;
 
-                    final tempDir = await getTemporaryDirectory();
-                    final file = File(
-                      '${tempDir.path}/qr_${member.phone}.png',
+                    await Gal.putImageBytes(
+                      byteData.buffer.asUint8List(),
+                      name: 'qr_${member.phone}',
                     );
-                    await file.writeAsBytes(byteData.buffer.asUint8List());
 
                     if (!context.mounted) return;
-                    await SharePlus.instance.share(
-                      ShareParams(
-                        files: [XFile(file.path)],
-                        text: 'QR Code - ${member.name}',
-                      ),
+                    appSnackbar(
+                      context,
+                      'تم حفظ الباركود في المعرض',
+                      color: AppColors.success,
                     );
                   } catch (e) {
                     if (context.mounted) {
-                      appSnackbar(context, 'حدث خطأ أثناء تحميل الباركود');
+                      appSnackbar(context, 'حدث خطأ أثناء حفظ الباركود');
                     }
                   }
                 },

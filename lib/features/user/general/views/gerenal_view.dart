@@ -7,7 +7,6 @@ import 'package:gym_management_app/features/user/market/cubit/market_user_cubit.
 import 'package:gym_management_app/features/user/general/cubit/gerenal_cubit.dart';
 import 'package:gym_management_app/features/user/general/home/cubit/home_cubit.dart';
 import 'package:gym_management_app/features/user/general/views/widgets/custom_nav_bar.dart';
-import 'package:gym_management_app/features/user/profile/cubit/profile_cubit.dart';
 
 class GerenalView extends StatelessWidget {
   const GerenalView({super.key});
@@ -20,7 +19,6 @@ class GerenalView extends StatelessWidget {
         BlocProvider<HomeCubit>(
           create: (context) => getIt<HomeCubit>()..getHomeData(),
         ),
-        BlocProvider(create: (context) => getIt<ProfileCubit>()),
         BlocProvider(
           create: (context) => getIt<MarketUserCubit>()..getProducts(),
         ),

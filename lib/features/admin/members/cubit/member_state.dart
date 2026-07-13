@@ -34,6 +34,11 @@ final class MemberFoundState extends MemberState {
   MemberFoundState({required this.member});
 }
 
+final class MemberNotFoundState extends MemberState {
+  final String message;
+  MemberNotFoundState({required this.message});
+}
+
 final class MemberScannedState extends MemberState {
   final MemberModel member;
   MemberScannedState({required this.member});

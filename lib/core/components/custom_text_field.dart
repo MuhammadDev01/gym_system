@@ -53,22 +53,25 @@ class CustomTextField extends StatelessWidget {
             : null,
         labelText: labelText,
         hintText: hintText,
-        hintStyle: TextStyle(color: AppColors.gray),
+        hintStyle: const TextStyle(color: AppColors.textSecondary),
         focusColor: AppColors.gold,
-        errorStyle: TextStyle(color: AppColors.gold),
-        enabledBorder: OutlineInputBorder(
+        errorStyle: const TextStyle(color: AppColors.gold),
+        enabledBorder: const OutlineInputBorder(
           borderSide: BorderSide(color: AppColors.black),
         ),
-        focusedErrorBorder: OutlineInputBorder(
+        focusedErrorBorder: const OutlineInputBorder(
           borderSide: BorderSide(color: AppColors.error),
         ),
-        errorBorder: OutlineInputBorder(
+        errorBorder: const OutlineInputBorder(
           borderSide: BorderSide(color: AppColors.error),
         ),
-        focusedBorder: OutlineInputBorder(
+        focusedBorder: const OutlineInputBorder(
           borderSide: BorderSide(color: AppColors.gold),
         ),
-        labelStyle: TextStyle(color: AppColors.gray, fontSize: 14),
+        labelStyle: const TextStyle(
+          color: AppColors.textSecondary,
+          fontSize: 14,
+        ),
         filled: true,
         fillColor: Colors.white.withValues(alpha: .04),
       ),

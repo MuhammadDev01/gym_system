@@ -2,6 +2,8 @@
 class AppAssets {
   AppAssets._();
   
+  static const String appIcon = "assets/app_icon.webp";
+
   static const String backround = "assets/backround.webp";
 
   static const String banner = "assets/banner.webp";
@@ -14,10 +16,8 @@ class AppAssets {
 
   static const String cloudMessages = "assets/cloud_messages.json";
 
-  static const String logo = "assets/logo.png";
+  static const String logo = "assets/logo.webp";
 
   static const String manHandADumbel = "assets/manHandADumbel.webp";
-
-  static const String picProfile = "assets/pic_profile.webp";
 }
 
