@@ -56,8 +56,8 @@ class _AddItemOnMarketViewState extends State<AddItemOnMarketView> {
               next is MarketAdminLoading ||
               next is MarketAdminImagePicked ||
               next is MarketAdminStockToggled ||
-              next is MarketAdmintypeChange ||
-              next is MarketAdminError,
+              next is MarketAdminKiloToggled ||
+              next is MarketAdmintypeChange,
           builder: (context, state) {
             final cubit = context.read<MarketAdminCubit>();
             return CustomLoadingOverlay(
@@ -156,6 +156,42 @@ class _AddItemOnMarketViewState extends State<AddItemOnMarketView> {
                             ),
                           ],
                         ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            CustomText(text: 'يُباع بالكيلو'),
+                            Switch(
+                              value: cubit.sellByKilo,
+                              onChanged: (_) => cubit.toggleSellByKilo(),
+                              activeThumbColor: AppColors.gold,
+                            ),
+                          ],
+                        ),
+                        if (cubit.sellByKilo)
+                          CustomTextField(
+                            controller: cubit.kiloPriceController,
+                            labelText: 'سعر الكيلو',
+                            prefixIcon: Icons.monetization_on,
+                            textInputType: TextInputType.number,
+                          ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            CustomText(text: 'يُباع بالأسكوب'),
+                            Switch(
+                              value: cubit.sellByPiece,
+                              onChanged: (_) => cubit.toggleSellByPiece(),
+                              activeThumbColor: AppColors.gold,
+                            ),
+                          ],
+                        ),
+                        if (cubit.sellByPiece)
+                          CustomTextField(
+                            controller: cubit.piecePriceController,
+                            labelText: 'سعر الأسكوب',
+                            prefixIcon: Icons.monetization_on,
+                            textInputType: TextInputType.number,
+                          ),
                         CustomButton(
                           text: 'إضافة',
                           icon: const Icon(Icons.add, color: Colors.black),

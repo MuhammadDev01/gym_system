@@ -19,5 +19,7 @@ class AppAssets {
   static const String logo = "assets/logo.webp";
 
   static const String manHandADumbel = "assets/manHandADumbel.webp";
+
+  static const String picProfile = "assets/pic_profile.webp";
 }
 

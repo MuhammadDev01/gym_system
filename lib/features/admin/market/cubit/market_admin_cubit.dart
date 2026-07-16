@@ -15,14 +15,20 @@ class MarketAdminCubit extends Cubit<MarketAdminState> {
   final nameController = TextEditingController();
   final descController = TextEditingController();
   final priceController = TextEditingController();
+  final kiloPriceController = TextEditingController();
+  final piecePriceController = TextEditingController();
   String selectedType = AppConstants.supplement;
   String? imageBase64;
   bool isInStock = true;
+  bool sellByKilo = false;
+  bool sellByPiece = false;
   @override
   Future<void> close() async {
     nameController.dispose();
     descController.dispose();
     priceController.dispose();
+    kiloPriceController.dispose();
+    piecePriceController.dispose();
     super.close();
   }
 
@@ -31,13 +37,29 @@ class MarketAdminCubit extends Cubit<MarketAdminState> {
     emit(MarketAdminStockToggled());
   }
 
+  void toggleSellByKilo() {
+    sellByKilo = !sellByKilo;
+    if (!sellByKilo) kiloPriceController.clear();
+    emit(MarketAdminKiloToggled());
+  }
+
+  void toggleSellByPiece() {
+    sellByPiece = !sellByPiece;
+    if (!sellByPiece) piecePriceController.clear();
+    emit(MarketAdminKiloToggled());
+  }
+
   void resetValues() {
     nameController.clear();
     descController.clear();
     priceController.clear();
+    kiloPriceController.clear();
+    piecePriceController.clear();
     imageBase64 = null;
     selectedType = AppConstants.supplement;
     isInStock = true;
+    sellByKilo = false;
+    sellByPiece = false;
   }
 
   Future<void> pickImage() async {
@@ -94,6 +116,10 @@ class MarketAdminCubit extends Cubit<MarketAdminState> {
         price: int.tryParse(priceController.text.trim()) ?? 0,
         type: selectedType,
         isInStock: isInStock,
+        sellByKilo: sellByKilo,
+        kiloPrice: sellByKilo
+            ? int.tryParse(kiloPriceController.text.trim())
+            : null,
       );
       resetValues();
       if (isClosed) return;
@@ -115,6 +141,12 @@ class MarketAdminCubit extends Cubit<MarketAdminState> {
     nameController.text = item.name;
     descController.text = item.description;
     priceController.text = item.price.toString();
+    if (item.sellByKilo && item.kiloPrice != null) {
+      kiloPriceController.text = item.kiloPrice.toString();
+    }
+    if (item.sellByPiece && item.piecePrice != null) {
+      piecePriceController.text = item.piecePrice.toString();
+    }
     itemId = item.id;
     itemImage = item.image;
     imageBase64 = null;
@@ -122,6 +154,8 @@ class MarketAdminCubit extends Cubit<MarketAdminState> {
         ? AppConstants.tool
         : AppConstants.supplement;
     isInStock = item.isInStock;
+    sellByKilo = item.sellByKilo;
+    sellByPiece = item.sellByPiece;
   }
 
   //*UPDATE
@@ -136,6 +170,14 @@ class MarketAdminCubit extends Cubit<MarketAdminState> {
         price: int.parse(priceController.text.trim()),
         type: selectedType,
         isInStock: isInStock,
+        sellByKilo: sellByKilo,
+        kiloPrice: sellByKilo
+            ? int.tryParse(kiloPriceController.text.trim())
+            : null,
+        sellByPiece: sellByPiece,
+        piecePrice: sellByPiece
+            ? int.tryParse(piecePriceController.text.trim())
+            : null,
       );
       if (isClosed) return;
       resetValues();

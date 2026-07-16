@@ -20,11 +20,21 @@ class MarketItemDetailView extends StatelessWidget {
         body: SingleChildScrollView(
           padding: const EdgeInsets.all(12),
           child: Column(
-            spacing: 24,
-            children: [
-              _DetailsItemCard(item: item),
-              _PriceItemCard(price: item.price.toString()),
-            ],
+          spacing: 24,
+          children: [
+            _DetailsItemCard(item: item),
+            _PriceItemCard(price: item.price.toString()),
+            if (item.sellByKilo && item.kiloPrice != null)
+              _PriceItemCard(
+                price: '${item.kiloPrice} ج.م / الكيلو',
+                title: 'سعر الكيلو',
+              ),
+            if (item.sellByPiece && item.piecePrice != null)
+              _PriceItemCard(
+                price: '${item.piecePrice} ج.م / الأسكوب',
+                title: 'سعر الأسكوب',
+              ),
+          ],
           ),
         ),
       ),
@@ -33,8 +43,9 @@ class MarketItemDetailView extends StatelessWidget {
 }
 
 class _PriceItemCard extends StatelessWidget {
-  const _PriceItemCard({required this.price});
+  const _PriceItemCard({required this.price, this.title});
   final String price;
+  final String? title;
   @override
   Widget build(BuildContext context) {
     return GlassWidget(
@@ -43,8 +54,8 @@ class _PriceItemCard extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          const CustomText(text: 'السعر', fontSize: 18),
-          CustomText(text: '$price ج.م', fontSize: 20, color: AppColors.gold),
+          CustomText(text: title ?? 'السعر', fontSize: 18),
+          CustomText(text: price, fontSize: 20, color: AppColors.gold),
         ],
       ),
     );

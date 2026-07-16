@@ -37,6 +37,10 @@ class MarketRepo {
     required int price,
     required String type,
     bool isInStock = true,
+    bool sellByKilo = false,
+    int? kiloPrice,
+    bool sellByPiece = false,
+    int? piecePrice,
   }) async {
     try {
       await _firebaseService.addDocument(
@@ -48,6 +52,10 @@ class MarketRepo {
           'price': price,
           'type': type,
           'isInStock': isInStock,
+          'sellByKilo': sellByKilo,
+          'kiloPrice': kiloPrice,
+          'sellByPiece': sellByPiece,
+          'piecePrice': piecePrice,
         },
       );
     } on FirebaseException catch (e) {
@@ -63,6 +71,10 @@ class MarketRepo {
     required int price,
     required String type,
     bool isInStock = true,
+    bool sellByKilo = false,
+    int? kiloPrice,
+    bool sellByPiece = false,
+    int? piecePrice,
   }) async {
     try {
       await _firebaseService.setDocument(
@@ -75,6 +87,10 @@ class MarketRepo {
           'price': price,
           'type': type,
           'isInStock': isInStock,
+          'sellByKilo': sellByKilo,
+          'kiloPrice': kiloPrice,
+          'sellByPiece': sellByPiece,
+          'piecePrice': piecePrice,
         },
       );
     } on FirebaseException catch (e) {

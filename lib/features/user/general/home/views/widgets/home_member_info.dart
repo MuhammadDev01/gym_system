@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gym_management_app/core/components/custom_circular_loading.dart';
 import 'package:gym_management_app/core/components/custom_text.dart';
 import 'package:gym_management_app/core/components/glass_widget.dart';
+import 'package:gym_management_app/core/constants/app_assets.dart';
 import 'package:gym_management_app/core/theme/app_colors.dart';
 import 'package:gym_management_app/features/user/general/home/cubit/home_cubit.dart';
 import 'package:gym_management_app/features/user/general/home/cubit/home_state.dart';
@@ -21,14 +22,10 @@ class HomeMemberInfo extends StatelessWidget {
                 child: Row(
                   spacing: 12,
                   children: [
-                    const CircleAvatar(
+                    CircleAvatar(
                       radius: 35,
                       backgroundColor: Colors.black,
-                      child: Icon(
-                        Icons.person,
-                        color: Colors.white38,
-                        size: 35,
-                      ),
+                      backgroundImage: AssetImage(AppAssets.picProfile),
                     ),
                     Expanded(
                       child: Column(

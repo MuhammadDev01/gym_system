@@ -53,12 +53,30 @@ class MarketItemGridBuilder extends StatelessWidget {
                           fontSize: 12,
                         ),
                         Align(
-                          alignment: AlignmentGeometry.bottomRight,
+                          alignment: Alignment.bottomRight,
                           child: CustomText(
                             text: '${item.price} ج.م',
                             color: AppColors.gold,
                           ),
                         ),
+                        if (item.sellByKilo && item.kiloPrice != null)
+                          Align(
+                            alignment: Alignment.bottomRight,
+                            child: CustomText(
+                              text: 'الكيلو: ${item.kiloPrice} ج.م',
+                              fontSize: 10,
+                              color: AppColors.gray,
+                            ),
+                          ),
+                        if (item.sellByPiece && item.piecePrice != null)
+                          Align(
+                            alignment: Alignment.bottomRight,
+                            child: CustomText(
+                              text: 'الأسكوب: ${item.piecePrice} ج.م',
+                              fontSize: 10,
+                              color: AppColors.gray,
+                            ),
+                          ),
                       ],
                     ),
                   ),

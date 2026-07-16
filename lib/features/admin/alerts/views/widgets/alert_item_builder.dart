@@ -10,6 +10,7 @@ class AlertItemBuilder extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GlassWidget(
+      borderColor: AppColors.gold,
       padding: const EdgeInsets.all(16),
       borderRaduis: 12,
       child: Row(

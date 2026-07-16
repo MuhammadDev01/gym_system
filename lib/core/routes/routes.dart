@@ -34,6 +34,7 @@ import 'package:gym_management_app/features/user/settings/views/settings_view.da
 import 'package:gym_management_app/features/user/settings/views/subscription_history_view.dart';
 import 'package:gym_management_app/features/admin/settings/cubit/prices_cubit.dart';
 import 'package:gym_management_app/features/admin/settings/views/prices_view.dart';
+import 'package:gym_management_app/features/admin/settings/views/publish_update_view.dart';
 import 'package:gym_management_app/features/user/subscription/views/subscription_view.dart';
 
 final goRouter = GoRouter(
@@ -198,6 +199,13 @@ final goRouter = GoRouter(
           pageBuilder: (_, _) => _customAnimatePushRoutePage(
             pageKey: AppRoutes.pricesView,
             pageView: const PricesView(),
+          ),
+        ),
+        GoRoute(
+          path: AppRoutes.publishUpdateView,
+          pageBuilder: (_, _) => _customAnimatePushRoutePage(
+            pageKey: AppRoutes.publishUpdateView,
+            pageView: const PublishUpdateView(),
           ),
         ),
       ],

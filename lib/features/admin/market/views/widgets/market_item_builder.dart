@@ -26,10 +26,27 @@ class MarketItemBuilder extends StatelessWidget {
               )
             : const Icon(Icons.shopping_bag, color: AppColors.gold),
         title: CustomText(text: item.name),
-        subtitle: CustomText(
-          text: '${item.price} ج.م',
-          fontSize: 13,
-          color: AppColors.gold,
+        subtitle: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            CustomText(
+              text: '${item.price} ج.م',
+              fontSize: 13,
+              color: AppColors.gold,
+            ),
+            if (item.sellByKilo && item.kiloPrice != null)
+              CustomText(
+                text: 'الكيلو: ${item.kiloPrice} ج.م',
+                fontSize: 11,
+                color: AppColors.gray,
+              ),
+            if (item.sellByPiece && item.piecePrice != null)
+              CustomText(
+                text: 'الأسكوب: ${item.piecePrice} ج.م',
+                fontSize: 11,
+                color: AppColors.gray,
+              ),
+          ],
         ),
         trailing: trailing,
       ),

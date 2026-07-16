@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:gap/gap.dart';
 import 'package:gym_management_app/core/components/custom_text.dart';
 import 'package:gym_management_app/core/components/glass_widget.dart';
 import 'package:gym_management_app/core/constants/app_assets.dart';
@@ -10,15 +9,23 @@ class AdminViewHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GlassWidget(
-      padding: const EdgeInsets.symmetric(vertical: 16),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Image.asset(AppAssets.logo),
-          const Gap(16),
-          CustomText(text: 'لوحة التحكم', fontSize: 24, color: AppColors.gold),
-        ],
+    return SizedBox(
+      width: 300,
+      child: GlassWidget(
+        borderColor: AppColors.gold,
+        padding: const EdgeInsets.symmetric(vertical: 16),
+        child: Column(
+          spacing: 16,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Image.asset(AppAssets.logo),
+            CustomText(
+              text: 'لوحة التحكم',
+              fontSize: 24,
+              color: AppColors.gold,
+            ),
+          ],
+        ),
       ),
     );
   }

@@ -121,6 +121,42 @@ class EditItemMarketDialogContent extends StatelessWidget {
                       ],
                     ),
                     Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        CustomText(text: 'يُباع بالكيلو'),
+                        Switch(
+                          value: cubit.sellByKilo,
+                          onChanged: (_) => cubit.toggleSellByKilo(),
+                          activeThumbColor: AppColors.gold,
+                        ),
+                      ],
+                    ),
+                    if (cubit.sellByKilo)
+                      CustomTextField(
+                        controller: cubit.kiloPriceController,
+                        labelText: 'سعر الكيلو',
+                        prefixIcon: Icons.monetization_on,
+                        textInputType: TextInputType.number,
+                      ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        CustomText(text: 'يُباع بالأسكوب'),
+                        Switch(
+                          value: cubit.sellByPiece,
+                          onChanged: (_) => cubit.toggleSellByPiece(),
+                          activeThumbColor: AppColors.gold,
+                        ),
+                      ],
+                    ),
+                    if (cubit.sellByPiece)
+                      CustomTextField(
+                        controller: cubit.piecePriceController,
+                        labelText: 'سعر الأسكوب',
+                        prefixIcon: Icons.monetization_on,
+                        textInputType: TextInputType.number,
+                      ),
+                    Row(
                       spacing: 12,
                       children: [
                         Expanded(

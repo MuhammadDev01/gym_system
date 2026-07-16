@@ -43,6 +43,7 @@ class AppRoutes {
   static const String subscriptionHistoryView = '/subscription-history-view';
   static const String monthlySubscriptionView = '/monthly-subscription-view';
   static const String pricesView = '/prices-view';
+  static const String publishUpdateView = '/publish-update-view';
 
   static String getCurrentRoute(BuildContext context) {
     return GoRouterState.of(context).uri.path;

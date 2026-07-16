@@ -8,6 +8,10 @@ class MarketItemModel {
   final int price;
   final ItemType type;
   final bool isInStock;
+  final bool sellByKilo;
+  final int? kiloPrice;
+  final bool sellByPiece;
+  final int? piecePrice;
 
   MarketItemModel({
     required this.id,
@@ -17,6 +21,10 @@ class MarketItemModel {
     required this.price,
     required this.type,
     this.isInStock = true,
+    this.sellByKilo = false,
+    this.kiloPrice,
+    this.sellByPiece = false,
+    this.piecePrice,
   });
 
   factory MarketItemModel.fromJson(Map<String, dynamic> json, String docId) {
@@ -28,6 +36,10 @@ class MarketItemModel {
       price: json['price'] as int? ?? 0,
       type: json['type'] == 'tool' ? ItemType.tool : ItemType.supplement,
       isInStock: json['isInStock'] as bool? ?? true,
+      sellByKilo: json['sellByKilo'] as bool? ?? false,
+      kiloPrice: json['kiloPrice'] as int?,
+      sellByPiece: json['sellByPiece'] as bool? ?? false,
+      piecePrice: json['piecePrice'] as int?,
     );
   }
 
@@ -41,6 +53,10 @@ class MarketItemModel {
           ? AppConstants.tool
           : AppConstants.supplement,
       'isInStock': isInStock,
+      'sellByKilo': sellByKilo,
+      if (kiloPrice != null) 'kiloPrice': kiloPrice,
+      'sellByPiece': sellByPiece,
+      if (piecePrice != null) 'piecePrice': piecePrice,
     };
   }
 
@@ -51,6 +67,10 @@ class MarketItemModel {
     int? price,
     ItemType? type,
     bool? isInStock,
+    bool? sellByKilo,
+    int? kiloPrice,
+    bool? sellByPiece,
+    int? piecePrice,
   }) {
     return MarketItemModel(
       id: id,
@@ -60,6 +80,10 @@ class MarketItemModel {
       price: price ?? this.price,
       type: type ?? this.type,
       isInStock: isInStock ?? this.isInStock,
+      sellByKilo: sellByKilo ?? this.sellByKilo,
+      kiloPrice: kiloPrice ?? this.kiloPrice,
+      sellByPiece: sellByPiece ?? this.sellByPiece,
+      piecePrice: piecePrice ?? this.piecePrice,
     );
   }
 }

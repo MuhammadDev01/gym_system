@@ -14,7 +14,7 @@ class MembersManagementView extends StatelessWidget {
     return AppBackground(
       child: Scaffold(
         appBar: GlassAppBar(title: 'ادارة المشتركين'),
-        body: Padding(
+        body: SingleChildScrollView(
           padding: const EdgeInsets.all(24),
           child: Column(
             spacing: 24,

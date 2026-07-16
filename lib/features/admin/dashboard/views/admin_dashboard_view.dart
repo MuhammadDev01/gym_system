@@ -36,7 +36,11 @@ class AdminDashboardView extends StatelessWidget {
                   title: 'إدارة المتجر',
                   onTap: () => context.push(AppRoutes.marketManagementView),
                 ),
-
+                AdminCard(
+                  icon: FontAwesomeIcons.cloudArrowUp,
+                  title: 'نشر تحديث',
+                  onTap: () => context.push(AppRoutes.publishUpdateView),
+                ),
                 AdminLogoutButton(),
               ],
             ),

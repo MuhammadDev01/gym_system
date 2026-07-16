@@ -50,10 +50,10 @@ class SettingsView extends StatelessWidget {
                         ),
                       ),
                       NavCard(
-                        title: 'التواصل مع الادمن',
+                        title: 'التواصل مع الكابتن',
                         icon: Icons.admin_panel_settings,
                         onTap: () => launchUrlString(
-                          'https://chat.whatsapp.com/LLywZ8vUQRs9b7CgjFYF3F',
+                          'https://wa.me/201022811130',
                           mode: LaunchMode.externalApplication,
                         ),
                       ),

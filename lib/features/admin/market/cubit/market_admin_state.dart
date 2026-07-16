@@ -19,6 +19,8 @@ final class MarketAdminImagePicked extends MarketAdminState {}
 
 final class MarketAdminStockToggled extends MarketAdminState {}
 
+final class MarketAdminKiloToggled extends MarketAdminState {}
+
 final class MarketAdminAdded extends MarketAdminState {}
 
 final class MarketAdminFiltered extends MarketAdminState {

@@ -19,7 +19,7 @@ class ProfileView extends StatelessWidget {
     return AppBackground(
       child: Scaffold(
         body: SafeArea(
-          child: Padding(
+          child: SingleChildScrollView(
             padding: const EdgeInsets.all(12),
             child: Column(
               spacing: 24,
@@ -70,7 +70,7 @@ class ProfileView extends StatelessWidget {
                       QrImageView(
                         data: member.phone,
                         version: QrVersions.auto,
-                        size: screenWidth * 0.7,
+                        size: screenWidth * 0.4,
                         eyeStyle: const QrEyeStyle(
                           eyeShape: QrEyeShape.square,
                           color: Colors.white,
@@ -82,7 +82,6 @@ class ProfileView extends StatelessWidget {
                       ),
                       CustomText(
                         text: 'امسح الباركود للوصول لبيانات العضوية',
-                        fontSize: 12,
                         color: AppColors.gold,
                       ),
                     ],

@@ -15,8 +15,19 @@ import 'package:gym_management_app/features/admin/market/views/widgets/market_it
 import 'package:gym_management_app/features/data/market_item_model.dart';
 import 'package:gym_management_app/features/user/market/views/widgets/market_item_filter.dart';
 
-class EditItemOnMarketView extends StatelessWidget {
+class EditItemOnMarketView extends StatefulWidget {
   const EditItemOnMarketView({super.key});
+
+  @override
+  State<EditItemOnMarketView> createState() => _EditItemOnMarketViewState();
+}
+
+class _EditItemOnMarketViewState extends State<EditItemOnMarketView> {
+  @override
+  void initState() {
+    context.read<MarketAdminCubit>().getProducts();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
