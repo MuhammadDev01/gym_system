@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gym_management_app/core/components/app_background.dart';
 import 'package:gym_management_app/core/components/app_dialog.dart';
+import 'package:gym_management_app/core/components/custom_circular_loading.dart';
 import 'package:gym_management_app/core/components/custom_empty_list.dart';
 import 'package:gym_management_app/core/components/glass_appbar.dart';
 import 'package:gym_management_app/core/helper/app_snackbar.dart';
@@ -52,9 +53,7 @@ class _EditAlertViewState extends State<EditAlertView> {
           builder: (_, state) {
             final cubit = context.read<AlertAdminCubit>();
             if (state is AlertLoadingState) {
-              return Center(
-                child: CircularProgressIndicator(color: AppColors.gold),
-              );
+              return CustomCircularLoading();
             }
             if (state is AlertsLoaded && state.alerts.isNotEmpty) {
               return ListView.separated(

@@ -10,12 +10,14 @@ class GlassWidget extends StatelessWidget {
     this.width,
     this.padding,
     this.borderRaduis,
+    this.borderColor,
   });
   final Widget child;
   final double? height;
   final double? width;
   final EdgeInsetsGeometry? padding;
   final double? borderRaduis;
+  final Color? borderColor;
   @override
   Widget build(BuildContext context) {
     return ClipRRect(
@@ -29,7 +31,7 @@ class GlassWidget extends StatelessWidget {
           decoration: BoxDecoration(
             color: Colors.white.withValues(alpha: .05),
             borderRadius: BorderRadius.circular(borderRaduis ?? 20),
-            border: Border.all(color: Colors.white.withValues(alpha: .1)),
+            border: Border.all(color: borderColor ?? Colors.white.withValues(alpha: .1)),
           ),
           child: child,
         ),

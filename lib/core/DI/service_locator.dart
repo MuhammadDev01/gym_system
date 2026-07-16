@@ -9,6 +9,7 @@ import 'package:gym_management_app/features/user/market/cubit/market_user_cubit.
 import 'package:gym_management_app/features/data/market_repo.dart';
 import 'package:gym_management_app/features/admin/members/cubit/member_cubit.dart';
 import 'package:gym_management_app/features/admin/members/data/members_repo.dart';
+import 'package:gym_management_app/features/admin/settings/cubit/prices_cubit.dart';
 import 'package:gym_management_app/features/user/general/cubit/gerenal_cubit.dart';
 import 'package:gym_management_app/features/user/general/home/data/home_repo.dart';
 import 'package:gym_management_app/features/user/settings/cubit/settings_cubit.dart';
@@ -76,4 +77,5 @@ void serviceLocatorSetup() {
     () => SubscriptionCubit(getIt<MemberRepo>()),
   );
   getIt.registerFactory<SettingsCubit>(() => SettingsCubit(getIt<AuthRepo>()));
+  getIt.registerLazySingleton<PricesCubit>(() => PricesCubit());
 }

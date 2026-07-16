@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gym_management_app/core/components/custom_text.dart';
 import 'package:gym_management_app/core/components/glass_widget.dart';
+import 'package:gym_management_app/core/theme/app_colors.dart';
 import 'package:gym_management_app/features/admin/members/cubit/member_cubit.dart';
 
 class MonthsSelector extends StatelessWidget {
@@ -26,8 +27,9 @@ class MonthsSelector extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: 8),
       child: DropdownButtonFormField<int>(
         initialValue: context.read<MemberCubit>().selectedMonths - 1,
-        dropdownColor: const Color(0xFF282A36),
-        style: const TextStyle(color: Colors.white),
+        dropdownColor: AppColors.surface,
+        style: TextStyle(color: Colors.white),
+        isDense: false,
         decoration: const InputDecoration(
           border: InputBorder.none,
           contentPadding: EdgeInsets.symmetric(horizontal: 8),

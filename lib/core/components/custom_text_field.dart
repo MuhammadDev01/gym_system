@@ -17,6 +17,7 @@ class CustomTextField extends StatelessWidget {
     this.maxLines,
     this.onChanged,
     this.enabled,
+    this.enabledColorBorder,
   });
   final TextEditingController? controller;
   final String? initialValue;
@@ -29,6 +30,7 @@ class CustomTextField extends StatelessWidget {
   final IconData? suffixIcon;
   final int? maxLines;
   final TextInputType? textInputType;
+  final Color? enabledColorBorder;
   final Function(String)? onChanged;
   final String? Function(String?)? validator;
   @override
@@ -53,11 +55,11 @@ class CustomTextField extends StatelessWidget {
             : null,
         labelText: labelText,
         hintText: hintText,
-        hintStyle: const TextStyle(color: AppColors.textSecondary),
+        hintStyle: const TextStyle(color: AppColors.gray),
         focusColor: AppColors.gold,
         errorStyle: const TextStyle(color: AppColors.gold),
-        enabledBorder: const OutlineInputBorder(
-          borderSide: BorderSide(color: AppColors.black),
+        enabledBorder: OutlineInputBorder(
+          borderSide: BorderSide(color: enabledColorBorder ?? AppColors.gray),
         ),
         focusedErrorBorder: const OutlineInputBorder(
           borderSide: BorderSide(color: AppColors.error),

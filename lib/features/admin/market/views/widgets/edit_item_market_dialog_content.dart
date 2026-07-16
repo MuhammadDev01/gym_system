@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gym_management_app/core/components/custom_button.dart';
 import 'package:gym_management_app/core/components/custom_text.dart';
 import 'package:gym_management_app/core/components/custom_text_field.dart';
+import 'package:gym_management_app/core/constants/app_constants.dart';
 import 'package:gym_management_app/core/extentions/navigator_extention.dart';
 import 'package:gym_management_app/core/helper/image_cache_helper.dart';
 import 'package:gym_management_app/core/helper/validators.dart';
@@ -84,10 +85,7 @@ class EditItemMarketDialogContent extends StatelessWidget {
                       labelText: 'السعر',
                       prefixIcon: Icons.monetization_on,
                       textInputType: TextInputType.number,
-                      validator: (v) => Validators.requiredField(
-                        v,
-                        message: 'هذا الحقل مطلوب',
-                      ),
+                      validator: (v) => Validators.requiredField(v),
                     ),
                     DropdownButtonFormField<String>(
                       initialValue: cubit.selectedType,
@@ -101,11 +99,11 @@ class EditItemMarketDialogContent extends StatelessWidget {
                       ),
                       items: [
                         const DropdownMenuItem(
-                          value: 'supplement',
+                          value: AppConstants.supplement,
                           child: CustomText(text: 'مكملات'),
                         ),
                         const DropdownMenuItem(
-                          value: 'tool',
+                          value: AppConstants.tool,
                           child: CustomText(text: 'أدوات'),
                         ),
                       ],
@@ -129,6 +127,7 @@ class EditItemMarketDialogContent extends StatelessWidget {
                           child: CustomButton(
                             text: 'إلغاء',
                             colorButton: Colors.white,
+                            colorText: AppColors.black,
                             onPressed: () => context.pop(),
                           ),
                         ),

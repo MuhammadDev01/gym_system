@@ -12,7 +12,6 @@ class GlassAppBar extends StatelessWidget implements PreferredSizeWidget {
     return GlassWidget(
       borderRaduis: 4,
       child: AppBar(
-        backgroundColor: Colors.transparent,
         automaticallyImplyLeading: false,
         leading: CustomBackButton(),
         actions: actions,

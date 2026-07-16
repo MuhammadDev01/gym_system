@@ -11,6 +11,8 @@ class MemberItemBuilder extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GlassWidget(
+      borderRaduis: 8,
+      borderColor: AppColors.gold,
       padding: const EdgeInsets.all(16),
       child: Row(
         spacing: 12,

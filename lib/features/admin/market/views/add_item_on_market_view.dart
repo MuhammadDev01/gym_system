@@ -7,6 +7,7 @@ import 'package:gym_management_app/core/components/custom_text.dart';
 import 'package:gym_management_app/core/components/custom_text_field.dart';
 import 'package:gym_management_app/core/components/glass_appbar.dart';
 import 'package:gym_management_app/core/components/glass_widget.dart';
+import 'package:gym_management_app/core/constants/app_constants.dart';
 import 'package:gym_management_app/core/extentions/navigator_extention.dart';
 import 'package:gym_management_app/core/helper/app_snackbar.dart';
 import 'package:gym_management_app/core/helper/image_cache_helper.dart';
@@ -134,11 +135,11 @@ class _AddItemOnMarketViewState extends State<AddItemOnMarketView> {
                           ),
                           items: const [
                             DropdownMenuItem(
-                              value: 'supplement',
+                              value: AppConstants.supplement,
                               child: CustomText(text: 'مكملات', fontSize: 16),
                             ),
                             DropdownMenuItem(
-                              value: 'tool',
+                              value: AppConstants.tool,
                               child: CustomText(text: 'أدوات', fontSize: 16),
                             ),
                           ],

@@ -44,8 +44,6 @@ final class MemberScannedState extends MemberState {
   MemberScannedState({required this.member});
 }
 
-final class MemberAttendanceMarked extends MemberState {}
-
 final class AttendanceHistoryLoaded extends MemberState {
   final List<AttendanceRecord> records;
   AttendanceHistoryLoaded({required this.records});

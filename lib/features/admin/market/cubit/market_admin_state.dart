@@ -21,6 +21,11 @@ final class MarketAdminStockToggled extends MarketAdminState {}
 
 final class MarketAdminAdded extends MarketAdminState {}
 
+final class MarketAdminFiltered extends MarketAdminState {
+  final List<MarketItemModel>? filteredProducts;
+  MarketAdminFiltered(this.filteredProducts);
+}
+
 final class MarketAdminUpdated extends MarketAdminState {}
 
 final class MarketAdminDeleted extends MarketAdminState {}

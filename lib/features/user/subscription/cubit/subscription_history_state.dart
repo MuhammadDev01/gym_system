@@ -17,3 +17,7 @@ final class SubscriptionHistoryError extends SubscriptionHistoryState {
   final String message;
   SubscriptionHistoryError(this.message);
 }
+
+final class SubscriptionHistoryDeleted extends SubscriptionHistoryState {}
+
+final class SubscriptionHistorytoggled extends SubscriptionHistoryState {}

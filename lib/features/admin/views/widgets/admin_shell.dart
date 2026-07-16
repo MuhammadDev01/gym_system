@@ -4,6 +4,7 @@ import 'package:gym_management_app/core/DI/service_locator.dart';
 import 'package:gym_management_app/features/admin/alerts/cubit/alert_admin_cubit.dart';
 import 'package:gym_management_app/features/admin/market/cubit/market_admin_cubit.dart';
 import 'package:gym_management_app/features/admin/members/cubit/member_cubit.dart';
+import 'package:gym_management_app/features/user/subscription/cubit/subscription_history_cubit.dart';
 
 class AdminShell extends StatelessWidget {
   final Widget child;
@@ -16,6 +17,7 @@ class AdminShell extends StatelessWidget {
         BlocProvider(create: (_) => getIt<MemberCubit>()..getAllMembers()),
         BlocProvider(create: (_) => getIt<AlertAdminCubit>()..getAlerts()),
         BlocProvider(create: (_) => getIt<MarketAdminCubit>()..getProducts()),
+        BlocProvider(create: (_) => getIt<SubscriptionHistoryCubit>()),
       ],
       child: child,
     );

@@ -30,9 +30,7 @@ class AlertItemBuilder extends StatelessWidget {
               CustomText(
                 text:
                     'ينتهي في:  ${alert.expiresAt.year}/${alert.expiresAt.month}/${alert.expiresAt.day} | ${alert.expiresAt.hour.toString().padLeft(2, '0')}:${alert.expiresAt.minute.toString().padLeft(2, '0')}',
-                color: alert.isExpired
-                    ? AppColors.snackError
-                    : AppColors.textSecondary,
+                color: AppColors.textSecondary,
               ),
             ],
           ),

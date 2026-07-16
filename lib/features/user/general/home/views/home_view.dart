@@ -13,7 +13,8 @@ class HomeView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocListener<HomeCubit, HomeState>(
-      listener: (context, state) {
+      listenWhen: (_, next) => next is HomeError,
+      listener: (_, state) {
         if (state is HomeError) {
           appSnackbar(context, state.message);
         }
@@ -28,7 +29,6 @@ class HomeView extends StatelessWidget {
               HomeBanner(),
               Center(child: HomeMemberInfo()),
               CustomText(text: 'تنبيهات من الكابتن', fontSize: 20),
-
               Center(child: AlertSection()),
             ],
           ),

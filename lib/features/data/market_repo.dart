@@ -21,6 +21,15 @@ class MarketRepo {
     }
   }
 
+  Stream<List<MarketItemModel>> streamProducts() {
+    return _firebaseService.streamCollection('products').map(
+      (snapshot) => snapshot.docs.map((doc) {
+        final data = doc.data() as Map<String, dynamic>;
+        return MarketItemModel.fromJson(data, doc.id);
+      }).toList(),
+    );
+  }
+
   Future<void> addProduct({
     required String name,
     required String description,

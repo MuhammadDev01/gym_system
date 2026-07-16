@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:gap/gap.dart';
 import 'package:gym_management_app/core/components/custom_status_icon.dart';
 import 'package:gym_management_app/core/components/custom_text.dart';
 import 'package:gym_management_app/core/components/glass_widget.dart';
@@ -17,24 +16,24 @@ class AlertListItem extends StatelessWidget {
     final remainingText = remaining.inDays > 0
         ? 'متبقي ${remaining.inDays} يوم'
         : remaining.inHours > 0
-            ? 'متبقي ${remaining.inHours} ساعة'
-            : 'آخر يوم';
+        ? 'متبقي ${remaining.inHours} ساعة'
+        : 'آخر يوم';
     return GlassWidget(
       padding: const EdgeInsets.all(16),
       child: Column(
+        spacing: 8,
         crossAxisAlignment: CrossAxisAlignment.end,
         children: [
           Row(
+            spacing: 12,
             children: [
-              CustomStatusIcon(
+              const CustomStatusIcon(
                 color: AppColors.gold,
                 icon: Icons.campaign_rounded,
               ),
-              const Gap(12),
               Expanded(child: CustomText(text: alert.message, fontSize: 14)),
             ],
           ),
-          const Gap(8),
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
             decoration: BoxDecoration(

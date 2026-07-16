@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:gym_management_app/core/constants/app_constants.dart';
 
 class SubscriptionHistoryModel {
   final String id;
@@ -27,10 +28,10 @@ class SubscriptionHistoryModel {
 
   String get planLabel {
     switch (type) {
-      case 'fitness':
+      case AppConstants.fitness:
         return 'باقة الفتنس - $months شهر';
-      case 'private':
-        return 'باقة خصوصي - $months شهر';
+      case AppConstants.private:
+        return 'باقة برايفت - $months شهر';
       default:
         return 'باقة الجيم - $months شهر';
     }
@@ -38,10 +39,10 @@ class SubscriptionHistoryModel {
 
   String get typeLabel {
     switch (type) {
-      case 'fitness':
+      case AppConstants.fitness:
         return 'فتنس';
-      case 'private':
-        return 'خصوصي';
+      case AppConstants.private:
+        return 'برايفت';
       default:
         return 'جيم';
     }
@@ -61,8 +62,7 @@ class SubscriptionHistoryModel {
       price: json['price'] as int? ?? 0,
       startDate: (json['startDate'] as Timestamp?)?.toDate() ?? DateTime.now(),
       endDate: (json['endDate'] as Timestamp?)?.toDate() ?? DateTime.now(),
-      createdAt:
-          (json['createdAt'] as Timestamp?)?.toDate() ?? DateTime.now(),
+      createdAt: (json['createdAt'] as Timestamp?)?.toDate() ?? DateTime.now(),
     );
   }
 

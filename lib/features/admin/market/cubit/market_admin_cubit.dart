@@ -2,10 +2,12 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:gym_management_app/core/constants/app_constants.dart';
 import 'package:gym_management_app/core/service/local/image_picker_service.dart';
 import 'package:gym_management_app/features/admin/market/cubit/market_admin_state.dart';
 import 'package:gym_management_app/features/data/market_item_model.dart';
 import 'package:gym_management_app/features/data/market_repo.dart';
+import 'package:gym_management_app/features/user/market/views/widgets/market_item_filter.dart';
 
 class MarketAdminCubit extends Cubit<MarketAdminState> {
   MarketAdminCubit(this._marketRepo) : super(MarketAdminInitial());
@@ -13,7 +15,7 @@ class MarketAdminCubit extends Cubit<MarketAdminState> {
   final nameController = TextEditingController();
   final descController = TextEditingController();
   final priceController = TextEditingController();
-  String selectedType = 'supplement';
+  String selectedType = AppConstants.supplement;
   String? imageBase64;
   bool isInStock = true;
   @override
@@ -34,7 +36,7 @@ class MarketAdminCubit extends Cubit<MarketAdminState> {
     descController.clear();
     priceController.clear();
     imageBase64 = null;
-    selectedType = 'supplement';
+    selectedType = AppConstants.supplement;
     isInStock = true;
   }
 
@@ -57,18 +59,19 @@ class MarketAdminCubit extends Cubit<MarketAdminState> {
     emit(MarketAdmintypeChange());
   }
 
-  List<MarketItemModel> _allProducts = [];
+  List<MarketItemModel> allProducts = [];
   //*GET
   Future<void> getProducts({bool refresh = false}) async {
     try {
       emit(MarketAdminLoading());
-      if (_allProducts.isNotEmpty && !refresh) {
-        emit(MarketAdminLoaded(products: _allProducts));
+      if (allProducts.isNotEmpty && !refresh) {
+        emit(MarketAdminLoaded(products: allProducts));
         return;
       }
-      _allProducts = await _marketRepo.getAllProducts();
+      allProducts = await _marketRepo.getAllProducts();
       if (isClosed) return;
-      emit(MarketAdminLoaded(products: _allProducts));
+      filterByType(selectedFilter);
+      emit(MarketAdminLoaded(products: allProducts));
       resetValues();
     } catch (e) {
       final msg = e.toString();
@@ -115,7 +118,9 @@ class MarketAdminCubit extends Cubit<MarketAdminState> {
     itemId = item.id;
     itemImage = item.image;
     imageBase64 = null;
-    selectedType = item.type == ItemType.tool ? 'tool' : 'supplement';
+    selectedType = item.type == ItemType.tool
+        ? AppConstants.tool
+        : AppConstants.supplement;
     isInStock = item.isInStock;
   }
 
@@ -162,5 +167,23 @@ class MarketAdminCubit extends Cubit<MarketAdminState> {
         ),
       );
     }
+  }
+
+  //* FILTER PRODUCT
+  FilterType selectedFilter = FilterType.all;
+  List<MarketItemModel> filteredProducts = [];
+
+  void filterByType(FilterType filter) {
+    selectedFilter = filter;
+    if (filter == FilterType.all) {
+      filteredProducts = List.from(allProducts);
+    } else {
+      filteredProducts = allProducts.where((item) {
+        return filter == FilterType.tools
+            ? item.type == ItemType.tool
+            : item.type == ItemType.supplement;
+      }).toList();
+    }
+    emit(MarketAdminLoaded(products: filteredProducts));
   }
 }

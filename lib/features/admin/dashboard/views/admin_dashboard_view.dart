@@ -36,6 +36,7 @@ class AdminDashboardView extends StatelessWidget {
                   title: 'إدارة المتجر',
                   onTap: () => context.push(AppRoutes.marketManagementView),
                 ),
+
                 AdminLogoutButton(),
               ],
             ),

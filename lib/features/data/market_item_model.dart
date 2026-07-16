@@ -1,3 +1,5 @@
+import 'package:gym_management_app/core/constants/app_constants.dart';
+
 class MarketItemModel {
   final String id;
   final String name;
@@ -35,7 +37,9 @@ class MarketItemModel {
       'description': description,
       'image': image,
       'price': price,
-      'type': type == ItemType.tool ? 'tool' : 'supplement',
+      'type': type == ItemType.tool
+          ? AppConstants.tool
+          : AppConstants.supplement,
       'isInStock': isInStock,
     };
   }

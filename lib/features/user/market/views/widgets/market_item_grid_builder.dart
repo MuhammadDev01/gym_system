@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:gym_management_app/core/components/custom_text.dart';
 import 'package:gym_management_app/core/components/glass_widget.dart';
@@ -14,34 +13,31 @@ class MarketItemGridBuilder extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final opacity = item.isInStock ? 1.0 : 0.5;
     return GestureDetector(
       onTap: item.isInStock
           ? () => context.push(AppRoutes.marketItemDetailView, extra: item)
           : null,
       child: Opacity(
-        opacity: opacity,
+        opacity: item.isInStock ? 1.0 : 0.5,
         child: Stack(
           children: [
             GlassWidget(
+              borderRaduis: 14,
+              borderColor: AppColors.gold,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Expanded(
-                    child: ClipRRect(
-                      borderRadius: const BorderRadius.vertical(
-                        top: Radius.circular(12),
-                      ),
-                      child: Image(
-                        image: BaseImageCache.getImage(item.image),
-                        width: double.infinity,
-                        fit: BoxFit.contain,
-                      ),
+                    child: Image(
+                      image: BaseImageCache.getImage(item.image),
+                      width: double.infinity,
+                      fit: BoxFit.contain,
                     ),
                   ),
                   Padding(
                     padding: const EdgeInsets.all(10),
                     child: Column(
+                      spacing: 6,
                       children: [
                         CustomText(
                           text: item.name,
@@ -49,23 +45,19 @@ class MarketItemGridBuilder extends StatelessWidget {
                           textOverflow: TextOverflow.ellipsis,
                           fontSize: 14,
                         ),
-                        Gap(4),
                         CustomText(
                           text: item.description,
-                          color: AppColors.gray.withValues(alpha: 0.5),
+                          color: AppColors.textSecondary,
                           maxLines: 2,
                           textOverflow: TextOverflow.ellipsis,
                           fontSize: 12,
                         ),
-                        Gap(8),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            CustomText(
-                              text: '${item.price} ج.م',
-                              color: AppColors.gold,
-                            ),
-                          ],
+                        Align(
+                          alignment: AlignmentGeometry.bottomRight,
+                          child: CustomText(
+                            text: '${item.price} ج.م',
+                            color: AppColors.gold,
+                          ),
                         ),
                       ],
                     ),
@@ -82,14 +74,10 @@ class MarketItemGridBuilder extends StatelessWidget {
                       vertical: 6,
                     ),
                     decoration: BoxDecoration(
-                      color: Colors.black87,
+                      color: Colors.black,
                       borderRadius: BorderRadius.circular(8),
                     ),
-                    child: const CustomText(
-                      text: 'غير متوفر',
-                      fontSize: 14,
-                      color: Colors.white,
-                    ),
+                    child: const CustomText(text: 'غير متوفر', fontSize: 14),
                   ),
                 ),
               ),

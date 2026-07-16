@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gym_management_app/core/components/custom_text.dart';
 import 'package:gym_management_app/core/theme/app_colors.dart';
 
 enum FilterType { all, tools, supplements }
@@ -15,21 +16,20 @@ class MarketItemFilter extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 8),
+      padding: const EdgeInsets.all(14),
       child: Row(
+        spacing: 12,
         children: [
           _FilterChipItem(
             label: 'الكل',
             isSelected: selectedFilter == FilterType.all,
             onTap: () => onFilterChanged(FilterType.all),
           ),
-          const SizedBox(width: 12),
           _FilterChipItem(
             label: 'مكملات',
             isSelected: selectedFilter == FilterType.supplements,
             onTap: () => onFilterChanged(FilterType.supplements),
           ),
-          const SizedBox(width: 12),
           _FilterChipItem(
             label: 'أدوات',
             isSelected: selectedFilter == FilterType.tools,
@@ -62,13 +62,7 @@ class _FilterChipItem extends StatelessWidget {
           borderRadius: BorderRadius.circular(20),
           border: Border.all(color: AppColors.gold, width: 1.5),
         ),
-        child: Text(
-          label,
-          style: TextStyle(
-            color: isSelected ? Colors.black : AppColors.black,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
+        child: CustomText(text: label, color: AppColors.black),
       ),
     );
   }

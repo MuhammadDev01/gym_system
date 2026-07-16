@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gym_management_app/core/DI/service_locator.dart';
 import 'package:gym_management_app/features/user/market/cubit/marke_user_state.dart';
@@ -8,40 +9,53 @@ import 'package:gym_management_app/features/user/market/views/widgets/market_ite
 class MarketUserCubit extends Cubit<MarketUserState> {
   MarketUserCubit() : super(MarketInitial());
 
+  StreamSubscription? _subscription;
   List<MarketItemModel> _allItems = [];
 
   FilterType selectedFilter = FilterType.all;
   List<MarketItemModel> filteredItems = [];
 
-  Future<void> getProducts() async {
+  void getProducts() {
     emit(MarketLoading());
-    try {
-      _allItems = await getIt<MarketRepo>().getAllProducts();
-      if (isClosed) return;
-      filteredItems = List.from(_allItems);
-
-      emit(MarketLoaded());
-    } catch (e) {
-      final msg = e.toString();
-      emit(
-        MarketError(
-          message: msg.startsWith('Exception: ') ? msg.substring(11) : msg,
-        ),
-      );
-    }
+    _subscription = getIt<MarketRepo>().streamProducts().listen(
+      (items) {
+        _allItems = items;
+        if (isClosed) return;
+        _applyFilter();
+      },
+      onError: (e) {
+        if (isClosed) return;
+        final msg = e.toString();
+        emit(
+          MarketError(
+            message: msg.startsWith('Exception: ') ? msg.substring(11) : msg,
+          ),
+        );
+      },
+    );
   }
 
   void filterByType(FilterType filter) {
     selectedFilter = filter;
-    if (filter == FilterType.all) {
+    _applyFilter();
+  }
+
+  void _applyFilter() {
+    if (selectedFilter == FilterType.all) {
       filteredItems = List.from(_allItems);
     } else {
       filteredItems = _allItems.where((item) {
-        return filter == FilterType.tools
+        return selectedFilter == FilterType.tools
             ? item.type == ItemType.tool
             : item.type == ItemType.supplement;
       }).toList();
     }
     emit(MarketLoaded());
+  }
+
+  @override
+  Future<void> close() {
+    _subscription?.cancel();
+    return super.close();
   }
 }

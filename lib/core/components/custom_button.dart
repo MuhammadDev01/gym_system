@@ -13,7 +13,7 @@ class CustomButton extends StatelessWidget {
     this.size,
     this.fontSize,
   });
-  final VoidCallback onPressed;
+  final VoidCallback? onPressed;
   final String text;
   final double borderRadius;
   final Widget? icon;
@@ -37,7 +37,7 @@ class CustomButton extends StatelessWidget {
       style: FilledButton.styleFrom(
         fixedSize: size,
         backgroundColor: colorButton ?? AppColors.gold,
-        foregroundColor: AppColors.black,
+        foregroundColor: colorButton ?? AppColors.black,
         elevation: 0,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(borderRadius),

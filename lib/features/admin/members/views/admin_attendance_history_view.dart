@@ -3,37 +3,20 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
 import 'package:gym_management_app/core/components/app_background.dart';
 import 'package:gym_management_app/core/components/app_dialog.dart';
-import 'package:gym_management_app/core/components/custom_button.dart';
+import 'package:gym_management_app/core/components/custom_circular_loading.dart';
 import 'package:gym_management_app/core/components/custom_empty_list.dart';
-import 'package:gym_management_app/core/components/custom_loading_overlay.dart';
 import 'package:gym_management_app/core/components/custom_text.dart';
 import 'package:gym_management_app/core/components/custom_text_field.dart';
 import 'package:gym_management_app/core/components/glass_appbar.dart';
 import 'package:gym_management_app/core/components/glass_widget.dart';
 import 'package:gym_management_app/core/helper/app_snackbar.dart';
-import 'package:gym_management_app/core/helper/validators.dart';
 import 'package:gym_management_app/core/theme/app_colors.dart';
 import 'package:gym_management_app/features/admin/members/cubit/member_cubit.dart';
 import 'package:gym_management_app/features/admin/members/cubit/member_state.dart';
 import 'package:gym_management_app/features/admin/members/data/attendance_model.dart';
 
-class AdminAttendanceHistoryView extends StatefulWidget {
+class AdminAttendanceHistoryView extends StatelessWidget {
   const AdminAttendanceHistoryView({super.key});
-
-  @override
-  State<AdminAttendanceHistoryView> createState() =>
-      _AdminAttendanceHistoryViewState();
-}
-
-class _AdminAttendanceHistoryViewState
-    extends State<AdminAttendanceHistoryView> {
-  final _formKey = GlobalKey<FormState>();
-
-  @override
-  void initState() {
-    context.read<MemberCubit>().phoneController.clear();
-    super.initState();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -46,54 +29,41 @@ class _AdminAttendanceHistoryViewState
               appSnackbar(context, state.message);
             }
           },
-          builder: (_, state) => CustomLoadingOverlay(
-            isLoading: state is MemberLoadingState,
-            child: Padding(
-              padding: const EdgeInsets.all(12),
-              child: Form(
-                key: _formKey,
-                child: Column(
-                  spacing: 12,
-                  children: [
-                    CustomTextField(
-                      controller: context.read<MemberCubit>().phoneController,
-                      hintText: 'رقم الهاتف',
-                      prefixIcon: Icons.search,
-                      validator: (p0) => Validators.requiredField(p0),
-                    ),
-                    CustomButton(
-                      onPressed: () {
-                        if (_formKey.currentState!.validate()) {
-                          context.read<MemberCubit>().getAttendanceHistory();
-                        }
-                      },
-                      text: "بحث",
-                    ),
-                    state is AttendanceHistoryLoaded
+          builder: (_, state) {
+            final cubit = context.read<MemberCubit>();
+            return Padding(
+              padding: const EdgeInsets.all(16),
+              child: Column(
+                spacing: 16,
+                children: [
+                  CustomTextField(
+                    controller: cubit.attendanceSearchController,
+                    hintText: 'بحث بالاسم أو رقم الهاتف',
+                    prefixIcon: Icons.search,
+                    onChanged: (_) => cubit.getAttendanceHistory(),
+                  ),
+                  Expanded(
+                    child: state is MemberLoadingState
+                        ? const CustomCircularLoading()
+                        : state is AttendanceHistoryLoaded
                         ? state.records.isNotEmpty
-                              ? Expanded(
-                                  child: ListView.separated(
-                                    addAutomaticKeepAlives: false,
-                                    separatorBuilder: (_, _) =>
-                                        Divider(color: Colors.transparent),
-                                    padding: const EdgeInsets.symmetric(
-                                      horizontal: 16,
-                                    ),
-                                    itemCount: state.records.length,
-                                    itemBuilder: (_, index) {
-                                      return _AttendanceCard(
-                                        record: state.records[index],
-                                      );
-                                    },
-                                  ),
+                              ? ListView.separated(
+                                  addAutomaticKeepAlives: false,
+                                  itemCount: state.records.length,
+                                  separatorBuilder: (_, _) => const Gap(12),
+                                  itemBuilder: (_, index) {
+                                    return _AttendanceCard(
+                                      record: state.records[index],
+                                    );
+                                  },
                                 )
-                              : Expanded(child: CustomEmptyList(text: 'سجلات'))
-                        : Expanded(child: CustomEmptyList(text: 'سجلات')),
-                  ],
-                ),
+                              : const CustomEmptyList(text: 'سجل')
+                        : const CustomEmptyList(text: 'سجل'),
+                  ),
+                ],
               ),
-            ),
-          ),
+            );
+          },
         ),
       ),
     );

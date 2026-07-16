@@ -7,6 +7,9 @@ import 'package:gym_management_app/features/admin/members/cubit/member_state.dar
 import 'package:gym_management_app/features/admin/members/data/members_repo.dart';
 import 'package:gym_management_app/features/user/subscription/data/subscription_history_model.dart';
 import 'package:gym_management_app/features/user/subscription/data/subscription_history_repo.dart';
+import 'package:gym_management_app/features/admin/settings/cubit/prices_cubit.dart';
+
+enum MemberFilter { all, active, expired }
 
 class MemberCubit extends Cubit<MemberState> {
   MemberCubit(this._memberRepo) : super(MemberInitial());
@@ -23,24 +26,23 @@ class MemberCubit extends Cubit<MemberState> {
   DateTime? editStartDate;
   DateTime? editEndDate;
 
+  MemberFilter _filterType = MemberFilter.all;
+  String _searchQuery = '';
+
+  MemberFilter get filterType => _filterType;
+
   @override
   Future<void> close() {
     nameController.dispose();
     phoneController.dispose();
     editNameController.dispose();
     editPhoneController.dispose();
+    attendanceSearchController.dispose();
     return super.close();
   }
 
-  static int _pricePerMonth(String type) {
-    switch (type) {
-      case AppConstants.fitness:
-        return 400;
-      case AppConstants.private:
-        return 500;
-      default:
-        return 300;
-    }
+  int _pricePerMonth(String type) {
+    return getIt<PricesCubit>().getPrice(type);
   }
 
   void init() {
@@ -86,13 +88,7 @@ class MemberCubit extends Cubit<MemberState> {
         createdAt: now,
       );
       await getIt<SubscriptionHistoryRepo>().addRecord(record);
-      await getIt<SubscriptionHistoryRepo>().deleteOldRecords();
       if (isClosed) return;
-      nameController.clear();
-      phoneController.clear();
-      selectedMonths = 1;
-      selectedType = 'gym';
-      await getAllMembers(forceRefresh: true);
       emit(MemberAddedState());
     } catch (e) {
       final msg = e.toString();
@@ -110,14 +106,14 @@ class MemberCubit extends Cubit<MemberState> {
     try {
       emit(MemberLoadingState());
       if (!forceRefresh && _members.isNotEmpty) {
-        emit(MemberLoadedState(members: _members));
+        _emitFiltered();
         return;
       }
 
       _members = await _memberRepo.getAllMembers();
       if (isClosed) return;
 
-      emit(MemberLoadedState(members: _members));
+      _emitFiltered();
     } catch (e) {
       final msg = e.toString();
       emit(
@@ -128,14 +124,43 @@ class MemberCubit extends Cubit<MemberState> {
     }
   }
 
+  void setFilter(MemberFilter filter) {
+    _filterType = filter;
+    _emitFiltered();
+  }
+
   void searchMembers(String query) {
-    if (query.isEmpty) {
-      emit(MemberLoadedState(members: _members));
-      return;
+    _searchQuery = query;
+    _emitFiltered();
+  }
+
+  void _emitFiltered() {
+    var filtered = List<MemberModel>.from(_members);
+
+    if (_searchQuery.isNotEmpty) {
+      filtered = filtered.where((m) {
+        return m.name.contains(_searchQuery) || m.phone.contains(_searchQuery);
+      }).toList();
     }
-    final filtered = _members.where((m) {
-      return m.name.contains(query) || m.phone.contains(query);
-    }).toList();
+
+    if (_filterType == MemberFilter.active) {
+      filtered = filtered
+          .where(
+            (m) =>
+                m.subscriptionEnd != null &&
+                !DateTime.now().isAfter(m.subscriptionEnd!),
+          )
+          .toList();
+    } else if (_filterType == MemberFilter.expired) {
+      filtered = filtered
+          .where(
+            (m) =>
+                m.subscriptionEnd == null ||
+                DateTime.now().isAfter(m.subscriptionEnd!),
+          )
+          .toList();
+    }
+
     emit(MemberLoadedState(members: filtered));
   }
 
@@ -146,6 +171,7 @@ class MemberCubit extends Cubit<MemberState> {
     editPhoneController.text = member.phone;
     editStartDate = member.subscriptionStart;
     editEndDate = member.subscriptionEnd;
+    emit(MemberEditFormState());
   }
 
   void setEditStartDate(DateTime date) {
@@ -162,8 +188,9 @@ class MemberCubit extends Cubit<MemberState> {
   Future<void> updateMember() async {
     emit(MemberLoadingState());
     try {
+      final member = selectedMember!;
       await _memberRepo.updateMember(
-        docId: selectedMember!.id,
+        docId: member.id,
         name: editNameController.text.trim(),
         phone: editPhoneController.text.trim(),
         subscriptionType: selectedType,
@@ -171,24 +198,29 @@ class MemberCubit extends Cubit<MemberState> {
         subscriptionEnd: editEndDate,
       );
 
-      final now = DateTime.now();
-      final record = SubscriptionHistoryModel(
-        id: '',
-        userId: selectedMember!.id,
-        userName: editNameController.text.trim(),
-        userPhone: editPhoneController.text.trim(),
-        months: 1,
-        type: selectedType,
-        price: 300,
-        //price: _pricePerMonth(selectedType) * editMonths,
-        startDate: editStartDate ?? now,
-        endDate: editEndDate ?? now,
-        createdAt: now,
-      );
-      await getIt<SubscriptionHistoryRepo>().addRecord(record);
-      await getIt<SubscriptionHistoryRepo>().deleteOldRecords();
+      final datesChanged =
+          member.subscriptionStart != editStartDate ||
+          member.subscriptionEnd != editEndDate;
+
+      if (datesChanged) {
+        final now = DateTime.now();
+        final record = SubscriptionHistoryModel(
+          id: '',
+          userId: member.id,
+          userName: editNameController.text.trim(),
+          userPhone: editPhoneController.text.trim(),
+          months: 1,
+          type: selectedType,
+          price: _pricePerMonth(selectedType),
+          startDate: editStartDate ?? now,
+          endDate: editEndDate ?? now,
+          createdAt: now,
+        );
+        await getIt<SubscriptionHistoryRepo>().addRecord(record);
+      }
 
       await getAllMembers(forceRefresh: true);
+      if (!isClosed) emit(MemberUpdatedState());
     } catch (e) {
       final msg = e.toString();
       emit(
@@ -203,7 +235,10 @@ class MemberCubit extends Cubit<MemberState> {
   Future<void> deleteMember() async {
     emit(MemberLoadingState());
     try {
-      await _memberRepo.deleteMember(selectedMember!.id);
+      final memberId = selectedMember!.id;
+      await _memberRepo.deleteAllAttendanceByUserPhone(memberId);
+      await getIt<SubscriptionHistoryRepo>().deleteAllHistoryByUserId(memberId);
+      await _memberRepo.deleteMember(memberId);
       if (isClosed) return;
       emit(MemberDeletedState());
       await getAllMembers(forceRefresh: true);
@@ -259,6 +294,12 @@ class MemberCubit extends Cubit<MemberState> {
         userPhone: member.phone,
       );
       await _memberRepo.cleanupOldAttendance();
+      final now = DateTime.now();
+      final idx = _members.indexWhere((m) => m.id == member.id);
+      if (idx != -1) {
+        _members[idx] = member.copyWith(lastAttendance: now);
+        _emitFiltered();
+      }
       if (isClosed) return;
       emit(MemberScannedState(member: member));
       phoneController.clear();
@@ -272,13 +313,23 @@ class MemberCubit extends Cubit<MemberState> {
     }
   }
 
+  final attendanceSearchController = TextEditingController();
+
   Future<void> getAttendanceHistory() async {
     emit(MemberLoadingState());
     try {
-      final records = await _memberRepo.getAttendanceByPhone(
-        phoneController.text.trim(),
-      );
-      emit(AttendanceHistoryLoaded(records: records));
+      final query = attendanceSearchController.text.trim().toLowerCase();
+      if (query.isEmpty) {
+        emit(AttendanceHistoryLoaded(records: []));
+        return;
+      }
+      final all = await _memberRepo.getAllAttendance();
+      final filtered = all.where((r) {
+        return r.userName.contains(query) || r.userPhone.contains(query);
+      }).toList();
+      filtered.sort((a, b) => b.timestamp.compareTo(a.timestamp));
+      if (isClosed) return;
+      emit(AttendanceHistoryLoaded(records: filtered));
     } catch (e) {
       final msg = e.toString();
       emit(
@@ -293,11 +344,18 @@ class MemberCubit extends Cubit<MemberState> {
     try {
       emit(MemberLoadingState());
       await _memberRepo.deleteAttendanceRecord(docId);
-      final records = await _memberRepo.getAttendanceByPhone(
-        phoneController.text.trim(),
-      );
+      final query = attendanceSearchController.text.trim().toLowerCase();
+      if (query.isEmpty) {
+        emit(AttendanceHistoryLoaded(records: []));
+        return;
+      }
+      final all = await _memberRepo.getAllAttendance();
+      final filtered = all.where((r) {
+        return r.userName.contains(query) || r.userPhone.contains(query);
+      }).toList();
+      filtered.sort((a, b) => b.timestamp.compareTo(a.timestamp));
       if (isClosed) return;
-      emit(AttendanceHistoryLoaded(records: records));
+      emit(AttendanceHistoryLoaded(records: filtered));
     } catch (e) {
       final msg = e.toString();
       emit(
@@ -308,26 +366,17 @@ class MemberCubit extends Cubit<MemberState> {
     }
   }
 
-  Future<void> markAttendanceByPhone(String phone) async {
+  Future<void> lookupMemberByPhone(String phone) async {
     emit(MemberLoadingState());
     try {
       final member = await _memberRepo.getMemberByPhone(phone);
       if (member == null) {
-        emit(MemberErrorState('لم يتم العثور على مشترك بهذا الرقم'));
+        emit(
+          MemberNotFoundState(message: "لم يتم العثور على مشترك بهذا الرقم"),
+        );
         return;
       }
-      if (member.subscriptionEnd != null &&
-          DateTime.now().isAfter(member.subscriptionEnd!)) {
-        emit(MemberErrorState('تم انتهاء اشتراك المشترك'));
-        return;
-      }
-      final alreadyAttended = await _memberRepo.hasAttendedToday(phone);
-      if (alreadyAttended) {
-        emit(MemberErrorState('تم تسجيل حضور هذا المشترك مسبقاً اليوم'));
-        return;
-      }
-      await _memberRepo.toggleAttendance(member.id, attended: true);
-      emit(MemberAttendanceMarked());
+      emit(MemberFoundState(member: member));
     } catch (e) {
       final msg = e.toString();
       emit(

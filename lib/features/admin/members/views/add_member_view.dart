@@ -8,6 +8,7 @@ import 'package:gym_management_app/core/components/custom_text_field.dart';
 import 'package:gym_management_app/core/components/glass_appbar.dart';
 import 'package:gym_management_app/core/components/glass_widget.dart';
 import 'package:gym_management_app/core/helper/validators.dart';
+import 'package:gym_management_app/core/theme/app_colors.dart';
 import 'package:gym_management_app/features/admin/members/cubit/member_cubit.dart';
 import 'package:gym_management_app/features/admin/members/cubit/member_state.dart';
 import 'package:gym_management_app/features/admin/members/views/widgets/add_member_button.dart';
@@ -67,9 +68,13 @@ class _AddMemberViewState extends State<AddMemberView> {
                           validator: (v) => Validators.requiredField(v),
                         ),
                         Row(
+                          spacing: 8,
                           children: [
-                            CustomText(text: 'المدة:', fontSize: 14),
-                            const Gap(8),
+                            CustomText(
+                              text: 'المدة:',
+                              fontSize: 14,
+                              color: AppColors.gold,
+                            ),
                             Expanded(child: MonthsSelector()),
                           ],
                         ),

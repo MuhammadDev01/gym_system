@@ -12,6 +12,7 @@ class MemberSearchBar extends StatelessWidget {
       padding: const EdgeInsets.fromLTRB(16, 12, 16, 4),
       child: CustomTextField(
         hintText: "بحث بالاسم أو رقم الهاتف",
+
         prefixIcon: Icons.search,
         onChanged: (v) => context.read<MemberCubit>().searchMembers(v),
       ),

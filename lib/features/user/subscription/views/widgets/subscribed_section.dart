@@ -3,6 +3,7 @@ import 'package:gym_management_app/core/components/custom_glass_alert.dart';
 import 'package:gym_management_app/core/components/custom_text.dart';
 import 'package:gym_management_app/core/components/glass_widget.dart';
 import 'package:gym_management_app/core/constants/app_assets.dart';
+import 'package:gym_management_app/core/constants/app_constants.dart';
 import 'package:gym_management_app/core/theme/app_colors.dart';
 import 'package:gym_management_app/features/admin/members/data/member_model.dart';
 import 'package:gym_management_app/features/user/subscription/views/widgets/member_ship_card.dart';
@@ -13,9 +14,9 @@ class SubscribedSection extends StatelessWidget {
 
   String get _cardImage {
     switch (member.subscriptionType) {
-      case 'fitness':
+      case AppConstants.fitness:
         return AppAssets.cardsFitnessCard;
-      case 'private':
+      case AppConstants.private:
         return AppAssets.cardsPrivateCard;
       default:
         return AppAssets.cardsGymCard;
@@ -41,8 +42,8 @@ class SubscribedSection extends StatelessWidget {
           text: isActive ? 'عضويتك فعالة حاليًا' : 'انتهت عضويتك',
           color: isActive ? AppColors.success : AppColors.error,
           icon: isActive
-              ? Icon(Icons.verified, color: AppColors.success)
-              : Icon(Icons.cancel_outlined, color: AppColors.error),
+              ? const Icon(Icons.verified, color: AppColors.success)
+              : const Icon(Icons.cancel_outlined, color: AppColors.error),
         ),
         CustomText(
           text: 'عضويتك الحالية',
@@ -63,9 +64,9 @@ class _SubscriptionInfoCard extends StatelessWidget {
 
   String _typeLabel(String type) {
     switch (type) {
-      case 'fitness':
-        return 'Fitness';
-      case 'private':
+      case AppConstants.fitness:
+        return 'فتنس';
+      case AppConstants.private:
         return 'برايفت';
       default:
         return 'جيم';

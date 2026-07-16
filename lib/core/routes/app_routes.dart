@@ -40,8 +40,9 @@ class AppRoutes {
 
   //intenral views
   static const String branchesSubView = '/branches-sub-view';
-  static const String subscriptionHistorySubView =
-      '/subscription-history-sub-view';
+  static const String subscriptionHistoryView = '/subscription-history-view';
+  static const String monthlySubscriptionView = '/monthly-subscription-view';
+  static const String pricesView = '/prices-view';
 
   static String getCurrentRoute(BuildContext context) {
     return GoRouterState.of(context).uri.path;

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:gap/gap.dart';
 import 'package:gym_management_app/core/components/custom_text.dart';
 
 class CustomGlassAlert extends StatelessWidget {
@@ -23,9 +22,9 @@ class CustomGlassAlert extends StatelessWidget {
         border: Border.all(color: color.withValues(alpha: .25)),
       ),
       child: Row(
+        spacing: 12,
         children: [
           icon,
-          const Gap(12),
           Expanded(child: CustomText(text: text, fontSize: 16)),
         ],
       ),

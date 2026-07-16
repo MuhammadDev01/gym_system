@@ -24,14 +24,14 @@ void main() async {
 
 class GymSystemApp extends StatelessWidget {
   const GymSystemApp({super.key});
-  final bool kDebugSingleScreen = false;
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => getIt<AuthCubit>(),
       child: MaterialApp.router(
         debugShowCheckedModeBanner: false,
-        title: 'Gym System App',
+
+        title: '3A GYM',
         theme: ThemeApp.defualtTheme,
         routerConfig: goRouter,
         builder: (_, child) {

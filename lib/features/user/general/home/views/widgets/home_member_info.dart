@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:gap/gap.dart';
+import 'package:gym_management_app/core/components/custom_circular_loading.dart';
 import 'package:gym_management_app/core/components/custom_text.dart';
 import 'package:gym_management_app/core/components/glass_widget.dart';
 import 'package:gym_management_app/core/theme/app_colors.dart';
@@ -19,19 +19,23 @@ class HomeMemberInfo extends StatelessWidget {
             ? GlassWidget(
                 padding: const EdgeInsets.all(12.0),
                 child: Row(
+                  spacing: 12,
                   children: [
-                    CircleAvatar(
+                    const CircleAvatar(
                       radius: 35,
                       backgroundColor: Colors.black,
-                      child: Icon(Icons.person, color: Colors.white38, size: 35),
+                      child: Icon(
+                        Icons.person,
+                        color: Colors.white38,
+                        size: 35,
+                      ),
                     ),
-                    const Gap(12),
                     Expanded(
                       child: Column(
+                        spacing: 6,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           CustomText(text: cubit.member!.name, fontSize: 17),
-                          const Gap(6),
                           CustomText(
                             text: cubit.member!.phone,
                             color: AppColors.gold,
@@ -41,6 +45,7 @@ class HomeMemberInfo extends StatelessWidget {
                       ),
                     ),
                     Column(
+                      spacing: 6,
                       children: [
                         CustomText(
                           text: cubit.remainingDays.toString(),
@@ -56,7 +61,7 @@ class HomeMemberInfo extends StatelessWidget {
                   ],
                 ),
               )
-            : CircularProgressIndicator(color: AppColors.gold);
+            : CustomCircularLoading();
       },
     );
   }

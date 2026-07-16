@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:gap/gap.dart';
+import 'package:gym_management_app/core/components/custom_circular_loading.dart';
 import 'package:gym_management_app/core/components/custom_text.dart';
 import 'package:gym_management_app/core/theme/app_colors.dart';
 import 'package:gym_management_app/features/user/general/home/cubit/home_cubit.dart';
@@ -28,12 +28,12 @@ class AlertSection extends StatelessWidget {
                       shrinkWrap: true,
                       physics: const NeverScrollableScrollPhysics(),
                       itemCount: cubit.alerts!.length,
-                      separatorBuilder: (_, _) => const Gap(12),
+                      separatorBuilder: (_, _) => const SizedBox(height: 16),
                       itemBuilder: (_, index) {
                         return AlertListItem(alert: cubit.alerts![index]);
                       },
                     )
-            : CircularProgressIndicator(color: AppColors.gold);
+            : CustomCircularLoading();
       },
     );
   }

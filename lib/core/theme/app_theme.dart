@@ -23,7 +23,7 @@ class ThemeApp {
 
     //*appbar
     appBarTheme: AppBarTheme(
-      backgroundColor: Colors.white,
+      backgroundColor: Colors.transparent,
       iconTheme: IconThemeData(color: Colors.white),
     ),
 

@@ -34,9 +34,9 @@ class AddMemberButton extends StatelessWidget {
       child: CustomButton(
         text: 'إضافة',
         icon: const Icon(Icons.person_add, color: Colors.black),
-        onPressed: () {
+        onPressed: () async {
           if (formKey.currentState!.validate()) {
-            cubit.addMember();
+            await cubit.addMember();
           }
         },
       ),

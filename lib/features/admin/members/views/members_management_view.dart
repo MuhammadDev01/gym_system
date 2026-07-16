@@ -13,8 +13,6 @@ class MembersManagementView extends StatelessWidget {
   Widget build(BuildContext context) {
     return AppBackground(
       child: Scaffold(
-        backgroundColor: Colors.transparent,
-
         appBar: GlassAppBar(title: 'ادارة المشتركين'),
         body: Padding(
           padding: const EdgeInsets.all(24),
@@ -47,6 +45,16 @@ class MembersManagementView extends StatelessWidget {
                 icon: FontAwesomeIcons.users,
                 title: 'قائمة المشتركين',
                 onTap: () => context.push(AppRoutes.membersListView),
+              ),
+              AdminCard(
+                icon: FontAwesomeIcons.idCard,
+                title: 'إدارة سجل الاشتراكات',
+                onTap: () => context.push(AppRoutes.subscriptionHistoryView),
+              ),
+              AdminCard(
+                icon: FontAwesomeIcons.moneyBillWave,
+                title: 'اسعار الاشتراكات',
+                onTap: () => context.push(AppRoutes.pricesView),
               ),
             ],
           ),

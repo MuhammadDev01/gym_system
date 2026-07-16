@@ -29,6 +29,8 @@ class AppConstants {
   static const String fitness = 'fitness';
   static const String gym = 'gym';
   static const String private = 'private';
+  static const String supplement = 'supplement';
+  static const String tool = 'tool';
 
   //*FCM
   static const String fcmServerKey = '';

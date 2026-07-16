@@ -82,6 +82,23 @@ class MemberRepo {
     }
   }
 
+  Future<void> deleteAllAttendanceByUserPhone(String phone) async {
+    try {
+      final result = await _firebaseService.queryCollection(
+        collection: 'attendance',
+        field: 'userPhone',
+        isEqualTo: phone.trim(),
+      );
+      final batch = FirebaseFirestore.instance.batch();
+      for (final doc in result.docs) {
+        batch.delete(doc.reference);
+      }
+      await batch.commit();
+    } on FirebaseException catch (e) {
+      throw Exception(FirebaseExceptionMessages.getFirestoreMessage(e));
+    }
+  }
+
   Future<void> recordAttendance({
     required String userId,
     required String userName,
@@ -147,6 +164,20 @@ class MemberRepo {
         collection: 'attendance',
         field: 'userPhone',
         isEqualTo: phone.trim(),
+      );
+      return result.docs.map((doc) {
+        final data = doc.data() as Map<String, dynamic>;
+        return AttendanceRecord.fromJson(data, doc.id);
+      }).toList();
+    } on FirebaseException catch (e) {
+      throw Exception(FirebaseExceptionMessages.getFirestoreMessage(e));
+    }
+  }
+
+  Future<List<AttendanceRecord>> getAllAttendance() async {
+    try {
+      final result = await _firebaseService.getCollection(
+        collection: 'attendance',
       );
       return result.docs.map((doc) {
         final data = doc.data() as Map<String, dynamic>;
